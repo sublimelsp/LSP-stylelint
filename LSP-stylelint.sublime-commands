@@ -1,0 +1,10 @@
+[
+    {
+        "caption": "Preferences: LSP-stylelint Settings",
+        "command": "edit_settings",
+        "args": {
+            "base_file": "${packages}/LSP-stylelint/LSP-stylelint.sublime-settings",
+            "default": "// Settings in here override those in \"LSP-stylelint/LSP-stylelint.sublime-settings\"\n\n{\n\t$0\n}\n",
+        },
+    },
+]

@@ -1,0 +1,46 @@
+{
+	"languages": [
+		{
+			"languageId": "scss",
+			"scopes": ["source.scss"],
+			"syntaxes": ["Packages/Sass/Syntaxes/SCSS.sublime-syntax"],
+		},
+		{
+			"languageId": "css",
+			"scopes": ["source.css", ],
+			"syntaxes": ["Packages/Sass/Syntaxes/CSS.sublime-syntax"],
+		},
+		{
+			"languageId": "vue",
+			"scopes": ["text.html.vue"],
+			"syntaxes": ["Packages/Vue Syntax Highlight/Vue Component.sublime-syntax"],
+		},
+	],
+	"settings": {
+		"stylelint": {
+			"validate": [
+				"css",
+				"html",
+				"javascript",
+				"javascriptreact",
+				"less",
+				"markdown",
+				"postcss",
+				"sass",
+				"scss",
+				"source.css.styled",
+				"source.markdown.math",
+				"styled-css",
+				"sugarss",
+				"svelte",
+				"typescript",
+				"typescriptreact",
+				"vue",
+				"vue-html",
+				"vue-postcss",
+				"xml",
+				"xsl",
+			]
+		}
+	}
+}
