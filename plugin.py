@@ -3,14 +3,14 @@ from lsp_utils import NpmClientHandler
 
 
 def plugin_loaded():
-    LspVscodeStylelintPlugin.setup()
+    LspStylelintPlugin.setup()
 
 
 def plugin_unloaded():
-    LspVscodeStylelintPlugin.cleanup()
+    LspStylelintPlugin.cleanup()
 
 
-class LspVscodeStylelintPlugin(NpmClientHandler):
+class LspStylelintPlugin(NpmClientHandler):
     package_name = __package__
-    server_directory = 'vscode-stylelint'
+    server_directory = 'server'
     server_binary_path = os.path.join(server_directory, 'server.js')

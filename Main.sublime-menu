@@ -16,11 +16,11 @@
                 "id": "lsp-servers",
                 "children": [
                   {
-                    "caption": "LSP-vscode-stylelint",
+                    "caption": "LSP-stylelint",
                     "command": "edit_settings",
                     "args": {
-                      "base_file": "${packages}/LSP-vscode-stylelint/LSP-vscode-stylelint.sublime-settings",
-                      "default": "// Settings in here override those in \"LSP-vscode-stylelint/LSP-vscode-stylelint.sublime-settings\"\n\n{\n\t$0\n}\n",
+                      "base_file": "${packages}/LSP-stylelint/LSP-stylelint.sublime-settings",
+                      "default": "// Settings in here override those in \"LSP-stylelint/LSP-stylelint.sublime-settings\"\n\n{\n\t$0\n}\n",
                     },
                   },
                 ],
