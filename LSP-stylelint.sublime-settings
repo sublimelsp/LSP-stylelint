@@ -3,12 +3,15 @@
 		{
 			"languageId": "scss",
 			"scopes": ["source.scss"],
-			"syntaxes": ["Packages/Sass/Syntaxes/SCSS.sublime-syntax"],
+			"syntaxes": [
+				"Packages/Sass/Syntaxes/SCSS.sublime-syntax",
+				"Packages/SCSS/SCSS.tmLanguage",
+			],
 		},
 		{
 			"languageId": "css",
-			"scopes": ["source.css", ],
-			"syntaxes": ["Packages/Sass/Syntaxes/CSS.sublime-syntax"],
+			"scopes": ["source.css"],
+			"syntaxes": ["Packages/CSS/CSS.sublime-syntax"],
 		},
 		{
 			"languageId": "vue",
