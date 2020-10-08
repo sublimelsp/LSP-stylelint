@@ -3,10 +3,12 @@
 		{
 			"languageId": "scss",
 			"scopes": ["source.scss"],
-			"syntaxes": [
-				"Packages/Sass/Syntaxes/SCSS.sublime-syntax",
-				"Packages/SCSS/SCSS.tmLanguage",
-			],
+			"syntaxes": ["Packages/Sass/Syntaxes/SCSS.sublime-syntax", "Packages/SCSS/SCSS.tmLanguage"],
+		},
+		{
+			"languageId": "less",
+			"scopes": ["source.less"],
+			"syntaxes": ["Packages/LESS/Syntaxes/LESS.sublime-syntax"],
 		},
 		{
 			"languageId": "css",
