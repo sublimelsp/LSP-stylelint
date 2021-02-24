@@ -27,6 +27,8 @@
 		"stylelint.enable": true,
 		// A stylelint configuration object.
 		"stylelint.config": null,
+		// Path to a JSON, YAML, or JS file that contains your configuration object. Use this option if you don't want stylelint to search for a configuration file.
+		"stylelint.configFile": "",
 		// A partial stylelint config whose properties override the existing ones.
 		"stylelint.configOverrides": null,
 		// A path to the directory that relative paths defining "extends" and "plugins" are relative to.
