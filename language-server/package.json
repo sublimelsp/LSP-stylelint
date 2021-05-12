@@ -199,7 +199,7 @@
   "dependencies": {
     "fast-diff": "^1.2.0",
     "kind-of": "^6.0.3",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "path-is-inside": "^1.0.2",
     "stylelint": "^13.6.0",
     "vscode-languageclient": "^6.2.0-next.1",
