@@ -1,39 +1,39 @@
 #!/usr/bin/env bash
 
+# exit when any command fails
+set -e
+
 GITHUB_REPO_URL="https://github.com/stylelint/vscode-stylelint"
 GITHUB_REPO_NAME=$(echo "${GITHUB_REPO_URL}" | command grep -oE '[^/]*$')
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPO_DIR="${SCRIPT_DIR}"
 SRC_DIR="${REPO_DIR}/${GITHUB_REPO_NAME}"
-DIST_DIR="${REPO_DIR}/out"
 
 
 # -------- #
 # clean up #
 # -------- #
 
-pushd "${REPO_DIR}" || exit
+pushd "${REPO_DIR}"
 
-rm -rf \
-    "${DIST_DIR}" \
-    "package.json" "package-lock.json"
+rm -rf "${SRC_DIR}" dist package.json
 
-popd || exit
+popd
 
 
 # ------------------------- #
 # download the source codes #
 # ------------------------- #
 
-pushd "${REPO_DIR}" || exit
+pushd "${REPO_DIR}"
 
 echo 'Enter commit SHA, branch or tag (for example 2.1.0) to build'
-read -rp 'SHA, branch or tag (default: master): ' ref
+read -rp 'SHA, branch or tag (default: main): ' ref
 
-# use the "master" branch by default
+# use the "main" branch by default
 if [ "${ref}" = "" ]; then
-    ref="master"
+    ref="main"
 fi
 
 temp_zip="src-${ref}.zip"
@@ -42,29 +42,37 @@ unzip -z "${temp_zip}" | tr -d '\r' > update-info.log
 unzip "${temp_zip}" && rm -f "${temp_zip}"
 mv "${GITHUB_REPO_NAME}-"* "${SRC_DIR}"
 
-popd || exit
+popd
 
+# ---------------- #
+# compile the code #
+# ---------------- #
+
+pushd "${SRC_DIR}"
+
+npm i
+npm run vscode:prepublish
+
+popd
 
 # ------------- #
 # collect files #
 # ------------- #
 
-pushd "${REPO_DIR}" || exit
+pushd "${REPO_DIR}"
 
-mv "${SRC_DIR}/lib" .
 mv "${SRC_DIR}/package.json" .
-mv "${SRC_DIR}/package-lock.json" .
-mv "${SRC_DIR}/server.js" .
+mv "${SRC_DIR}/dist/" .
+rm ./dist/index.js  # remove the vscode extension code
 
-popd || exit
-
+popd
 
 # -------- #
 # clean up #
 # -------- #
 
-pushd "${REPO_DIR}" || exit
+pushd "${REPO_DIR}"
 
 rm -rf "${SRC_DIR}"
 
-popd || exit
+popd
