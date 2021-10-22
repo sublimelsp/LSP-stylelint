@@ -51,7 +51,8 @@ popd
 pushd "${SRC_DIR}"
 
 npm i
-npm run vscode:prepublish
+cp "${REPO_DIR}/bundle.js" scripts/
+npm run bundle-base
 
 popd
 
@@ -63,7 +64,6 @@ pushd "${REPO_DIR}"
 
 mv "${SRC_DIR}/package.json" .
 mv "${SRC_DIR}/dist/" .
-rm ./dist/index.js  # remove the vscode extension code
 
 popd
 
