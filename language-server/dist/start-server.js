@@ -18760,6 +18760,12 @@ var require_types = __commonJS({
       Descriptionless: "--report-descriptionless-disables",
       Illegal: "reportDisables"
     };
+    var Notification = {
+      DidRegisterDocumentFormattingEditProvider: "textDocument/didRegisterDocumentFormattingEditProvider"
+    };
+    var ApiEvent = {
+      DidRegisterDocumentFormattingEditProvider: "DidRegisterDocumentFormattingEditProvider"
+    };
     var InvalidOptionError = class extends Error {
       constructor(warnings) {
         const reasons = warnings.map((warning) => warning.text);
@@ -18771,6 +18777,8 @@ var require_types = __commonJS({
       CommandId,
       CodeActionKind,
       DisableReportRuleNames,
+      Notification,
+      ApiEvent,
       InvalidOptionError
     };
   }
@@ -19999,7 +20007,7 @@ var require_create_disable_completion_item = __commonJS({
       if (disableType === "stylelint-disable") {
         item.insertText = `/* stylelint-disable \${0:${rule || "rule"}} */
 /* stylelint-enable \${0:${rule || "rule"}} */`;
-        item.detail = "Turn off all Stylelint or individual rules, after which you do not need to re-enable stylelint. (stylelint)";
+        item.detail = "Turn off all Stylelint or individual rules, after which you do not need to re-enable Stylelint. (Stylelint)";
         item.documentation = {
           kind: MarkupKind.Markdown,
           value: `\`\`\`css
@@ -20009,7 +20017,7 @@ var require_create_disable_completion_item = __commonJS({
         };
       } else {
         item.insertText = `/* ${disableType} \${0:${rule || "rule"}} */`;
-        item.detail = disableType === "stylelint-disable-line" ? "Turn off Stylelint rules for individual lines only, after which you do not need to explicitly re-enable them. (stylelint)" : "Turn off Stylelint rules for the next line only, after which you do not need to explicitly re-enable them. (stylelint)";
+        item.detail = disableType === "stylelint-disable-line" ? "Turn off Stylelint rules for individual lines only, after which you do not need to explicitly re-enable them. (Stylelint)" : "Turn off Stylelint rules for the next line only, after which you do not need to explicitly re-enable them. (Stylelint)";
         item.documentation = {
           kind: MarkupKind.Markdown,
           value: `\`\`\`css
@@ -20036,12 +20044,12 @@ var require_display_error = __commonJS({
       }
       if (err?.reasons) {
         for (const reason of err?.reasons) {
-          connection2.window.showErrorMessage(`stylelint: ${reason}`);
+          connection2.window.showErrorMessage(`Stylelint: ${reason}`);
         }
         return;
       }
       if (err?.code === 78) {
-        connection2.window.showErrorMessage(`stylelint: ${err.message}`);
+        connection2.window.showErrorMessage(`Stylelint: ${err.message}`);
         return;
       }
       connection2.window.showErrorMessage((err.stack || err.message).replace(/\n/gu, " "));
@@ -20084,7 +20092,7 @@ var require_find_package_root = __commonJS({
           }
           currentDirectory = parent;
         } catch (error) {
-          if (error.code === "ENOENT") {
+          if (error.code === "ENOENT" || error.code === "ENOTDIR") {
             const parent = path.dirname(currentDirectory);
             if (!path.relative(parent, currentDirectory)) {
               return void 0;
@@ -20366,7 +20374,7 @@ var require_stylelint_resolver = __commonJS({
         if (!this.#connection) {
           return;
         }
-        this.#connection.window.showErrorMessage(`stylelint: ${message}`);
+        this.#connection.window.showErrorMessage(`Stylelint: ${message}`);
         this.#logger?.error(message);
       }
       async #getRequirePath(stylelintPath, getWorkspaceFolderFn) {
@@ -20380,7 +20388,7 @@ var require_stylelint_resolver = __commonJS({
         if (!stylelintPath) {
           return void 0;
         }
-        const errorMessage = `Failed to load stylelint from "stylelintPath": ${stylelintPath}.`;
+        const errorMessage = `Failed to load Stylelint from "stylelintPath": ${stylelintPath}.`;
         try {
           const requirePath = await this.#getRequirePath(stylelintPath, getWorkspaceFolderFn);
           const stylelint = require(requirePath);
@@ -20425,7 +20433,7 @@ var require_stylelint_resolver = __commonJS({
         const getWorkspaceFolderFn = lazyCallAsync(async () => this.#connection && await getWorkspaceFolder(this.#connection, textDocument));
         const stylelint = await getFirstResolvedValue(async () => this.#resolveFromPath(stylelintPath, getWorkspaceFolderFn), async () => await this.#resolveFromModules(textDocument, getWorkspaceFolderFn, packageManager));
         if (!stylelint) {
-          this.#logger?.warn("Failed to load stylelint either globally or from the current workspace.");
+          this.#logger?.warn("Failed to load Stylelint either globally or from the current workspace.");
           return void 0;
         }
         return stylelint;
@@ -20633,7 +20641,7 @@ var require_warning_to_diagnostic = __commonJS({
     function warningToDiagnostic(warning, rules) {
       const position = Position.create(warning.line - 1, warning.column - 1);
       const ruleDocUrl = rules?.[warning.rule] && `https://stylelint.io/user-guide/rules/${warning.rule}`;
-      const diagnostic = Diagnostic.create(Range.create(position, position), warning.text, DiagnosticSeverity[warning.severity === "warning" ? "Warning" : "Error"], warning.rule, "stylelint");
+      const diagnostic = Diagnostic.create(Range.create(position, position), warning.text, DiagnosticSeverity[warning.severity === "warning" ? "Warning" : "Error"], warning.rule, "Stylelint");
       if (ruleDocUrl) {
         diagnostic.codeDescription = { href: ruleDocUrl };
       }
@@ -20842,7 +20850,7 @@ var require_completion = __commonJS({
           results.push({
             label: rule,
             kind: CompletionItemKind.Snippet,
-            detail: `disable ${rule} rule. (stylelint)`
+            detail: `disable ${rule} rule. (Stylelint)`
           });
         }
       } else if (disableType === "stylelint-disable" || disableType === "stylelint-disable-next-line") {
@@ -20850,7 +20858,7 @@ var require_completion = __commonJS({
           results.push({
             label: rule,
             kind: CompletionItemKind.Snippet,
-            detail: `disable ${rule} rule. (stylelint)`
+            detail: `disable ${rule} rule. (Stylelint)`
           });
         }
       } else {
@@ -20874,6 +20882,7 @@ var require_formatter = __commonJS({
     "use strict";
     var { DocumentFormattingRequest } = require_main3();
     var { formattingOptionsToRules } = require_stylelint();
+    var { Notification } = require_types();
     var _context, _logger, _registerDynamically, _registration, _shouldFormat, shouldFormat_fn;
     var FormatterModule = class {
       constructor({ context, logger: logger2 }) {
@@ -20928,16 +20937,15 @@ var require_formatter = __commonJS({
         });
         __privateGet(this, _logger)?.debug("onDocumentFormatting handler registered");
       }
-      onDidChangeValidateLanguages({ languages }) {
+      async onDidChangeValidateLanguages({ languages }) {
         if (__privateGet(this, _logger)?.isDebugEnabled()) {
           __privateGet(this, _logger)?.debug("Received onDidChangeValidateLanguages", { languages: [...languages] });
         }
         if (__privateGet(this, _registerDynamically)) {
           if (__privateGet(this, _registration)) {
             __privateGet(this, _logger)?.debug("Disposing old formatter registration");
-            void __privateGet(this, _registration).then((disposable) => disposable.dispose()).then(() => {
-              __privateGet(this, _logger)?.debug("Old formatter registration disposed");
-            });
+            __privateGet(this, _registration).dispose();
+            __privateGet(this, _logger)?.debug("Old formatter registration disposed");
           }
           if (languages.size > 0) {
             const documentSelector = [];
@@ -20947,7 +20955,8 @@ var require_formatter = __commonJS({
             if (__privateGet(this, _logger)?.isDebugEnabled()) {
               __privateGet(this, _logger)?.debug("Registering formatter for languages", { languages: [...languages] });
             }
-            __privateSet(this, _registration, __privateGet(this, _context).connection.client.register(DocumentFormattingRequest.type, { documentSelector }));
+            __privateSet(this, _registration, await __privateGet(this, _context).connection.client.register(DocumentFormattingRequest.type, { documentSelector }));
+            __privateGet(this, _context).connection.sendNotification(Notification.DidRegisterDocumentFormattingEditProvider, {});
             __privateGet(this, _logger)?.debug("Formatter registered");
           }
         }
@@ -23349,8 +23358,15 @@ var require_old_stylelint_warning = __commonJS({
       }
       __privateGet(this, _checkedWorkspaces).add(workspaceFolder);
       const stylelintVersion = await __privateMethod(this, _getStylelintVersion, getStylelintVersion_fn).call(this, document);
+      if (!stylelintVersion) {
+        return void 0;
+      }
       try {
-        return stylelintVersion && semver.lt(stylelintVersion, "14.0.0") ? stylelintVersion : void 0;
+        const coerced = semver.coerce(stylelintVersion);
+        if (!coerced) {
+          throw new Error(`Could not coerce version "${stylelintVersion}"`);
+        }
+        return semver.lt(coerced, "14.0.0") ? stylelintVersion : void 0;
       } catch (error) {
         __privateGet(this, _logger)?.debug("Stylelint version could not be parsed", {
           uri: document.uri,
@@ -23789,8 +23805,8 @@ var require_server2 = __commonJS({
     var { StylelintResolver } = require_packages();
     var defaultOptions = {
       packageManager: "npm",
-      validate: ["css", "less", "postcss"],
-      snippet: ["css", "less", "postcss"]
+      validate: ["css", "postcss"],
+      snippet: ["css", "postcss"]
     };
     var StylelintLanguageServer2 = class {
       #connection;
