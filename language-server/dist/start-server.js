@@ -10005,9 +10005,9 @@ var require_node4 = __commonJS({
   }
 });
 
-// node_modules/winston-transport/node_modules/readable-stream/lib/internal/streams/stream.js
+// node_modules/readable-stream/lib/internal/streams/stream.js
 var require_stream = __commonJS({
-  "node_modules/winston-transport/node_modules/readable-stream/lib/internal/streams/stream.js"(exports2, module2) {
+  "node_modules/readable-stream/lib/internal/streams/stream.js"(exports2, module2) {
     module2.exports = require("stream");
   }
 });
@@ -10069,9 +10069,9 @@ var require_safe_buffer = __commonJS({
   }
 });
 
-// node_modules/winston-transport/node_modules/readable-stream/lib/internal/streams/destroy.js
+// node_modules/readable-stream/lib/internal/streams/destroy.js
 var require_destroy = __commonJS({
-  "node_modules/winston-transport/node_modules/readable-stream/lib/internal/streams/destroy.js"(exports2, module2) {
+  "node_modules/readable-stream/lib/internal/streams/destroy.js"(exports2, module2) {
     "use strict";
     var pna = require_process_nextick_args();
     function destroy(err, cb) {
@@ -10139,9 +10139,9 @@ var require_isarray = __commonJS({
   }
 });
 
-// node_modules/winston-transport/node_modules/readable-stream/lib/internal/streams/BufferList.js
+// node_modules/readable-stream/lib/internal/streams/BufferList.js
 var require_BufferList = __commonJS({
-  "node_modules/winston-transport/node_modules/readable-stream/lib/internal/streams/BufferList.js"(exports2, module2) {
+  "node_modules/readable-stream/lib/internal/streams/BufferList.js"(exports2, module2) {
     "use strict";
     function _classCallCheck(instance, Constructor) {
       if (!(instance instanceof Constructor)) {
@@ -10227,9 +10227,269 @@ var require_BufferList = __commonJS({
   }
 });
 
-// node_modules/winston-transport/node_modules/readable-stream/lib/_stream_readable.js
+// node_modules/string_decoder/lib/string_decoder.js
+var require_string_decoder = __commonJS({
+  "node_modules/string_decoder/lib/string_decoder.js"(exports2) {
+    "use strict";
+    var Buffer2 = require_safe_buffer().Buffer;
+    var isEncoding = Buffer2.isEncoding || function(encoding) {
+      encoding = "" + encoding;
+      switch (encoding && encoding.toLowerCase()) {
+        case "hex":
+        case "utf8":
+        case "utf-8":
+        case "ascii":
+        case "binary":
+        case "base64":
+        case "ucs2":
+        case "ucs-2":
+        case "utf16le":
+        case "utf-16le":
+        case "raw":
+          return true;
+        default:
+          return false;
+      }
+    };
+    function _normalizeEncoding(enc) {
+      if (!enc)
+        return "utf8";
+      var retried;
+      while (true) {
+        switch (enc) {
+          case "utf8":
+          case "utf-8":
+            return "utf8";
+          case "ucs2":
+          case "ucs-2":
+          case "utf16le":
+          case "utf-16le":
+            return "utf16le";
+          case "latin1":
+          case "binary":
+            return "latin1";
+          case "base64":
+          case "ascii":
+          case "hex":
+            return enc;
+          default:
+            if (retried)
+              return;
+            enc = ("" + enc).toLowerCase();
+            retried = true;
+        }
+      }
+    }
+    function normalizeEncoding(enc) {
+      var nenc = _normalizeEncoding(enc);
+      if (typeof nenc !== "string" && (Buffer2.isEncoding === isEncoding || !isEncoding(enc)))
+        throw new Error("Unknown encoding: " + enc);
+      return nenc || enc;
+    }
+    exports2.StringDecoder = StringDecoder;
+    function StringDecoder(encoding) {
+      this.encoding = normalizeEncoding(encoding);
+      var nb;
+      switch (this.encoding) {
+        case "utf16le":
+          this.text = utf16Text;
+          this.end = utf16End;
+          nb = 4;
+          break;
+        case "utf8":
+          this.fillLast = utf8FillLast;
+          nb = 4;
+          break;
+        case "base64":
+          this.text = base64Text;
+          this.end = base64End;
+          nb = 3;
+          break;
+        default:
+          this.write = simpleWrite;
+          this.end = simpleEnd;
+          return;
+      }
+      this.lastNeed = 0;
+      this.lastTotal = 0;
+      this.lastChar = Buffer2.allocUnsafe(nb);
+    }
+    StringDecoder.prototype.write = function(buf) {
+      if (buf.length === 0)
+        return "";
+      var r;
+      var i;
+      if (this.lastNeed) {
+        r = this.fillLast(buf);
+        if (r === void 0)
+          return "";
+        i = this.lastNeed;
+        this.lastNeed = 0;
+      } else {
+        i = 0;
+      }
+      if (i < buf.length)
+        return r ? r + this.text(buf, i) : this.text(buf, i);
+      return r || "";
+    };
+    StringDecoder.prototype.end = utf8End;
+    StringDecoder.prototype.text = utf8Text;
+    StringDecoder.prototype.fillLast = function(buf) {
+      if (this.lastNeed <= buf.length) {
+        buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);
+        return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+      }
+      buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);
+      this.lastNeed -= buf.length;
+    };
+    function utf8CheckByte(byte) {
+      if (byte <= 127)
+        return 0;
+      else if (byte >> 5 === 6)
+        return 2;
+      else if (byte >> 4 === 14)
+        return 3;
+      else if (byte >> 3 === 30)
+        return 4;
+      return byte >> 6 === 2 ? -1 : -2;
+    }
+    function utf8CheckIncomplete(self, buf, i) {
+      var j = buf.length - 1;
+      if (j < i)
+        return 0;
+      var nb = utf8CheckByte(buf[j]);
+      if (nb >= 0) {
+        if (nb > 0)
+          self.lastNeed = nb - 1;
+        return nb;
+      }
+      if (--j < i || nb === -2)
+        return 0;
+      nb = utf8CheckByte(buf[j]);
+      if (nb >= 0) {
+        if (nb > 0)
+          self.lastNeed = nb - 2;
+        return nb;
+      }
+      if (--j < i || nb === -2)
+        return 0;
+      nb = utf8CheckByte(buf[j]);
+      if (nb >= 0) {
+        if (nb > 0) {
+          if (nb === 2)
+            nb = 0;
+          else
+            self.lastNeed = nb - 3;
+        }
+        return nb;
+      }
+      return 0;
+    }
+    function utf8CheckExtraBytes(self, buf, p) {
+      if ((buf[0] & 192) !== 128) {
+        self.lastNeed = 0;
+        return "\uFFFD";
+      }
+      if (self.lastNeed > 1 && buf.length > 1) {
+        if ((buf[1] & 192) !== 128) {
+          self.lastNeed = 1;
+          return "\uFFFD";
+        }
+        if (self.lastNeed > 2 && buf.length > 2) {
+          if ((buf[2] & 192) !== 128) {
+            self.lastNeed = 2;
+            return "\uFFFD";
+          }
+        }
+      }
+    }
+    function utf8FillLast(buf) {
+      var p = this.lastTotal - this.lastNeed;
+      var r = utf8CheckExtraBytes(this, buf, p);
+      if (r !== void 0)
+        return r;
+      if (this.lastNeed <= buf.length) {
+        buf.copy(this.lastChar, p, 0, this.lastNeed);
+        return this.lastChar.toString(this.encoding, 0, this.lastTotal);
+      }
+      buf.copy(this.lastChar, p, 0, buf.length);
+      this.lastNeed -= buf.length;
+    }
+    function utf8Text(buf, i) {
+      var total = utf8CheckIncomplete(this, buf, i);
+      if (!this.lastNeed)
+        return buf.toString("utf8", i);
+      this.lastTotal = total;
+      var end = buf.length - (total - this.lastNeed);
+      buf.copy(this.lastChar, 0, end);
+      return buf.toString("utf8", i, end);
+    }
+    function utf8End(buf) {
+      var r = buf && buf.length ? this.write(buf) : "";
+      if (this.lastNeed)
+        return r + "\uFFFD";
+      return r;
+    }
+    function utf16Text(buf, i) {
+      if ((buf.length - i) % 2 === 0) {
+        var r = buf.toString("utf16le", i);
+        if (r) {
+          var c = r.charCodeAt(r.length - 1);
+          if (c >= 55296 && c <= 56319) {
+            this.lastNeed = 2;
+            this.lastTotal = 4;
+            this.lastChar[0] = buf[buf.length - 2];
+            this.lastChar[1] = buf[buf.length - 1];
+            return r.slice(0, -1);
+          }
+        }
+        return r;
+      }
+      this.lastNeed = 1;
+      this.lastTotal = 2;
+      this.lastChar[0] = buf[buf.length - 1];
+      return buf.toString("utf16le", i, buf.length - 1);
+    }
+    function utf16End(buf) {
+      var r = buf && buf.length ? this.write(buf) : "";
+      if (this.lastNeed) {
+        var end = this.lastTotal - this.lastNeed;
+        return r + this.lastChar.toString("utf16le", 0, end);
+      }
+      return r;
+    }
+    function base64Text(buf, i) {
+      var n = (buf.length - i) % 3;
+      if (n === 0)
+        return buf.toString("base64", i);
+      this.lastNeed = 3 - n;
+      this.lastTotal = 3;
+      if (n === 1) {
+        this.lastChar[0] = buf[buf.length - 1];
+      } else {
+        this.lastChar[0] = buf[buf.length - 2];
+        this.lastChar[1] = buf[buf.length - 1];
+      }
+      return buf.toString("base64", i, buf.length - n);
+    }
+    function base64End(buf) {
+      var r = buf && buf.length ? this.write(buf) : "";
+      if (this.lastNeed)
+        return r + this.lastChar.toString("base64", 0, 3 - this.lastNeed);
+      return r;
+    }
+    function simpleWrite(buf) {
+      return buf.toString(this.encoding);
+    }
+    function simpleEnd(buf) {
+      return buf && buf.length ? this.write(buf) : "";
+    }
+  }
+});
+
+// node_modules/readable-stream/lib/_stream_readable.js
 var require_stream_readable = __commonJS({
-  "node_modules/winston-transport/node_modules/readable-stream/lib/_stream_readable.js"(exports2, module2) {
+  "node_modules/readable-stream/lib/_stream_readable.js"(exports2, module2) {
     "use strict";
     var pna = require_process_nextick_args();
     module2.exports = Readable;
@@ -10313,7 +10573,7 @@ var require_stream_readable = __commonJS({
       this.encoding = null;
       if (options.encoding) {
         if (!StringDecoder)
-          StringDecoder = require("string_decoder/").StringDecoder;
+          StringDecoder = require_string_decoder().StringDecoder;
         this.decoder = new StringDecoder(options.encoding);
         this.encoding = options.encoding;
       }
@@ -10442,7 +10702,7 @@ var require_stream_readable = __commonJS({
     };
     Readable.prototype.setEncoding = function(enc) {
       if (!StringDecoder)
-        StringDecoder = require("string_decoder/").StringDecoder;
+        StringDecoder = require_string_decoder().StringDecoder;
       this._readableState.decoder = new StringDecoder(enc);
       this._readableState.encoding = enc;
       return this;
@@ -10982,9 +11242,9 @@ var require_stream_readable = __commonJS({
   }
 });
 
-// node_modules/winston-transport/node_modules/readable-stream/lib/_stream_duplex.js
+// node_modules/readable-stream/lib/_stream_duplex.js
 var require_stream_duplex = __commonJS({
-  "node_modules/winston-transport/node_modules/readable-stream/lib/_stream_duplex.js"(exports2, module2) {
+  "node_modules/readable-stream/lib/_stream_duplex.js"(exports2, module2) {
     "use strict";
     var pna = require_process_nextick_args();
     var objectKeys = Object.keys || function(obj) {
@@ -11062,9 +11322,9 @@ var require_stream_duplex = __commonJS({
   }
 });
 
-// node_modules/winston-transport/node_modules/readable-stream/lib/_stream_writable.js
+// node_modules/readable-stream/lib/_stream_writable.js
 var require_stream_writable = __commonJS({
-  "node_modules/winston-transport/node_modules/readable-stream/lib/_stream_writable.js"(exports2, module2) {
+  "node_modules/readable-stream/lib/_stream_writable.js"(exports2, module2) {
     "use strict";
     var pna = require_process_nextick_args();
     module2.exports = Writable;
@@ -11531,9 +11791,9 @@ var require_stream_writable = __commonJS({
   }
 });
 
-// node_modules/winston-transport/node_modules/readable-stream/writable.js
+// node_modules/readable-stream/writable.js
 var require_writable = __commonJS({
-  "node_modules/winston-transport/node_modules/readable-stream/writable.js"(exports2, module2) {
+  "node_modules/readable-stream/writable.js"(exports2, module2) {
     var Stream = require("stream");
     var Writable = require_stream_writable();
     if (process.env.READABLE_STREAM === "disable") {
@@ -12079,6 +12339,9 @@ var require_iterator = __commonJS({
       var len = okeys.length;
       return function next() {
         var key = okeys[++i];
+        if (key === "__proto__") {
+          return next();
+        }
         return i < len ? { value: obj[key], key } : null;
       };
     }
@@ -12346,16 +12609,16 @@ var require_series = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/internal/streams/stream.js
+// node_modules/winston/node_modules/readable-stream/lib/internal/streams/stream.js
 var require_stream2 = __commonJS({
-  "node_modules/readable-stream/lib/internal/streams/stream.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/internal/streams/stream.js"(exports2, module2) {
     module2.exports = require("stream");
   }
 });
 
-// node_modules/readable-stream/lib/internal/streams/buffer_list.js
+// node_modules/winston/node_modules/readable-stream/lib/internal/streams/buffer_list.js
 var require_buffer_list = __commonJS({
-  "node_modules/readable-stream/lib/internal/streams/buffer_list.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/internal/streams/buffer_list.js"(exports2, module2) {
     "use strict";
     function ownKeys(object, enumerableOnly) {
       var keys = Object.keys(object);
@@ -12600,9 +12863,9 @@ var require_buffer_list = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/internal/streams/destroy.js
+// node_modules/winston/node_modules/readable-stream/lib/internal/streams/destroy.js
 var require_destroy2 = __commonJS({
-  "node_modules/readable-stream/lib/internal/streams/destroy.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/internal/streams/destroy.js"(exports2, module2) {
     "use strict";
     function destroy(err, cb) {
       var _this = this;
@@ -12693,9 +12956,9 @@ var require_destroy2 = __commonJS({
   }
 });
 
-// node_modules/readable-stream/errors.js
+// node_modules/winston/node_modules/readable-stream/errors.js
 var require_errors2 = __commonJS({
-  "node_modules/readable-stream/errors.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/errors.js"(exports2, module2) {
     "use strict";
     var codes = {};
     function createErrorType(code, message, Base) {
@@ -12793,9 +13056,9 @@ var require_errors2 = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/internal/streams/state.js
+// node_modules/winston/node_modules/readable-stream/lib/internal/streams/state.js
 var require_state = __commonJS({
-  "node_modules/readable-stream/lib/internal/streams/state.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/internal/streams/state.js"(exports2, module2) {
     "use strict";
     var ERR_INVALID_OPT_VALUE = require_errors2().codes.ERR_INVALID_OPT_VALUE;
     function highWaterMarkFrom(options, isDuplex, duplexKey) {
@@ -12818,9 +13081,9 @@ var require_state = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/_stream_writable.js
+// node_modules/winston/node_modules/readable-stream/lib/_stream_writable.js
 var require_stream_writable2 = __commonJS({
-  "node_modules/readable-stream/lib/_stream_writable.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/_stream_writable.js"(exports2, module2) {
     "use strict";
     module2.exports = Writable;
     function CorkedRequest(state) {
@@ -13306,9 +13569,9 @@ var require_stream_writable2 = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/_stream_duplex.js
+// node_modules/winston/node_modules/readable-stream/lib/_stream_duplex.js
 var require_stream_duplex2 = __commonJS({
-  "node_modules/readable-stream/lib/_stream_duplex.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/_stream_duplex.js"(exports2, module2) {
     "use strict";
     var objectKeys = Object.keys || function(obj) {
       var keys2 = [];
@@ -13394,9 +13657,9 @@ var require_stream_duplex2 = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/internal/streams/end-of-stream.js
+// node_modules/winston/node_modules/readable-stream/lib/internal/streams/end-of-stream.js
 var require_end_of_stream = __commonJS({
-  "node_modules/readable-stream/lib/internal/streams/end-of-stream.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/internal/streams/end-of-stream.js"(exports2, module2) {
     "use strict";
     var ERR_STREAM_PREMATURE_CLOSE = require_errors2().codes.ERR_STREAM_PREMATURE_CLOSE;
     function once(callback) {
@@ -13495,9 +13758,9 @@ var require_end_of_stream = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/internal/streams/async_iterator.js
+// node_modules/winston/node_modules/readable-stream/lib/internal/streams/async_iterator.js
 var require_async_iterator = __commonJS({
-  "node_modules/readable-stream/lib/internal/streams/async_iterator.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/internal/streams/async_iterator.js"(exports2, module2) {
     "use strict";
     var _Object$setPrototypeO;
     function _defineProperty(obj, key, value) {
@@ -13663,9 +13926,9 @@ var require_async_iterator = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/internal/streams/from.js
+// node_modules/winston/node_modules/readable-stream/lib/internal/streams/from.js
 var require_from = __commonJS({
-  "node_modules/readable-stream/lib/internal/streams/from.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/internal/streams/from.js"(exports2, module2) {
     "use strict";
     function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
       try {
@@ -13780,9 +14043,9 @@ var require_from = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/_stream_readable.js
+// node_modules/winston/node_modules/readable-stream/lib/_stream_readable.js
 var require_stream_readable2 = __commonJS({
-  "node_modules/readable-stream/lib/_stream_readable.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/_stream_readable.js"(exports2, module2) {
     "use strict";
     module2.exports = Readable;
     var Duplex;
@@ -13867,7 +14130,7 @@ var require_stream_readable2 = __commonJS({
       this.encoding = null;
       if (options.encoding) {
         if (!StringDecoder)
-          StringDecoder = require("string_decoder/").StringDecoder;
+          StringDecoder = require_string_decoder().StringDecoder;
         this.decoder = new StringDecoder(options.encoding);
         this.encoding = options.encoding;
       }
@@ -13998,7 +14261,7 @@ var require_stream_readable2 = __commonJS({
     };
     Readable.prototype.setEncoding = function(enc) {
       if (!StringDecoder)
-        StringDecoder = require("string_decoder/").StringDecoder;
+        StringDecoder = require_string_decoder().StringDecoder;
       var decoder = new StringDecoder(enc);
       this._readableState.decoder = decoder;
       this._readableState.encoding = this._readableState.decoder.encoding;
@@ -14563,9 +14826,9 @@ var require_stream_readable2 = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/_stream_transform.js
+// node_modules/winston/node_modules/readable-stream/lib/_stream_transform.js
 var require_stream_transform = __commonJS({
-  "node_modules/readable-stream/lib/_stream_transform.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/_stream_transform.js"(exports2, module2) {
     "use strict";
     module2.exports = Transform;
     var _require$codes = require_errors2().codes;
@@ -14671,9 +14934,9 @@ var require_stream_transform = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/_stream_passthrough.js
+// node_modules/winston/node_modules/readable-stream/lib/_stream_passthrough.js
 var require_stream_passthrough = __commonJS({
-  "node_modules/readable-stream/lib/_stream_passthrough.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/_stream_passthrough.js"(exports2, module2) {
     "use strict";
     module2.exports = PassThrough;
     var Transform = require_stream_transform();
@@ -14689,9 +14952,9 @@ var require_stream_passthrough = __commonJS({
   }
 });
 
-// node_modules/readable-stream/lib/internal/streams/pipeline.js
+// node_modules/winston/node_modules/readable-stream/lib/internal/streams/pipeline.js
 var require_pipeline = __commonJS({
-  "node_modules/readable-stream/lib/internal/streams/pipeline.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/lib/internal/streams/pipeline.js"(exports2, module2) {
     "use strict";
     var eos;
     function once(callback) {
@@ -14788,9 +15051,9 @@ var require_pipeline = __commonJS({
   }
 });
 
-// node_modules/readable-stream/readable.js
+// node_modules/winston/node_modules/readable-stream/readable.js
 var require_readable = __commonJS({
-  "node_modules/readable-stream/readable.js"(exports2, module2) {
+  "node_modules/winston/node_modules/readable-stream/readable.js"(exports2, module2) {
     var Stream = require("stream");
     if (process.env.READABLE_STREAM === "disable" && Stream) {
       module2.exports = Stream.Readable;
@@ -15295,167 +15558,10 @@ var require_color_string = __commonJS({
   }
 });
 
-// node_modules/color/node_modules/color-name/index.js
-var require_color_name2 = __commonJS({
-  "node_modules/color/node_modules/color-name/index.js"(exports2, module2) {
-    "use strict";
-    module2.exports = {
-      "aliceblue": [240, 248, 255],
-      "antiquewhite": [250, 235, 215],
-      "aqua": [0, 255, 255],
-      "aquamarine": [127, 255, 212],
-      "azure": [240, 255, 255],
-      "beige": [245, 245, 220],
-      "bisque": [255, 228, 196],
-      "black": [0, 0, 0],
-      "blanchedalmond": [255, 235, 205],
-      "blue": [0, 0, 255],
-      "blueviolet": [138, 43, 226],
-      "brown": [165, 42, 42],
-      "burlywood": [222, 184, 135],
-      "cadetblue": [95, 158, 160],
-      "chartreuse": [127, 255, 0],
-      "chocolate": [210, 105, 30],
-      "coral": [255, 127, 80],
-      "cornflowerblue": [100, 149, 237],
-      "cornsilk": [255, 248, 220],
-      "crimson": [220, 20, 60],
-      "cyan": [0, 255, 255],
-      "darkblue": [0, 0, 139],
-      "darkcyan": [0, 139, 139],
-      "darkgoldenrod": [184, 134, 11],
-      "darkgray": [169, 169, 169],
-      "darkgreen": [0, 100, 0],
-      "darkgrey": [169, 169, 169],
-      "darkkhaki": [189, 183, 107],
-      "darkmagenta": [139, 0, 139],
-      "darkolivegreen": [85, 107, 47],
-      "darkorange": [255, 140, 0],
-      "darkorchid": [153, 50, 204],
-      "darkred": [139, 0, 0],
-      "darksalmon": [233, 150, 122],
-      "darkseagreen": [143, 188, 143],
-      "darkslateblue": [72, 61, 139],
-      "darkslategray": [47, 79, 79],
-      "darkslategrey": [47, 79, 79],
-      "darkturquoise": [0, 206, 209],
-      "darkviolet": [148, 0, 211],
-      "deeppink": [255, 20, 147],
-      "deepskyblue": [0, 191, 255],
-      "dimgray": [105, 105, 105],
-      "dimgrey": [105, 105, 105],
-      "dodgerblue": [30, 144, 255],
-      "firebrick": [178, 34, 34],
-      "floralwhite": [255, 250, 240],
-      "forestgreen": [34, 139, 34],
-      "fuchsia": [255, 0, 255],
-      "gainsboro": [220, 220, 220],
-      "ghostwhite": [248, 248, 255],
-      "gold": [255, 215, 0],
-      "goldenrod": [218, 165, 32],
-      "gray": [128, 128, 128],
-      "green": [0, 128, 0],
-      "greenyellow": [173, 255, 47],
-      "grey": [128, 128, 128],
-      "honeydew": [240, 255, 240],
-      "hotpink": [255, 105, 180],
-      "indianred": [205, 92, 92],
-      "indigo": [75, 0, 130],
-      "ivory": [255, 255, 240],
-      "khaki": [240, 230, 140],
-      "lavender": [230, 230, 250],
-      "lavenderblush": [255, 240, 245],
-      "lawngreen": [124, 252, 0],
-      "lemonchiffon": [255, 250, 205],
-      "lightblue": [173, 216, 230],
-      "lightcoral": [240, 128, 128],
-      "lightcyan": [224, 255, 255],
-      "lightgoldenrodyellow": [250, 250, 210],
-      "lightgray": [211, 211, 211],
-      "lightgreen": [144, 238, 144],
-      "lightgrey": [211, 211, 211],
-      "lightpink": [255, 182, 193],
-      "lightsalmon": [255, 160, 122],
-      "lightseagreen": [32, 178, 170],
-      "lightskyblue": [135, 206, 250],
-      "lightslategray": [119, 136, 153],
-      "lightslategrey": [119, 136, 153],
-      "lightsteelblue": [176, 196, 222],
-      "lightyellow": [255, 255, 224],
-      "lime": [0, 255, 0],
-      "limegreen": [50, 205, 50],
-      "linen": [250, 240, 230],
-      "magenta": [255, 0, 255],
-      "maroon": [128, 0, 0],
-      "mediumaquamarine": [102, 205, 170],
-      "mediumblue": [0, 0, 205],
-      "mediumorchid": [186, 85, 211],
-      "mediumpurple": [147, 112, 219],
-      "mediumseagreen": [60, 179, 113],
-      "mediumslateblue": [123, 104, 238],
-      "mediumspringgreen": [0, 250, 154],
-      "mediumturquoise": [72, 209, 204],
-      "mediumvioletred": [199, 21, 133],
-      "midnightblue": [25, 25, 112],
-      "mintcream": [245, 255, 250],
-      "mistyrose": [255, 228, 225],
-      "moccasin": [255, 228, 181],
-      "navajowhite": [255, 222, 173],
-      "navy": [0, 0, 128],
-      "oldlace": [253, 245, 230],
-      "olive": [128, 128, 0],
-      "olivedrab": [107, 142, 35],
-      "orange": [255, 165, 0],
-      "orangered": [255, 69, 0],
-      "orchid": [218, 112, 214],
-      "palegoldenrod": [238, 232, 170],
-      "palegreen": [152, 251, 152],
-      "paleturquoise": [175, 238, 238],
-      "palevioletred": [219, 112, 147],
-      "papayawhip": [255, 239, 213],
-      "peachpuff": [255, 218, 185],
-      "peru": [205, 133, 63],
-      "pink": [255, 192, 203],
-      "plum": [221, 160, 221],
-      "powderblue": [176, 224, 230],
-      "purple": [128, 0, 128],
-      "rebeccapurple": [102, 51, 153],
-      "red": [255, 0, 0],
-      "rosybrown": [188, 143, 143],
-      "royalblue": [65, 105, 225],
-      "saddlebrown": [139, 69, 19],
-      "salmon": [250, 128, 114],
-      "sandybrown": [244, 164, 96],
-      "seagreen": [46, 139, 87],
-      "seashell": [255, 245, 238],
-      "sienna": [160, 82, 45],
-      "silver": [192, 192, 192],
-      "skyblue": [135, 206, 235],
-      "slateblue": [106, 90, 205],
-      "slategray": [112, 128, 144],
-      "slategrey": [112, 128, 144],
-      "snow": [255, 250, 250],
-      "springgreen": [0, 255, 127],
-      "steelblue": [70, 130, 180],
-      "tan": [210, 180, 140],
-      "teal": [0, 128, 128],
-      "thistle": [216, 191, 216],
-      "tomato": [255, 99, 71],
-      "turquoise": [64, 224, 208],
-      "violet": [238, 130, 238],
-      "wheat": [245, 222, 179],
-      "white": [255, 255, 255],
-      "whitesmoke": [245, 245, 245],
-      "yellow": [255, 255, 0],
-      "yellowgreen": [154, 205, 50]
-    };
-  }
-});
-
-// node_modules/color/node_modules/color-convert/conversions.js
+// node_modules/color-convert/conversions.js
 var require_conversions = __commonJS({
-  "node_modules/color/node_modules/color-convert/conversions.js"(exports2, module2) {
-    var cssKeywords = require_color_name2();
+  "node_modules/color-convert/conversions.js"(exports2, module2) {
+    var cssKeywords = require_color_name();
     var reverseKeywords = {};
     for (key in cssKeywords) {
       if (cssKeywords.hasOwnProperty(key)) {
@@ -16165,9 +16271,9 @@ var require_conversions = __commonJS({
   }
 });
 
-// node_modules/color/node_modules/color-convert/route.js
+// node_modules/color-convert/route.js
 var require_route = __commonJS({
-  "node_modules/color/node_modules/color-convert/route.js"(exports2, module2) {
+  "node_modules/color-convert/route.js"(exports2, module2) {
     var conversions = require_conversions();
     function buildGraph() {
       var graph = {};
@@ -16233,9 +16339,9 @@ var require_route = __commonJS({
   }
 });
 
-// node_modules/color/node_modules/color-convert/index.js
+// node_modules/color-convert/index.js
 var require_color_convert = __commonJS({
-  "node_modules/color/node_modules/color-convert/index.js"(exports2, module2) {
+  "node_modules/color-convert/index.js"(exports2, module2) {
     var conversions = require_conversions();
     var route = require_route();
     var convert = {};
@@ -16321,7 +16427,7 @@ var require_color = __commonJS({
       }
       var i;
       var channels;
-      if (!obj) {
+      if (obj == null) {
         this.model = "rgb";
         this.color = [0, 0, 0];
         this.valpha = 1;
@@ -16578,6 +16684,9 @@ var require_color = __commonJS({
         return hsl;
       },
       mix: function(mixinColor, weight) {
+        if (!mixinColor || !mixinColor.rgb) {
+          throw new Error('Argument to "mix" was not a Color instance, but rather an instance of ' + typeof mixinColor);
+        }
         var color1 = mixinColor.rgb();
         var color2 = this.rgb();
         var p = weight === void 0 ? 0.5 : weight;
@@ -20033,17 +20142,35 @@ var require_create_disable_completion_item = __commonJS({
   }
 });
 
+// src/utils/iterables.js
+var require_iterables = __commonJS({
+  "src/utils/iterables.js"(exports2, module2) {
+    "use strict";
+    function isIterable(obj) {
+      return obj !== null && obj !== void 0 && typeof obj[Symbol.iterator] === "function";
+    }
+    function isIterableObject(obj) {
+      return isIterable(obj) && typeof obj === "object";
+    }
+    module2.exports = {
+      isIterable,
+      isIterableObject
+    };
+  }
+});
+
 // src/utils/lsp/display-error.js
 var require_display_error = __commonJS({
   "src/utils/lsp/display-error.js"(exports2, module2) {
     "use strict";
+    var { isIterableObject } = require_iterables();
     function displayError(connection2, err) {
       if (!(err instanceof Error)) {
         connection2.window.showErrorMessage(String(err).replace(/\n/gu, " "));
         return;
       }
-      if (err?.reasons) {
-        for (const reason of err?.reasons) {
+      if (isIterableObject(err?.reasons)) {
+        for (const reason of err.reasons) {
           connection2.window.showErrorMessage(`Stylelint: ${reason}`);
         }
         return;
@@ -20077,10 +20204,10 @@ var require_find_package_root = __commonJS({
     "use strict";
     var fs = require("fs/promises");
     var path = require("path");
-    async function findPackageRoot(directory) {
-      let currentDirectory = directory;
+    async function findPackageRoot(startPath, rootFile = "package.json") {
+      let currentDirectory = startPath;
       while (true) {
-        const manifestPath = path.join(currentDirectory, "package.json");
+        const manifestPath = path.join(currentDirectory, rootFile);
         try {
           const stat = await fs.stat(manifestPath);
           if (stat.isFile()) {
@@ -20188,9 +20315,24 @@ var require_global_path_resolver = __commonJS({
     var os = require("os");
     var path = require("path");
     var { runProcessFindLine } = require_processes();
-    var resolvers = {
-      async yarn(trace, isWindows) {
-        const tryTrace = trace ?? (() => void 0);
+    var GlobalPathResolver = class {
+      #logger;
+      #cache = {
+        yarn: void 0,
+        npm: void 0,
+        pnpm: void 0
+      };
+      #isWindows;
+      #resolvers = {
+        yarn: this.#yarn.bind(this),
+        npm: this.#npm.bind(this),
+        pnpm: this.#pnpm.bind(this)
+      };
+      constructor(logger2) {
+        this.#logger = logger2;
+        this.#isWindows = os.platform() === "win32";
+      }
+      async #yarn() {
         const tryParseLog = (line) => {
           let log;
           try {
@@ -20200,80 +20342,76 @@ var require_global_path_resolver = __commonJS({
           }
           return log;
         };
-        const yarnGlobalPath = await runProcessFindLine("yarn", ["global", "dir", "--json"], isWindows ? { shell: true } : void 0, (line) => {
+        const yarnGlobalPath = await runProcessFindLine("yarn", ["global", "dir", "--json"], this.#isWindows ? { shell: true } : void 0, (line) => {
           const log = tryParseLog(line);
           if (!log || log.type !== "log" || !log.data) {
             return void 0;
           }
           const globalPath = path.join(log.data, "node_modules");
-          tryTrace(`Yarn returned global path: "${globalPath}"`);
+          this.#logger?.debug("Yarn returned global node_modules path.", { path: globalPath });
           return globalPath;
         });
         if (!yarnGlobalPath) {
-          tryTrace('"yarn global dir --json" did not return a path.');
+          this.#logger?.warn('"yarn global dir --json" did not return a path.');
           return void 0;
         }
         return yarnGlobalPath;
-      },
-      async npm(trace, isWindows) {
-        const tryTrace = trace ?? (() => void 0);
-        const npmGlobalPath = await runProcessFindLine("npm", ["config", "get", "prefix"], isWindows ? { shell: true } : void 0, (line) => {
+      }
+      async #npm() {
+        const npmGlobalPath = await runProcessFindLine("npm", ["config", "get", "prefix"], this.#isWindows ? { shell: true } : void 0, (line) => {
           const trimmed = line.trim();
           if (!trimmed) {
             return void 0;
           }
-          const globalPath = os.platform() === "win32" ? path.join(trimmed, "node_modules") : path.join(trimmed, "lib/node_modules");
-          tryTrace(`npm returned global path: "${globalPath}"`);
+          const globalPath = this.#isWindows ? path.join(trimmed, "node_modules") : path.join(trimmed, "lib/node_modules");
+          this.#logger?.debug("npm returned global node_modules path.", { path: globalPath });
           return globalPath;
         });
         if (!npmGlobalPath) {
-          tryTrace('"npm config get prefix" did not return a path.');
+          this.#logger?.warn('"npm config get prefix" did not return a path.');
           return void 0;
         }
         return npmGlobalPath;
-      },
-      async pnpm(trace, isWindows) {
-        const tryTrace = trace ?? (() => void 0);
-        const pnpmGlobalPath = await runProcessFindLine("pnpm", ["root", "-g"], isWindows ? { shell: true } : void 0, (line) => {
+      }
+      async #pnpm() {
+        const pnpmGlobalPath = await runProcessFindLine("pnpm", ["root", "-g"], this.#isWindows ? { shell: true } : void 0, (line) => {
           const trimmed = line.trim();
           if (!trimmed) {
             return void 0;
           }
-          tryTrace(`pnpm returned global path: "${trimmed}"`);
+          this.#logger?.debug("pnpm returned global node_modules path.", { path: trimmed });
           return trimmed;
         });
         if (!pnpmGlobalPath) {
-          tryTrace('"pnpm root -g" did not return a path.');
+          this.#logger?.warn('"pnpm root -g" did not return a path.');
           return void 0;
         }
         return pnpmGlobalPath;
       }
-    };
-    function getGlobalPathResolver() {
-      const cache = {};
-      return {
-        async resolve(packageManager, trace) {
-          const cached = cache[packageManager];
-          if (cached) {
-            return cached;
-          }
-          const tryTrace = trace ?? (() => void 0);
-          const resolver = resolvers[packageManager];
-          if (!resolver) {
-            tryTrace(`Package manager "${packageManager}" is not supported.`);
-            return void 0;
-          }
-          const isWindows = os.platform() === "win32";
-          const globalPath = await resolver(trace, isWindows);
+      async resolve(packageManager) {
+        const cached = this.#cache[packageManager];
+        if (cached) {
+          return cached;
+        }
+        const resolver = this.#resolvers[packageManager];
+        if (!resolver) {
+          this.#logger?.warn("Unsupported package manager.", { packageManager });
+          return void 0;
+        }
+        try {
+          const globalPath = await resolver();
           if (globalPath) {
-            cache[packageManager] = globalPath;
+            this.#cache[packageManager] = globalPath;
           }
           return globalPath;
+        } catch (error) {
+          this.#logger?.warn("Failed to resolve global node_modules path.", { packageManager, error });
+          return void 0;
         }
-      };
-    }
+      }
+    };
     module2.exports = {
-      getGlobalPathResolver
+      GlobalPathResolver
     };
   }
 });
@@ -20356,11 +20494,15 @@ var require_stylelint_resolver = __commonJS({
   "src/utils/packages/stylelint-resolver.js"(exports2, module2) {
     "use strict";
     var path = require("path");
+    var fs = require("fs/promises");
     var { Files } = require_node3();
     var { URI } = require_umd();
     var { getWorkspaceFolder } = require_documents();
-    var { getGlobalPathResolver } = require_global_path_resolver();
+    var { findPackageRoot } = require_find_package_root();
+    var { GlobalPathResolver } = require_global_path_resolver();
     var { getFirstResolvedValue, lazyCallAsync } = require_functions();
+    var { createRequire } = require("module");
+    var process2 = require("process");
     var StylelintResolver = class {
       #connection;
       #logger;
@@ -20368,14 +20510,91 @@ var require_stylelint_resolver = __commonJS({
       constructor(connection2, logger2) {
         this.#connection = connection2;
         this.#logger = logger2;
-        this.#globalPathResolver = getGlobalPathResolver();
+        this.#globalPathResolver = new GlobalPathResolver(logger2);
       }
-      #logError(message) {
-        if (!this.#connection) {
-          return;
+      #logError(message, error) {
+        if (this.#logger) {
+          this.#logger?.error(message, error && { error });
         }
-        this.#connection.window.showErrorMessage(`Stylelint: ${message}`);
-        this.#logger?.error(message);
+        if (this.#connection) {
+          this.#connection.window.showErrorMessage(`Stylelint: ${message}`);
+        }
+      }
+      async #findPnPLoader(directory) {
+        const pnpFilenames = [".pnp.cjs", ".pnp.js"];
+        for (const filename of pnpFilenames) {
+          const pnpPath = path.join(directory, filename);
+          try {
+            if ((await fs.stat(pnpPath)).isFile()) {
+              return pnpPath;
+            }
+          } catch (error) {
+            this.#logger?.debug("Did not find PnP loader at tested path", { path: pnpPath, error });
+          }
+        }
+        this.#logger?.debug("Could not find a PnP loader", { path: directory });
+        return void 0;
+      }
+      async #requirePnP(cwd) {
+        if (!cwd) {
+          return void 0;
+        }
+        const root = await findPackageRoot(cwd, "yarn.lock");
+        if (!root) {
+          this.#logger?.debug("Could not find a Yarn lockfile", { cwd });
+          return void 0;
+        }
+        const pnpPath = await this.#findPnPLoader(root);
+        if (!pnpPath) {
+          return void 0;
+        }
+        if (!process2.versions.pnp) {
+          try {
+            require(pnpPath).setup();
+          } catch (error) {
+            this.#logger?.warn("Could not setup PnP", { path: pnpPath, error });
+            return void 0;
+          }
+        }
+        try {
+          const rootRelativeRequire = createRequire(pnpPath);
+          const stylelintEntryPath = rootRelativeRequire.resolve("stylelint");
+          const stylelintPath = await findPackageRoot(stylelintEntryPath);
+          if (!stylelintPath) {
+            this.#logger?.warn("Failed to find the Stylelint package root", {
+              path: stylelintEntryPath
+            });
+            return void 0;
+          }
+          const stylelint = rootRelativeRequire("stylelint");
+          const result = {
+            stylelint,
+            resolvedPath: stylelintPath
+          };
+          this.#logger?.debug("Resolved Stylelint using PnP", {
+            path: pnpPath
+          });
+          return result;
+        } catch (error) {
+          this.#logger?.warn("Could not load Stylelint using PnP", { path: root, error });
+          return void 0;
+        }
+      }
+      async #requireNode(cwd, globalModulesPath, trace) {
+        try {
+          const stylelintPath = await Files.resolve("stylelint", globalModulesPath, cwd, trace);
+          const result = {
+            stylelint: require(stylelintPath),
+            resolvedPath: stylelintPath
+          };
+          this.#logger?.debug("Resolved Stylelint from node_modules", {
+            path: stylelintPath
+          });
+          return result;
+        } catch (error) {
+          this.#logger?.warn("Could not load Stylelint from node_modules", { error });
+          return void 0;
+        }
       }
       async #getRequirePath(stylelintPath, getWorkspaceFolderFn) {
         if (!this.#connection || path.isAbsolute(stylelintPath)) {
@@ -20399,7 +20618,7 @@ var require_stylelint_resolver = __commonJS({
             };
           }
         } catch (err) {
-          this.#logError(errorMessage);
+          this.#logError(errorMessage, err);
           throw err;
         }
         this.#logError(errorMessage);
@@ -20407,31 +20626,30 @@ var require_stylelint_resolver = __commonJS({
       }
       async #resolveFromModules(textDocument, getWorkspaceFolderFn, packageManager) {
         const connection2 = this.#connection;
-        const trace = connection2 ? (message, verbose) => {
-          this.#logger?.debug(message, { verbose });
-          connection2.tracer.log(message, verbose);
-        } : () => void 0;
         try {
-          const globalModulesPath = packageManager ? await this.#globalPathResolver.resolve(packageManager, trace) : void 0;
+          const globalModulesPath = packageManager ? await this.#globalPathResolver.resolve(packageManager) : void 0;
           const documentURI = URI.parse(textDocument.uri);
           const cwd = documentURI.scheme === "file" ? path.dirname(documentURI.fsPath) : await getWorkspaceFolderFn();
-          const stylelintPath = await Files.resolve("stylelint", globalModulesPath, cwd, trace);
-          const stylelint = require(stylelintPath);
-          if (stylelint && typeof stylelint.lint !== "function") {
+          const result = await getFirstResolvedValue(async () => await this.#requirePnP(cwd), async () => await this.#requireNode(cwd, globalModulesPath, (message, verbose) => {
+            this.#logger?.debug(message.replace(/\n/g, "  "), { verbose });
+            connection2?.tracer.log(message, verbose);
+          }));
+          if (!result) {
+            return void 0;
+          }
+          if (typeof result.stylelint?.lint !== "function") {
             this.#logError("stylelint.lint is not a function.");
             return void 0;
           }
-          return {
-            stylelint,
-            resolvedPath: stylelintPath
-          };
-        } catch {
+          return result;
+        } catch (error) {
+          this.#logger?.debug("Failed to resolve Stylelint from workspace or globally-installed packages.", { error });
         }
         return void 0;
       }
       async resolve({ packageManager, stylelintPath }, textDocument) {
         const getWorkspaceFolderFn = lazyCallAsync(async () => this.#connection && await getWorkspaceFolder(this.#connection, textDocument));
-        const stylelint = await getFirstResolvedValue(async () => this.#resolveFromPath(stylelintPath, getWorkspaceFolderFn), async () => await this.#resolveFromModules(textDocument, getWorkspaceFolderFn, packageManager));
+        const stylelint = await getFirstResolvedValue(() => this.#resolveFromPath(stylelintPath, getWorkspaceFolderFn), () => this.#resolveFromModules(textDocument, getWorkspaceFolderFn, packageManager));
         if (!stylelint) {
           this.#logger?.warn("Failed to load Stylelint either globally or from the current workspace.");
           return void 0;
@@ -24035,6 +24253,242 @@ var require_server3 = __commonJS({
   }
 });
 
+// node_modules/serialize-error/index.js
+var require_serialize_error = __commonJS({
+  "node_modules/serialize-error/index.js"(exports2, module2) {
+    "use strict";
+    var NonError = class extends Error {
+      constructor(message) {
+        super(NonError._prepareSuperMessage(message));
+        Object.defineProperty(this, "name", {
+          value: "NonError",
+          configurable: true,
+          writable: true
+        });
+        if (Error.captureStackTrace) {
+          Error.captureStackTrace(this, NonError);
+        }
+      }
+      static _prepareSuperMessage(message) {
+        try {
+          return JSON.stringify(message);
+        } catch {
+          return String(message);
+        }
+      }
+    };
+    var commonProperties = [
+      { property: "name", enumerable: false },
+      { property: "message", enumerable: false },
+      { property: "stack", enumerable: false },
+      { property: "code", enumerable: true }
+    ];
+    var isCalled = Symbol(".toJSON called");
+    var toJSON = (from) => {
+      from[isCalled] = true;
+      const json = from.toJSON();
+      delete from[isCalled];
+      return json;
+    };
+    var destroyCircular = ({
+      from,
+      seen,
+      to_,
+      forceEnumerable,
+      maxDepth,
+      depth
+    }) => {
+      const to = to_ || (Array.isArray(from) ? [] : {});
+      seen.push(from);
+      if (depth >= maxDepth) {
+        return to;
+      }
+      if (typeof from.toJSON === "function" && from[isCalled] !== true) {
+        return toJSON(from);
+      }
+      for (const [key, value] of Object.entries(from)) {
+        if (typeof Buffer === "function" && Buffer.isBuffer(value)) {
+          to[key] = "[object Buffer]";
+          continue;
+        }
+        if (typeof value === "function") {
+          continue;
+        }
+        if (!value || typeof value !== "object") {
+          to[key] = value;
+          continue;
+        }
+        if (!seen.includes(from[key])) {
+          depth++;
+          to[key] = destroyCircular({
+            from: from[key],
+            seen: seen.slice(),
+            forceEnumerable,
+            maxDepth,
+            depth
+          });
+          continue;
+        }
+        to[key] = "[Circular]";
+      }
+      for (const { property, enumerable } of commonProperties) {
+        if (typeof from[property] === "string") {
+          Object.defineProperty(to, property, {
+            value: from[property],
+            enumerable: forceEnumerable ? true : enumerable,
+            configurable: true,
+            writable: true
+          });
+        }
+      }
+      return to;
+    };
+    var serializeError = (value, options = {}) => {
+      const { maxDepth = Number.POSITIVE_INFINITY } = options;
+      if (typeof value === "object" && value !== null) {
+        return destroyCircular({
+          from: value,
+          seen: [],
+          forceEnumerable: true,
+          maxDepth,
+          depth: 0
+        });
+      }
+      if (typeof value === "function") {
+        return `[Function: ${value.name || "anonymous"}]`;
+      }
+      return value;
+    };
+    var deserializeError = (value, options = {}) => {
+      const { maxDepth = Number.POSITIVE_INFINITY } = options;
+      if (value instanceof Error) {
+        return value;
+      }
+      if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+        const newError = new Error();
+        destroyCircular({
+          from: value,
+          seen: [],
+          to_: newError,
+          maxDepth,
+          depth: 0
+        });
+        return newError;
+      }
+      return new NonError(value);
+    };
+    module2.exports = {
+      serializeError,
+      deserializeError
+    };
+  }
+});
+
+// src/utils/errors.js
+var require_errors3 = __commonJS({
+  "src/utils/errors.js"(exports2, module2) {
+    "use strict";
+    var { serializeError } = require_serialize_error();
+    var { isIterable } = require_iterables();
+    function serializeErrors(object) {
+      const serializeInner = (obj, visited) => {
+        if (!obj || typeof obj !== "object") {
+          return obj;
+        }
+        if (visited.has(obj)) {
+          return visited.get(obj);
+        }
+        if (obj instanceof Error) {
+          const result = serializeError(obj);
+          visited.set(obj, result);
+          return result;
+        }
+        if (obj instanceof Map) {
+          const result = new Map();
+          visited.set(obj, result);
+          for (const [key, value] of obj) {
+            const serializedKey = serializeInner(key, visited);
+            const serializedValue = serializeInner(value, visited);
+            if (key && typeof key === "object") {
+              visited.set(key, serializedKey);
+            }
+            if (value && typeof value === "object") {
+              visited.set(value, serializedValue);
+            }
+            result.set(serializedKey, serializedValue);
+          }
+          return result;
+        }
+        if (obj instanceof Set) {
+          const result = new Set();
+          visited.set(obj, result);
+          for (const value of obj) {
+            if (!value || typeof value !== "object") {
+              result.add(value);
+              continue;
+            }
+            const serializedValue = serializeInner(value, visited);
+            visited.set(value, serializedValue);
+            result.add(serializedValue);
+          }
+          return result;
+        }
+        if (isIterable(obj)) {
+          const result = [];
+          visited.set(obj, result);
+          for (const value of obj) {
+            result.push(serializeInner(value, visited));
+          }
+          return result;
+        }
+        visited.set(obj, "[Circular]");
+        const serializedObj = Object.fromEntries(Object.entries(obj).map(([key, value]) => {
+          if (!value || typeof value !== "object") {
+            return [key, value];
+          }
+          if (visited.has(value)) {
+            return [key, visited.get(value)];
+          }
+          if (value instanceof Error) {
+            const serialized = serializeError(value);
+            visited.set(value, serialized);
+            return [key, serialized];
+          }
+          const result = serializeInner(value, visited);
+          visited.set(value, result);
+          return [key, result];
+        }));
+        visited.set(obj, serializedObj);
+        return serializedObj;
+      };
+      return serializeInner(object, new WeakMap());
+    }
+    module2.exports = {
+      serializeErrors
+    };
+  }
+});
+
+// src/utils/logging/error-formatter.js
+var require_error_formatter = __commonJS({
+  "src/utils/logging/error-formatter.js"(exports2, module2) {
+    "use strict";
+    var { serializeErrors } = require_errors3();
+    var ErrorFormatter2 = class {
+      transform(info) {
+        const transformed = serializeErrors({ ...info });
+        for (const key of Object.keys(transformed)) {
+          info[key] = transformed[key];
+        }
+        return info;
+      }
+    };
+    module2.exports = {
+      ErrorFormatter: ErrorFormatter2
+    };
+  }
+});
+
 // src/utils/logging/get-log-function.js
 var require_get_log_function = __commonJS({
   "src/utils/logging/get-log-function.js"(exports2, module2) {
@@ -24165,6 +24619,7 @@ var require_logging = __commonJS({
   "src/utils/logging/index.js"(exports2, module2) {
     "use strict";
     module2.exports = {
+      ...require_error_formatter(),
       ...require_get_log_function(),
       ...require_language_server_formatter(),
       ...require_language_server_transport()
@@ -24178,23 +24633,27 @@ var { createConnection, ProposedFeatures } = require_node3();
 var winston = require_winston();
 var { StylelintLanguageServer, modules } = require_server3();
 var connection = createConnection(ProposedFeatures.all);
-var { LanguageServerTransport, LanguageServerFormatter } = require_logging();
+var {
+  ErrorFormatter,
+  LanguageServerTransport,
+  LanguageServerFormatter
+} = require_logging();
 var { NODE_ENV } = process.env;
 var level = NODE_ENV === "development" ? "debug" : "info";
 var transports = [
   new LanguageServerTransport({
     connection,
-    format: new LanguageServerFormatter({
+    format: winston.format.combine(new ErrorFormatter(), new LanguageServerFormatter({
       connection,
       preferredKeyOrder: ["module", "uri", "command"]
-    })
+    }))
   })
 ];
 if (level === "debug") {
   transports.push(new winston.transports.File({
     filename: require("path").join(__dirname, "../stylelint-language-server.log"),
     level,
-    format: winston.format.combine(winston.format.timestamp(), winston.format.json())
+    format: winston.format.combine(new ErrorFormatter(), winston.format.timestamp(), winston.format.json())
   }));
 }
 var logger = winston.createLogger({ level, transports });
