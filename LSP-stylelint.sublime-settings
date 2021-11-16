@@ -25,6 +25,10 @@
 	"settings": {
 		// Control whether stylelint is enabled for CSS/SCSS/Less files or not.
 		"stylelint.enable": true,
+		// Options for the disable lint rule action in the quick fix menu.
+		"stylelint.codeAction.disableRuleComment": {
+			"location": "separateLine"
+		},
 		// A stylelint configuration object.
 		"stylelint.config": null,
 		// Path to a JSON, YAML, or JS file that contains your configuration object. Use this option if you don't want stylelint to search for a configuration file.

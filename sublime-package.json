@@ -17,6 +17,25 @@
                       "default": true,
                       "description": "Control whether stylelint is enabled for CSS/SCSS/Less files or not."
                     },
+                    "stylelint.codeAction.disableRuleComment": {
+                      "type": "object",
+                      "default": {
+                        "location": "separateLine"
+                      },
+                      "properties": {
+                        "location": {
+                          "type": "string",
+                          "enum": [
+                            "separateLine",
+                            "sameLine"
+                          ],
+                          "default": "separateLine",
+                          "description": "Configure whether disable comments are added on the same line or a new line."
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Options for the disable lint rule action in the quick fix menu."
+                    },
                     "stylelint.config": {
                       "type": [
                         "object",

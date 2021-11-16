@@ -51,7 +51,8 @@ popd
 pushd "${SRC_DIR}"
 
 npm i
-cp "${REPO_DIR}/bundle.js" scripts/
+cp "${REPO_DIR}/bundle.ts" scripts/
+npm run build
 npm run bundle-base
 
 popd

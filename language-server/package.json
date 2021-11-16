@@ -1,8 +1,8 @@
 {
   "name": "vscode-stylelint",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "MIT",
-  "description": "Modern CSS/Less/SCSS linter",
+  "description": "Official Stylelint extension for Visual Studio Code",
   "main": "dist/index.js",
   "displayName": "Stylelint",
   "publisher": "stylelint",
@@ -49,11 +49,33 @@
       "title": "Stylelint",
       "properties": {
         "stylelint.enable": {
+          "scope": "resource",
           "type": "boolean",
           "default": true,
           "description": "Control whether Stylelint is enabled or not."
         },
+        "stylelint.codeAction.disableRuleComment": {
+          "scope": "resource",
+          "type": "object",
+          "default": {
+            "location": "separateLine"
+          },
+          "properties": {
+            "location": {
+              "type": "string",
+              "enum": [
+                "separateLine",
+                "sameLine"
+              ],
+              "default": "separateLine",
+              "description": "Configure whether disable comments are added on the same line or a new line."
+            }
+          },
+          "additionalProperties": false,
+          "description": "Options for the disable lint rule action in the quick fix menu."
+        },
         "stylelint.config": {
+          "scope": "resource",
           "type": [
             "object",
             "null"
@@ -62,36 +84,43 @@
           "description": "A Stylelint configuration object."
         },
         "stylelint.configFile": {
+          "scope": "resource",
           "type": "string",
           "default": "",
           "description": "Path to a JSON, YAML, or JS file that contains your configuration object. Use this option if you don't want Stylelint to search for a configuration file."
         },
         "stylelint.configBasedir": {
+          "scope": "resource",
           "type": "string",
           "default": "",
           "description": "A path to the directory that relative paths defining \"extends\" and \"plugins\" are relative to."
         },
         "stylelint.customSyntax": {
+          "scope": "resource",
           "type": "string",
           "default": "",
           "description": "An absolute path to a custom PostCSS-compatible syntax module."
         },
         "stylelint.ignoreDisables": {
+          "scope": "resource",
           "type": "boolean",
           "default": false,
           "description": "Ignore `stylelint-disable` (e.g. `/* stylelint-disable block-no-empty */`) comments"
         },
         "stylelint.reportNeedlessDisables": {
+          "scope": "resource",
           "type": "boolean",
           "default": false,
           "description": "Also report errors for `stylelint-disable` comments that are not blocking a lint warning."
         },
         "stylelint.reportInvalidScopeDisables": {
+          "scope": "resource",
           "type": "boolean",
           "default": false,
           "description": "Also report errors for `stylelint-disable` comments that used for rules that don't exist within the configuration object."
         },
         "stylelint.stylelintPath": {
+          "scope": "resource",
           "type": "string",
           "default": "",
           "description": "Supply a custom path to the Stylelint module."
@@ -161,6 +190,7 @@
     "@types/triple-beam": "^1.3.2",
     "fast-diff": "^1.2.0",
     "path-is-inside": "^1.0.2",
+    "rfdc": "^1.3.0",
     "semver": "^7.3.5",
     "serialize-error": "^8.1.0",
     "triple-beam": "^1.3.0",
@@ -174,9 +204,6 @@
     "winston-transport": "^4.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/eslint-parser": "^7.16.0",
-    "@babel/preset-env": "^7.16.0",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@stylelint/prettier-config": "^2.0.0",
     "@types/eslint": "^7.28.2",
@@ -185,15 +212,19 @@
     "@types/path-is-inside": "^1.0.0",
     "@types/semver": "^7.3.9",
     "@types/vscode": "1.56.0",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
     "@vscode/test-electron": "^1.6.2",
     "cspell": "^5.12.3",
     "esbuild": "^0.13.12",
     "eslint": "^8.1.0",
     "eslint-config-stylelint": "^15.0.0",
+    "fast-deep-equal": "^3.1.3",
     "fast-glob": "^3.2.7",
     "fs-extra": "^10.0.0",
     "jest": "^27.3.1",
     "jest-runner-vscode": "^2.0.0",
+    "jsonc-parser": "^3.0.0",
     "npm-run-all": "^4.1.5",
     "p-wait-for": "^3.1.0",
     "postcss": "^8.3.9",
@@ -203,28 +234,37 @@
     "stylelint": "^14.0.1",
     "stylelint-processor-glamorous": "^0.3.0",
     "stylelint-processor-styled-components": "^1.10.0",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0",
     "typed-emitter": "^1.4.0",
     "typescript": "^4.4.4",
     "zen-observable": "^0.8.15"
   },
   "scripts": {
+    "build": "tsc -p tsconfig.src.json",
+    "build-bundle-watch": "run:p build-watch bundle-watch",
+    "build-watch": "npm run build -- --watch",
     "bundle": "npm run bundle-base -- --sourcemap",
-    "bundle-base": "node scripts/bundle.js",
+    "bundle-base": "ts-node -P tsconfig.scripts.json scripts/bundle.ts",
     "bundle-watch": "npm run bundle-base -- --sourcemap --watch",
-    "download-types": "node scripts/stylelint-types.js --download",
-    "download-vscode": "node scripts/download-vscode.js",
+    "build-bundle": "run-s build bundle",
+    "download-vscode": "ts-node -P tsconfig.scripts.json scripts/download-vscode.ts",
     "format": "prettier . --write",
     "lint": "run-s \"lint:*\"",
     "lint:formatting": "prettier . --check",
     "lint:js": "eslint --report-unused-disable-directives .",
     "lint:spelling": "cspell lint --no-progress",
     "lint:types": "tsc -b",
-    "lint:unit-tests": "node scripts/enforce-unit-tests-per-file.js",
-    "test": "npm run bundle && jest",
-    "test:e2e": "npm run bundle && jest --projects test/e2e",
+    "lint:unit-tests": "ts-node -P tsconfig.scripts.json scripts/enforce-unit-tests-per-file.ts",
+    "test": "npm run build-bundle && jest",
+    "test:e2e": "npm run build-bundle && jest --projects test/e2e",
     "test:integration": "jest --projects test/integration",
     "test:unit": "jest --projects test/unit",
-    "vscode:prepublish": "npm run bundle-base -- --minify"
+    "vscode:prepublish": "npm run build && npm run bundle-base -- --minify"
   },
-  "prettier": "@stylelint/prettier-config"
+  "prettier": "@stylelint/prettier-config",
+  "volta": {
+    "node": "14.17.6",
+    "npm": "8.1.3"
+  }
 }

@@ -1,18 +1,20 @@
 // Slightly update version of the original bundle script that doesn't include
 // the vscode and extension specific code.
 
-const path = require('path');
-const fs = require('fs-extra');
-const esbuild = require('esbuild');
-const glob = require('fast-glob');
+import path from 'path';
+import fs from 'fs-extra';
+import * as esbuild from 'esbuild';
+import glob from 'fast-glob';
 
 const rootDir = path.resolve(__dirname, '..');
 
 const args = new Set(process.argv.slice(2));
 
-/** @returns {Promise<void>} */
-async function bundle() {
-    const entryPoints = ['src/start-server.js'];
+/**
+ * Bundles the extension into a single file per entry point.
+ */
+async function bundle(): Promise<void> {
+    const entryPoints = ['build/extension/start-server.js'];
 
     for (const item of await glob('dist/*', { cwd: rootDir })) {
         await fs.remove(item);
@@ -32,9 +34,10 @@ async function bundle() {
             sourcemap: args.has('--sourcemap'),
             minify: args.has('--minify'),
         });
-    } catch {
+    } catch (error) {
+        console.error(error);
         process.exit(1);
     }
 }
 
-bundle();
+void bundle();

@@ -1,33 +1,5 @@
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
-var __accessCheck = (obj, member, msg) => {
-  if (!member.has(obj))
-    throw TypeError("Cannot " + msg);
-};
-var __privateGet = (obj, member, getter) => {
-  __accessCheck(obj, member, "read from private field");
-  return getter ? getter.call(obj) : member.get(obj);
-};
-var __privateAdd = (obj, member, value) => {
-  if (member.has(obj))
-    throw TypeError("Cannot add the same private member more than once");
-  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
-};
-var __privateSet = (obj, member, value, setter) => {
-  __accessCheck(obj, member, "write to private field");
-  setter ? setter.call(obj, value) : member.set(obj, value);
-  return value;
-};
-var __privateMethod = (obj, member, method) => {
-  __accessCheck(obj, member, "access private method");
-  return method;
 };
 
 // node_modules/vscode-languageserver/lib/common/utils/is.js
@@ -5346,11 +5318,11 @@ var require_main3 = __commonJS({
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createProtocolConnection = void 0;
-    var node_1 = require_node();
+    var node_12 = require_node();
     __exportStar(require_node(), exports2);
     __exportStar(require_api2(), exports2);
     function createProtocolConnection(input, output, logger2, options) {
-      return node_1.createMessageConnection(input, output, logger2, options);
+      return node_12.createMessageConnection(input, output, logger2, options);
     }
     exports2.createProtocolConnection = createProtocolConnection;
   }
@@ -6466,7 +6438,7 @@ var require_server = __commonJS({
       return result;
     }
     exports2.combineFeatures = combineFeatures;
-    function createConnection2(connectionFactory, watchDog, factories) {
+    function createConnection(connectionFactory, watchDog, factories) {
       const logger2 = factories && factories.console ? new (factories.console(RemoteConsoleImpl))() : new RemoteConsoleImpl();
       const connection2 = connectionFactory(logger2);
       logger2.rawAttach(connection2);
@@ -6695,7 +6667,7 @@ var require_server = __commonJS({
       });
       return protocolConnection;
     }
-    exports2.createConnection = createConnection2;
+    exports2.createConnection = createConnection;
   }
 });
 
@@ -6966,12 +6938,12 @@ var require_api3 = __commonJS({
     } });
     __exportStar(require_main3(), exports2);
     __exportStar(require_server(), exports2);
-    var ProposedFeatures2;
-    (function(ProposedFeatures3) {
-      ProposedFeatures3.all = {
+    var ProposedFeatures;
+    (function(ProposedFeatures2) {
+      ProposedFeatures2.all = {
         __brand: "features"
       };
-    })(ProposedFeatures2 = exports2.ProposedFeatures || (exports2.ProposedFeatures = {}));
+    })(ProposedFeatures = exports2.ProposedFeatures || (exports2.ProposedFeatures = {}));
   }
 });
 
@@ -6998,9 +6970,9 @@ var require_main4 = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createConnection = exports2.Files = void 0;
     var Is = require_is();
-    var server_1 = require_server();
+    var server_12 = require_server();
     var fm = require_files();
-    var node_1 = require_node2();
+    var node_12 = require_node2();
     __exportStar(require_node2(), exports2);
     __exportStar(require_api3(), exports2);
     var Files;
@@ -7079,7 +7051,7 @@ var require_main4 = __commonJS({
         process.exit(code);
       }
     };
-    function createConnection2(arg1, arg2, arg3, arg4) {
+    function createConnection(arg1, arg2, arg3, arg4) {
       let factories;
       let input;
       let output;
@@ -7090,7 +7062,7 @@ var require_main4 = __commonJS({
         arg2 = arg3;
         arg3 = arg4;
       }
-      if (node_1.ConnectionStrategy.is(arg1) || node_1.ConnectionOptions.is(arg1)) {
+      if (node_12.ConnectionStrategy.is(arg1) || node_12.ConnectionOptions.is(arg1)) {
         options = arg1;
       } else {
         input = arg1;
@@ -7099,7 +7071,7 @@ var require_main4 = __commonJS({
       }
       return _createConnection(input, output, options, factories);
     }
-    exports2.createConnection = createConnection2;
+    exports2.createConnection = createConnection;
     function _createConnection(input, output, options, factories) {
       if (!input && !output && process.argv.length > 2) {
         let port = void 0;
@@ -7108,8 +7080,8 @@ var require_main4 = __commonJS({
         for (let i = 0; i < argv.length; i++) {
           let arg = argv[i];
           if (arg === "--node-ipc") {
-            input = new node_1.IPCMessageReader(process);
-            output = new node_1.IPCMessageWriter(process);
+            input = new node_12.IPCMessageReader(process);
+            output = new node_12.IPCMessageWriter(process);
             break;
           } else if (arg === "--stdio") {
             input = process.stdin;
@@ -7133,11 +7105,11 @@ var require_main4 = __commonJS({
           }
         }
         if (port) {
-          let transport = node_1.createServerSocketTransport(port);
+          let transport = node_12.createServerSocketTransport(port);
           input = transport[0];
           output = transport[1];
         } else if (pipeName) {
-          let transport = node_1.createServerPipeTransport(pipeName);
+          let transport = node_12.createServerPipeTransport(pipeName);
           input = transport[0];
           output = transport[1];
         }
@@ -7161,10 +7133,10 @@ var require_main4 = __commonJS({
         });
       }
       const connectionFactory = (logger2) => {
-        const result = node_1.createProtocolConnection(input, output, logger2, options);
+        const result = node_12.createProtocolConnection(input, output, logger2, options);
         return result;
       };
-      return server_1.createConnection(connectionFactory, watchDog, factories);
+      return server_12.createConnection(connectionFactory, watchDog, factories);
     }
   }
 });
@@ -18777,20 +18749,20 @@ var require_winston = __commonJS({
     "use strict";
     var logform = require_logform();
     var { warn } = require_common();
-    var winston2 = exports2;
-    winston2.version = require_package().version;
-    winston2.transports = require_transports();
-    winston2.config = require_config2();
-    winston2.addColors = logform.levels;
-    winston2.format = logform.format;
-    winston2.createLogger = require_create_logger();
-    winston2.ExceptionHandler = require_exception_handler();
-    winston2.RejectionHandler = require_rejection_handler();
-    winston2.Container = require_container();
-    winston2.Transport = require_winston_transport();
-    winston2.loggers = new winston2.Container();
-    var defaultLogger = winston2.createLogger();
-    Object.keys(winston2.config.npm.levels).concat([
+    var winston = exports2;
+    winston.version = require_package().version;
+    winston.transports = require_transports();
+    winston.config = require_config2();
+    winston.addColors = logform.levels;
+    winston.format = logform.format;
+    winston.createLogger = require_create_logger();
+    winston.ExceptionHandler = require_exception_handler();
+    winston.RejectionHandler = require_rejection_handler();
+    winston.Container = require_container();
+    winston.Transport = require_winston_transport();
+    winston.loggers = new winston.Container();
+    var defaultLogger = winston.createLogger();
+    Object.keys(winston.config.npm.levels).concat([
       "log",
       "query",
       "stream",
@@ -18805,8 +18777,8 @@ var require_winston = __commonJS({
       "unhandleRejections",
       "configure",
       "child"
-    ]).forEach((method) => winston2[method] = (...args) => defaultLogger[method](...args));
-    Object.defineProperty(winston2, "level", {
+    ]).forEach((method) => winston[method] = (...args) => defaultLogger[method](...args));
+    Object.defineProperty(winston, "level", {
       get() {
         return defaultLogger.level;
       },
@@ -18814,13 +18786,13 @@ var require_winston = __commonJS({
         defaultLogger.level = val;
       }
     });
-    Object.defineProperty(winston2, "exceptions", {
+    Object.defineProperty(winston, "exceptions", {
       get() {
         return defaultLogger.exceptions;
       }
     });
     ["exitOnError"].forEach((prop) => {
-      Object.defineProperty(winston2, prop, {
+      Object.defineProperty(winston, prop, {
         get() {
           return defaultLogger[prop];
         },
@@ -18829,7 +18801,7 @@ var require_winston = __commonJS({
         }
       });
     });
-    Object.defineProperty(winston2, "default", {
+    Object.defineProperty(winston, "default", {
       get() {
         return {
           exceptionHandlers: defaultLogger.exceptionHandlers,
@@ -18838,101 +18810,104 @@ var require_winston = __commonJS({
         };
       }
     });
-    warn.deprecated(winston2, "setLevels");
-    warn.forFunctions(winston2, "useFormat", ["cli"]);
-    warn.forProperties(winston2, "useFormat", ["padLevels", "stripColors"]);
-    warn.forFunctions(winston2, "deprecated", [
+    warn.deprecated(winston, "setLevels");
+    warn.forFunctions(winston, "useFormat", ["cli"]);
+    warn.forProperties(winston, "useFormat", ["padLevels", "stripColors"]);
+    warn.forFunctions(winston, "deprecated", [
       "addRewriter",
       "addFilter",
       "clone",
       "extend"
     ]);
-    warn.forProperties(winston2, "deprecated", ["emitErrs", "levelLength"]);
-    warn.moved(winston2, "createLogger", "Logger");
+    warn.forProperties(winston, "deprecated", ["emitErrs", "levelLength"]);
+    warn.moved(winston, "createLogger", "Logger");
   }
 });
 
-// src/utils/types.js
+// build/server/types.js
 var require_types = __commonJS({
-  "src/utils/types.js"(exports2, module2) {
+  "build/server/types.js"(exports2) {
     "use strict";
-    var { CodeActionKind: VSCodeActionKind } = require_main2();
-    var CommandId = {
-      ApplyAutoFix: "stylelint.applyAutoFix"
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.Notification = exports2.CodeActionKind = exports2.CommandId = void 0;
+    var vscode_languageserver_types_1 = require_main2();
+    var CommandId;
+    (function(CommandId2) {
+      CommandId2["ApplyAutoFix"] = "stylelint.applyAutoFix";
+      CommandId2["OpenRuleDoc"] = "stylelint.openRuleDoc";
+    })(CommandId = exports2.CommandId || (exports2.CommandId = {}));
+    exports2.CodeActionKind = {
+      StylelintSourceFixAll: `${vscode_languageserver_types_1.CodeActionKind.SourceFixAll}.stylelint`
     };
-    var CodeActionKind = {
-      StylelintSourceFixAll: `${VSCodeActionKind.SourceFixAll}.stylelint`
-    };
-    var DisableReportRuleNames = {
-      Needless: "--report-needless-disables",
-      InvalidScope: "--report-invalid-scope-disables",
-      Descriptionless: "--report-descriptionless-disables",
-      Illegal: "reportDisables"
-    };
-    var Notification = {
-      DidRegisterDocumentFormattingEditProvider: "textDocument/didRegisterDocumentFormattingEditProvider"
-    };
-    var ApiEvent = {
-      DidRegisterDocumentFormattingEditProvider: "DidRegisterDocumentFormattingEditProvider"
-    };
-    var InvalidOptionError = class extends Error {
-      constructor(warnings) {
-        const reasons = warnings.map((warning) => warning.text);
-        super(reasons.join("\n"));
-        this.reasons = reasons;
-      }
-    };
-    module2.exports = {
-      CommandId,
-      CodeActionKind,
-      DisableReportRuleNames,
-      Notification,
-      ApiEvent,
-      InvalidOptionError
-    };
+    var Notification;
+    (function(Notification2) {
+      Notification2["DidRegisterCodeActionRequestHandler"] = "stylelint/didRegisterCodeActionRequestHandler";
+      Notification2["DidRegisterDocumentFormattingEditProvider"] = "textDocument/didRegisterDocumentFormattingEditProvider";
+      Notification2["DidResetConfiguration"] = "stylelint/didResetConfiguration";
+    })(Notification = exports2.Notification || (exports2.Notification = {}));
   }
 });
 
-// src/server/modules/auto-fix.js
+// build/server/modules/auto-fix.js
 var require_auto_fix = __commonJS({
-  "src/server/modules/auto-fix.js"(exports2, module2) {
+  "build/server/modules/auto-fix.js"(exports2) {
     "use strict";
-    var { WorkspaceChange } = require_main3();
-    var { CommandId } = require_types();
-    var _context, _logger, _shouldAutoFix, shouldAutoFix_fn;
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _AutoFixModule_instances;
+    var _AutoFixModule_context;
+    var _AutoFixModule_logger;
+    var _AutoFixModule_shouldAutoFix;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.AutoFixModule = void 0;
+    var vscode_languageserver_protocol_1 = require_main3();
+    var types_1 = require_types();
     var AutoFixModule = class {
       constructor({ context, logger: logger2 }) {
-        __privateAdd(this, _shouldAutoFix);
-        __privateAdd(this, _context, void 0);
-        __privateAdd(this, _logger, void 0);
-        __privateSet(this, _context, context);
-        __privateSet(this, _logger, logger2);
+        _AutoFixModule_instances.add(this);
+        _AutoFixModule_context.set(this, void 0);
+        _AutoFixModule_logger.set(this, void 0);
+        __classPrivateFieldSet(this, _AutoFixModule_context, context, "f");
+        __classPrivateFieldSet(this, _AutoFixModule_logger, logger2, "f");
       }
       onInitialize() {
         return {
           capabilities: {
             executeCommandProvider: {
-              commands: [CommandId.ApplyAutoFix]
+              commands: [types_1.CommandId.ApplyAutoFix]
             }
           }
         };
       }
       onDidRegisterHandlers() {
-        __privateGet(this, _logger)?.debug("Registering onExecuteCommand handler");
-        __privateGet(this, _context).connection.onExecuteCommand(async ({ command, arguments: args }) => {
-          __privateGet(this, _logger)?.debug("Received onExecuteCommand", { command, arguments: args });
-          if (command !== CommandId.ApplyAutoFix || !args) {
+        __classPrivateFieldGet(this, _AutoFixModule_logger, "f")?.debug("Registering onExecuteCommand handler");
+        __classPrivateFieldGet(this, _AutoFixModule_context, "f").commands.on(types_1.CommandId.ApplyAutoFix, async ({ arguments: args }) => {
+          if (!args) {
             return {};
           }
           const identifier = args[0];
           const uri = identifier.uri;
-          const document = __privateGet(this, _context).documents.get(uri);
-          if (!document || !__privateMethod(this, _shouldAutoFix, shouldAutoFix_fn).call(this, document)) {
-            if (__privateGet(this, _logger)?.isDebugEnabled()) {
+          const document = __classPrivateFieldGet(this, _AutoFixModule_context, "f").documents.get(uri);
+          if (!document || !await __classPrivateFieldGet(this, _AutoFixModule_instances, "m", _AutoFixModule_shouldAutoFix).call(this, document)) {
+            if (__classPrivateFieldGet(this, _AutoFixModule_logger, "f")?.isDebugEnabled()) {
               if (!document) {
-                __privateGet(this, _logger).debug("Unknown document, ignoring", { uri });
+                __classPrivateFieldGet(this, _AutoFixModule_logger, "f").debug("Unknown document, ignoring", { uri });
               } else {
-                __privateGet(this, _logger).debug("Document should not be auto-fixed, ignoring", {
+                __classPrivateFieldGet(this, _AutoFixModule_logger, "f").debug("Document should not be auto-fixed, ignoring", {
                   uri,
                   language: document.languageId
                 });
@@ -18941,110 +18916,1165 @@ var require_auto_fix = __commonJS({
             return {};
           }
           if (identifier.version !== document.version) {
-            __privateGet(this, _logger)?.debug("Document has been modified, ignoring", { uri });
+            __classPrivateFieldGet(this, _AutoFixModule_logger, "f")?.debug("Document has been modified, ignoring", { uri });
             return {};
           }
-          const workspaceChange = new WorkspaceChange();
+          const workspaceChange = new vscode_languageserver_protocol_1.WorkspaceChange();
           const textChange = workspaceChange.getTextEditChange(identifier);
-          const edits = await __privateGet(this, _context).getFixes(document);
+          const edits = await __classPrivateFieldGet(this, _AutoFixModule_context, "f").getFixes(document);
           edits.forEach((edit) => textChange.add(edit));
-          __privateGet(this, _logger)?.debug("Applying fixes", { uri, edits });
+          __classPrivateFieldGet(this, _AutoFixModule_logger, "f")?.debug("Applying fixes", { uri, edits });
           try {
-            const response = await __privateGet(this, _context).connection.workspace.applyEdit(workspaceChange.edit);
+            const response = await __classPrivateFieldGet(this, _AutoFixModule_context, "f").connection.workspace.applyEdit(workspaceChange.edit);
             if (!response.applied) {
-              __privateGet(this, _logger)?.debug("Failed to apply fixes", { uri, response });
+              __classPrivateFieldGet(this, _AutoFixModule_logger, "f")?.debug("Failed to apply fixes", { uri, response });
             }
           } catch (error) {
-            __privateGet(this, _logger)?.debug("Failed to apply fixes", { uri, error });
+            __classPrivateFieldGet(this, _AutoFixModule_logger, "f")?.debug("Failed to apply fixes", { uri, error });
           }
           return {};
         });
-        __privateGet(this, _logger)?.debug("onExecuteCommand handler registered");
       }
     };
-    _context = new WeakMap();
-    _logger = new WeakMap();
-    _shouldAutoFix = new WeakSet();
-    shouldAutoFix_fn = function(document) {
-      return __privateGet(this, _context).options.validate.includes(document.languageId);
+    exports2.AutoFixModule = AutoFixModule;
+    _AutoFixModule_context = new WeakMap(), _AutoFixModule_logger = new WeakMap(), _AutoFixModule_instances = new WeakSet(), _AutoFixModule_shouldAutoFix = async function _AutoFixModule_shouldAutoFix2(document) {
+      const options = await __classPrivateFieldGet(this, _AutoFixModule_context, "f").getOptions(document.uri);
+      return options.validate.includes(document.languageId);
     };
-    __publicField(AutoFixModule, "id", "auto-fix");
-    module2.exports = {
-      AutoFixModule
+    AutoFixModule.id = "auto-fix";
+  }
+});
+
+// build/utils/lsp/command-manager.js
+var require_command_manager = __commonJS({
+  "build/utils/lsp/command-manager.js"(exports2) {
+    "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports2 && exports2.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
+    };
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _CommandManager_connection;
+    var _CommandManager_logger;
+    var _CommandManager_commands;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.CommandManager = void 0;
+    var LSP = __importStar(require_main3());
+    var CommandManager = class {
+      constructor(connection2, logger2) {
+        _CommandManager_connection.set(this, void 0);
+        _CommandManager_logger.set(this, void 0);
+        _CommandManager_commands.set(this, new Map());
+        __classPrivateFieldSet(this, _CommandManager_connection, connection2, "f");
+        __classPrivateFieldSet(this, _CommandManager_logger, logger2, "f");
+      }
+      on(name, handler) {
+        if (Array.isArray(name)) {
+          __classPrivateFieldGet(this, _CommandManager_logger, "f")?.debug("Registering commands", {
+            commands: name
+          });
+          for (const commandName of name) {
+            __classPrivateFieldGet(this, _CommandManager_commands, "f").set(commandName, handler);
+          }
+        } else {
+          __classPrivateFieldGet(this, _CommandManager_logger, "f")?.debug("Registering command", {
+            command: name
+          });
+          __classPrivateFieldGet(this, _CommandManager_commands, "f").set(name, handler);
+        }
+      }
+      register() {
+        __classPrivateFieldGet(this, _CommandManager_logger, "f")?.debug("Registering ExecuteCommandRequest handler");
+        __classPrivateFieldGet(this, _CommandManager_connection, "f").onExecuteCommand(async (...params) => {
+          __classPrivateFieldGet(this, _CommandManager_logger, "f")?.debug("Received ExecuteCommandRequest", {
+            command: params[0].command,
+            arguments: params[0].arguments
+          });
+          const handler = __classPrivateFieldGet(this, _CommandManager_commands, "f").get(params[0].command);
+          if (!handler) {
+            __classPrivateFieldGet(this, _CommandManager_logger, "f")?.debug("No handler registered for command", {
+              command: params[0].command
+            });
+            return {};
+          }
+          __classPrivateFieldGet(this, _CommandManager_logger, "f")?.debug("Executing command", {
+            command: params[0].command
+          });
+          try {
+            const response = await handler(...params);
+            __classPrivateFieldGet(this, _CommandManager_logger, "f")?.debug("Sending command response", {
+              command: params[0].command,
+              response
+            });
+            return response;
+          } catch (error) {
+            __classPrivateFieldGet(this, _CommandManager_logger, "f")?.error("Error executing command", {
+              command: params[0].command,
+              error
+            });
+            return new LSP.ResponseError(LSP.ErrorCodes.InternalError, `Error executing command ${params[0].command}`, error);
+          }
+        });
+        __classPrivateFieldGet(this, _CommandManager_logger, "f")?.debug("ExecuteCommandRequest handler registered");
+      }
+    };
+    exports2.CommandManager = CommandManager;
+    _CommandManager_connection = new WeakMap(), _CommandManager_logger = new WeakMap(), _CommandManager_commands = new WeakMap();
+  }
+});
+
+// build/utils/lsp/create-disable-completion-item.js
+var require_create_disable_completion_item = __commonJS({
+  "build/utils/lsp/create-disable-completion-item.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.createDisableCompletionItem = void 0;
+    var vscode_languageserver_types_1 = require_main2();
+    function createDisableCompletionItem(disableType, rule = "") {
+      const item = vscode_languageserver_types_1.CompletionItem.create(disableType);
+      item.kind = vscode_languageserver_types_1.CompletionItemKind.Snippet;
+      item.insertTextFormat = vscode_languageserver_types_1.InsertTextFormat.Snippet;
+      if (disableType === "stylelint-disable") {
+        item.insertText = `/* stylelint-disable \${0:${rule || "rule"}} */
+/* stylelint-enable \${0:${rule || "rule"}} */`;
+        item.detail = "Turn off all Stylelint or individual rules, after which you do not need to re-enable Stylelint. (Stylelint)";
+        item.documentation = {
+          kind: vscode_languageserver_types_1.MarkupKind.Markdown,
+          value: `\`\`\`css
+/* stylelint-disable ${rule || "rule"} */
+/* stylelint-enable ${rule || "rule"} */
+\`\`\``
+        };
+      } else {
+        item.insertText = `/* ${disableType} \${0:${rule || "rule"}} */`;
+        item.detail = disableType === "stylelint-disable-line" ? "Turn off Stylelint rules for individual lines only, after which you do not need to explicitly re-enable them. (Stylelint)" : "Turn off Stylelint rules for the next line only, after which you do not need to explicitly re-enable them. (Stylelint)";
+        item.documentation = {
+          kind: vscode_languageserver_types_1.MarkupKind.Markdown,
+          value: `\`\`\`css
+/* ${disableType} ${rule || "rule"} */
+\`\`\``
+        };
+      }
+      return item;
+    }
+    exports2.createDisableCompletionItem = createDisableCompletionItem;
+  }
+});
+
+// build/utils/lsp/create-disable-rule-file-code-action.js
+var require_create_disable_rule_file_code_action = __commonJS({
+  "build/utils/lsp/create-disable-rule-file-code-action.js"(exports2) {
+    "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports2 && exports2.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
+    };
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.createDisableRuleFileCodeAction = void 0;
+    var os_1 = __importDefault2(require("os"));
+    var LSP = __importStar(require_main3());
+    function createDisableRuleFileCodeAction(document, { code }) {
+      const workspaceChange = new LSP.WorkspaceChange();
+      const shebang = document.getText(LSP.Range.create(LSP.Position.create(0, 0), LSP.Position.create(0, 2)));
+      workspaceChange.getTextEditChange(document).add(LSP.TextEdit.insert(LSP.Position.create(shebang === "#!" ? 1 : 0, 0), `/* stylelint-disable ${code} */${os_1.default.EOL}`));
+      return LSP.CodeAction.create(`Disable ${code} for the entire file`, workspaceChange.edit, LSP.CodeActionKind.QuickFix);
+    }
+    exports2.createDisableRuleFileCodeAction = createDisableRuleFileCodeAction;
+  }
+});
+
+// build/utils/lsp/create-disable-rule-line-code-action.js
+var require_create_disable_rule_line_code_action = __commonJS({
+  "build/utils/lsp/create-disable-rule-line-code-action.js"(exports2) {
+    "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports2 && exports2.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
+    };
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.createDisableRuleLineCodeAction = void 0;
+    var os_1 = __importDefault2(require("os"));
+    var LSP = __importStar(require_main3());
+    function createDisableRuleLineCodeAction(document, { code, range }, location) {
+      const workspaceChange = new LSP.WorkspaceChange();
+      if (location === "sameLine") {
+        workspaceChange.getTextEditChange(document).add(LSP.TextEdit.insert(LSP.Position.create(range.start.line, LSP.uinteger.MAX_VALUE), ` /* stylelint-disable-line ${code} */`));
+      } else {
+        const lineText = document.getText(LSP.Range.create(LSP.Position.create(range.start.line, 0), LSP.Position.create(range.start.line, LSP.uinteger.MAX_VALUE)));
+        const indentation = lineText.match(/^([ \t]+)/)?.[1] ?? "";
+        workspaceChange.getTextEditChange(document).add(LSP.TextEdit.insert(LSP.Position.create(range.start.line, 0), `${indentation}/* stylelint-disable-next-line ${code} */${os_1.default.EOL}`));
+      }
+      return LSP.CodeAction.create(`Disable ${code} for this line`, workspaceChange.edit, LSP.CodeActionKind.QuickFix);
+    }
+    exports2.createDisableRuleLineCodeAction = createDisableRuleLineCodeAction;
+  }
+});
+
+// build/utils/iterables.js
+var require_iterables = __commonJS({
+  "build/utils/iterables.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.isIterableObject = exports2.isIterable = void 0;
+    function isIterable(obj) {
+      return obj !== null && obj !== void 0 && typeof obj[Symbol.iterator] === "function";
+    }
+    exports2.isIterable = isIterable;
+    function isIterableObject(obj) {
+      return isIterable(obj) && typeof obj === "object";
+    }
+    exports2.isIterableObject = isIterableObject;
+  }
+});
+
+// build/utils/lsp/display-error.js
+var require_display_error = __commonJS({
+  "build/utils/lsp/display-error.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.displayError = void 0;
+    var iterables_1 = require_iterables();
+    function displayError(connection2, err) {
+      if (!(err instanceof Error)) {
+        connection2.window.showErrorMessage(String(err).replace(/\n/gu, " "));
+        return;
+      }
+      if ((0, iterables_1.isIterableObject)(err?.reasons)) {
+        for (const reason of err.reasons) {
+          connection2.window.showErrorMessage(`Stylelint: ${reason}`);
+        }
+        return;
+      }
+      if (err?.code === 78) {
+        connection2.window.showErrorMessage(`Stylelint: ${err.message}`);
+        return;
+      }
+      connection2.window.showErrorMessage((err.stack || err.message).replace(/\n/gu, " "));
+    }
+    exports2.displayError = displayError;
+  }
+});
+
+// build/utils/lsp/notification-manager.js
+var require_notification_manager = __commonJS({
+  "build/utils/lsp/notification-manager.js"(exports2) {
+    "use strict";
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _NotificationManager_instances;
+    var _NotificationManager_connection;
+    var _NotificationManager_logger;
+    var _NotificationManager_notifications;
+    var _NotificationManager_handleNotification;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.NotificationManager = void 0;
+    var NotificationManager = class {
+      constructor(connection2, logger2) {
+        _NotificationManager_instances.add(this);
+        _NotificationManager_connection.set(this, void 0);
+        _NotificationManager_logger.set(this, void 0);
+        _NotificationManager_notifications.set(this, new Map());
+        __classPrivateFieldSet(this, _NotificationManager_connection, connection2, "f");
+        __classPrivateFieldSet(this, _NotificationManager_logger, logger2, "f");
+      }
+      on(type, handler) {
+        const isStar = typeof type === "function";
+        const [key, func] = isStar ? [void 0, type] : [type, handler];
+        if (!func) {
+          throw new Error("Handler must be defined");
+        }
+        const existing = __classPrivateFieldGet(this, _NotificationManager_notifications, "f").get(key);
+        if (existing) {
+          existing.push(func);
+          return;
+        }
+        __classPrivateFieldGet(this, _NotificationManager_notifications, "f").set(key, [func]);
+        if (isStar) {
+          __classPrivateFieldGet(this, _NotificationManager_connection, "f").onNotification((...params) => __classPrivateFieldGet(this, _NotificationManager_instances, "m", _NotificationManager_handleNotification).call(this, void 0, params));
+          return;
+        }
+        __classPrivateFieldGet(this, _NotificationManager_connection, "f").onNotification(type, (...params) => __classPrivateFieldGet(this, _NotificationManager_instances, "m", _NotificationManager_handleNotification).call(this, type, params));
+      }
+    };
+    exports2.NotificationManager = NotificationManager;
+    _NotificationManager_connection = new WeakMap(), _NotificationManager_logger = new WeakMap(), _NotificationManager_notifications = new WeakMap(), _NotificationManager_instances = new WeakSet(), _NotificationManager_handleNotification = async function _NotificationManager_handleNotification2(key, params) {
+      __classPrivateFieldGet(this, _NotificationManager_logger, "f")?.debug("Received notification", { notificationType: key ?? "<all>", params });
+      const handlers = __classPrivateFieldGet(this, _NotificationManager_notifications, "f").get(key);
+      await Promise.all(handlers.map(async (handler) => {
+        try {
+          await handler(...params);
+        } catch (error) {
+          __classPrivateFieldGet(this, _NotificationManager_logger, "f")?.error("Error handling notification", {
+            notificationType: key ?? "<all>",
+            error
+          });
+        }
+      }));
     };
   }
 });
 
-// src/server/modules/code-action.js
-var require_code_action = __commonJS({
-  "src/server/modules/code-action.js"(exports2, module2) {
+// build/utils/lsp/rule-code-actions-collection.js
+var require_rule_code_actions_collection = __commonJS({
+  "build/utils/lsp/rule-code-actions-collection.js"(exports2) {
     "use strict";
-    var { CodeActionKind, CodeAction, TextDocumentEdit } = require_main2();
-    var { CodeActionKind: StylelintCodeActionKind } = require_types();
-    var _context, _logger, _shouldCodeAction, shouldCodeAction_fn;
-    var CodeActionModule = class {
-      constructor({ context, logger: logger2 }) {
-        __privateAdd(this, _shouldCodeAction);
-        __privateAdd(this, _context, void 0);
-        __privateAdd(this, _logger, void 0);
-        __privateSet(this, _context, context);
-        __privateSet(this, _logger, logger2);
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _RuleCodeActionsCollection_actions;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.RuleCodeActionsCollection = void 0;
+    var RuleCodeActionsCollection = class {
+      constructor() {
+        _RuleCodeActionsCollection_actions.set(this, new Map());
       }
-      onInitialize() {
-        return {
-          capabilities: {
-            codeActionProvider: {
-              codeActionKinds: [CodeActionKind.QuickFix, StylelintCodeActionKind.StylelintSourceFixAll]
+      get(ruleId) {
+        const existing = __classPrivateFieldGet(this, _RuleCodeActionsCollection_actions, "f").get(ruleId);
+        if (existing) {
+          return existing;
+        }
+        const actions = {};
+        __classPrivateFieldGet(this, _RuleCodeActionsCollection_actions, "f").set(ruleId, actions);
+        return actions;
+      }
+      *[(_RuleCodeActionsCollection_actions = new WeakMap(), Symbol.iterator)]() {
+        for (const actions of __classPrivateFieldGet(this, _RuleCodeActionsCollection_actions, "f").values()) {
+          if (actions.disableLine) {
+            yield actions.disableLine;
+          }
+          if (actions.disableFile) {
+            yield actions.disableFile;
+          }
+          if (actions.documentation) {
+            yield actions.documentation;
+          }
+        }
+      }
+      get size() {
+        const iterator = this[Symbol.iterator]();
+        let size = 0;
+        while (!iterator.next().done) {
+          size++;
+        }
+        return size;
+      }
+    };
+    exports2.RuleCodeActionsCollection = RuleCodeActionsCollection;
+  }
+});
+
+// build/utils/lsp/types.js
+var require_types2 = __commonJS({
+  "build/utils/lsp/types.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+  }
+});
+
+// build/utils/lsp/index.js
+var require_lsp = __commonJS({
+  "build/utils/lsp/index.js"(exports2) {
+    "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_command_manager(), exports2);
+    __exportStar(require_create_disable_completion_item(), exports2);
+    __exportStar(require_create_disable_rule_file_code_action(), exports2);
+    __exportStar(require_create_disable_rule_line_code_action(), exports2);
+    __exportStar(require_display_error(), exports2);
+    __exportStar(require_notification_manager(), exports2);
+    __exportStar(require_rule_code_actions_collection(), exports2);
+    __exportStar(require_types2(), exports2);
+  }
+});
+
+// node_modules/path-is-inside/lib/path-is-inside.js
+var require_path_is_inside = __commonJS({
+  "node_modules/path-is-inside/lib/path-is-inside.js"(exports2, module2) {
+    "use strict";
+    var path = require("path");
+    module2.exports = function(thePath, potentialParent) {
+      thePath = stripTrailingSep(thePath);
+      potentialParent = stripTrailingSep(potentialParent);
+      if (process.platform === "win32") {
+        thePath = thePath.toLowerCase();
+        potentialParent = potentialParent.toLowerCase();
+      }
+      return thePath.lastIndexOf(potentialParent, 0) === 0 && (thePath[potentialParent.length] === path.sep || thePath[potentialParent.length] === void 0);
+    };
+    function stripTrailingSep(thePath) {
+      if (thePath[thePath.length - 1] === path.sep) {
+        return thePath.slice(0, -1);
+      }
+      return thePath;
+    }
+  }
+});
+
+// node_modules/vscode-uri/lib/umd/index.js
+var require_umd = __commonJS({
+  "node_modules/vscode-uri/lib/umd/index.js"(exports2, module2) {
+    !function(t, e) {
+      if (typeof exports2 == "object" && typeof module2 == "object")
+        module2.exports = e();
+      else if (typeof define == "function" && define.amd)
+        define([], e);
+      else {
+        var r = e();
+        for (var n in r)
+          (typeof exports2 == "object" ? exports2 : t)[n] = r[n];
+      }
+    }(exports2, function() {
+      return (() => {
+        "use strict";
+        var t = { 470: (t2) => {
+          function e2(t3) {
+            if (typeof t3 != "string")
+              throw new TypeError("Path must be a string. Received " + JSON.stringify(t3));
+          }
+          function r(t3, e3) {
+            for (var r2, n2 = "", i = 0, o = -1, a = 0, h = 0; h <= t3.length; ++h) {
+              if (h < t3.length)
+                r2 = t3.charCodeAt(h);
+              else {
+                if (r2 === 47)
+                  break;
+                r2 = 47;
+              }
+              if (r2 === 47) {
+                if (o === h - 1 || a === 1)
+                  ;
+                else if (o !== h - 1 && a === 2) {
+                  if (n2.length < 2 || i !== 2 || n2.charCodeAt(n2.length - 1) !== 46 || n2.charCodeAt(n2.length - 2) !== 46) {
+                    if (n2.length > 2) {
+                      var s = n2.lastIndexOf("/");
+                      if (s !== n2.length - 1) {
+                        s === -1 ? (n2 = "", i = 0) : i = (n2 = n2.slice(0, s)).length - 1 - n2.lastIndexOf("/"), o = h, a = 0;
+                        continue;
+                      }
+                    } else if (n2.length === 2 || n2.length === 1) {
+                      n2 = "", i = 0, o = h, a = 0;
+                      continue;
+                    }
+                  }
+                  e3 && (n2.length > 0 ? n2 += "/.." : n2 = "..", i = 2);
+                } else
+                  n2.length > 0 ? n2 += "/" + t3.slice(o + 1, h) : n2 = t3.slice(o + 1, h), i = h - o - 1;
+                o = h, a = 0;
+              } else
+                r2 === 46 && a !== -1 ? ++a : a = -1;
             }
+            return n2;
           }
-        };
-      }
-      onDidRegisterHandlers() {
-        __privateGet(this, _logger)?.debug("Registering onCodeAction handler");
-        __privateGet(this, _context).connection.onCodeAction(async ({ context, textDocument }) => {
-          __privateGet(this, _logger)?.debug("Received onCodeAction", { context, uri: textDocument.uri });
-          const only = context.only !== void 0 ? context.only[0] : void 0;
-          const isSource = only === CodeActionKind.Source;
-          const isSourceFixAll = only === StylelintCodeActionKind.StylelintSourceFixAll || only === CodeActionKind.SourceFixAll;
-          if (!isSourceFixAll && !isSource) {
-            __privateGet(this, _logger)?.debug("Unsupported code action kind, ignoring", { kind: only });
-            return [];
-          }
-          const uri = textDocument.uri;
-          const document = __privateGet(this, _context).documents.get(uri);
-          if (!document || !__privateMethod(this, _shouldCodeAction, shouldCodeAction_fn).call(this, document)) {
-            if (__privateGet(this, _logger)?.isDebugEnabled()) {
-              if (!document) {
-                __privateGet(this, _logger).debug("Unknown document, ignoring", { uri });
-              } else {
-                __privateGet(this, _logger).debug("Document should not be validated, ignoring", {
-                  uri,
-                  language: document.languageId
-                });
+          var n = { resolve: function() {
+            for (var t3, n2 = "", i = false, o = arguments.length - 1; o >= -1 && !i; o--) {
+              var a;
+              o >= 0 ? a = arguments[o] : (t3 === void 0 && (t3 = process.cwd()), a = t3), e2(a), a.length !== 0 && (n2 = a + "/" + n2, i = a.charCodeAt(0) === 47);
+            }
+            return n2 = r(n2, !i), i ? n2.length > 0 ? "/" + n2 : "/" : n2.length > 0 ? n2 : ".";
+          }, normalize: function(t3) {
+            if (e2(t3), t3.length === 0)
+              return ".";
+            var n2 = t3.charCodeAt(0) === 47, i = t3.charCodeAt(t3.length - 1) === 47;
+            return (t3 = r(t3, !n2)).length !== 0 || n2 || (t3 = "."), t3.length > 0 && i && (t3 += "/"), n2 ? "/" + t3 : t3;
+          }, isAbsolute: function(t3) {
+            return e2(t3), t3.length > 0 && t3.charCodeAt(0) === 47;
+          }, join: function() {
+            if (arguments.length === 0)
+              return ".";
+            for (var t3, r2 = 0; r2 < arguments.length; ++r2) {
+              var i = arguments[r2];
+              e2(i), i.length > 0 && (t3 === void 0 ? t3 = i : t3 += "/" + i);
+            }
+            return t3 === void 0 ? "." : n.normalize(t3);
+          }, relative: function(t3, r2) {
+            if (e2(t3), e2(r2), t3 === r2)
+              return "";
+            if ((t3 = n.resolve(t3)) === (r2 = n.resolve(r2)))
+              return "";
+            for (var i = 1; i < t3.length && t3.charCodeAt(i) === 47; ++i)
+              ;
+            for (var o = t3.length, a = o - i, h = 1; h < r2.length && r2.charCodeAt(h) === 47; ++h)
+              ;
+            for (var s = r2.length - h, f = a < s ? a : s, u = -1, c = 0; c <= f; ++c) {
+              if (c === f) {
+                if (s > f) {
+                  if (r2.charCodeAt(h + c) === 47)
+                    return r2.slice(h + c + 1);
+                  if (c === 0)
+                    return r2.slice(h + c);
+                } else
+                  a > f && (t3.charCodeAt(i + c) === 47 ? u = c : c === 0 && (u = 0));
+                break;
+              }
+              var l = t3.charCodeAt(i + c);
+              if (l !== r2.charCodeAt(h + c))
+                break;
+              l === 47 && (u = c);
+            }
+            var p = "";
+            for (c = i + u + 1; c <= o; ++c)
+              c !== o && t3.charCodeAt(c) !== 47 || (p.length === 0 ? p += ".." : p += "/..");
+            return p.length > 0 ? p + r2.slice(h + u) : (h += u, r2.charCodeAt(h) === 47 && ++h, r2.slice(h));
+          }, _makeLong: function(t3) {
+            return t3;
+          }, dirname: function(t3) {
+            if (e2(t3), t3.length === 0)
+              return ".";
+            for (var r2 = t3.charCodeAt(0), n2 = r2 === 47, i = -1, o = true, a = t3.length - 1; a >= 1; --a)
+              if ((r2 = t3.charCodeAt(a)) === 47) {
+                if (!o) {
+                  i = a;
+                  break;
+                }
+              } else
+                o = false;
+            return i === -1 ? n2 ? "/" : "." : n2 && i === 1 ? "//" : t3.slice(0, i);
+          }, basename: function(t3, r2) {
+            if (r2 !== void 0 && typeof r2 != "string")
+              throw new TypeError('"ext" argument must be a string');
+            e2(t3);
+            var n2, i = 0, o = -1, a = true;
+            if (r2 !== void 0 && r2.length > 0 && r2.length <= t3.length) {
+              if (r2.length === t3.length && r2 === t3)
+                return "";
+              var h = r2.length - 1, s = -1;
+              for (n2 = t3.length - 1; n2 >= 0; --n2) {
+                var f = t3.charCodeAt(n2);
+                if (f === 47) {
+                  if (!a) {
+                    i = n2 + 1;
+                    break;
+                  }
+                } else
+                  s === -1 && (a = false, s = n2 + 1), h >= 0 && (f === r2.charCodeAt(h) ? --h == -1 && (o = n2) : (h = -1, o = s));
+              }
+              return i === o ? o = s : o === -1 && (o = t3.length), t3.slice(i, o);
+            }
+            for (n2 = t3.length - 1; n2 >= 0; --n2)
+              if (t3.charCodeAt(n2) === 47) {
+                if (!a) {
+                  i = n2 + 1;
+                  break;
+                }
+              } else
+                o === -1 && (a = false, o = n2 + 1);
+            return o === -1 ? "" : t3.slice(i, o);
+          }, extname: function(t3) {
+            e2(t3);
+            for (var r2 = -1, n2 = 0, i = -1, o = true, a = 0, h = t3.length - 1; h >= 0; --h) {
+              var s = t3.charCodeAt(h);
+              if (s !== 47)
+                i === -1 && (o = false, i = h + 1), s === 46 ? r2 === -1 ? r2 = h : a !== 1 && (a = 1) : r2 !== -1 && (a = -1);
+              else if (!o) {
+                n2 = h + 1;
+                break;
               }
             }
-            return [];
+            return r2 === -1 || i === -1 || a === 0 || a === 1 && r2 === i - 1 && r2 === n2 + 1 ? "" : t3.slice(r2, i);
+          }, format: function(t3) {
+            if (t3 === null || typeof t3 != "object")
+              throw new TypeError('The "pathObject" argument must be of type Object. Received type ' + typeof t3);
+            return function(t4, e3) {
+              var r2 = e3.dir || e3.root, n2 = e3.base || (e3.name || "") + (e3.ext || "");
+              return r2 ? r2 === e3.root ? r2 + n2 : r2 + "/" + n2 : n2;
+            }(0, t3);
+          }, parse: function(t3) {
+            e2(t3);
+            var r2 = { root: "", dir: "", base: "", ext: "", name: "" };
+            if (t3.length === 0)
+              return r2;
+            var n2, i = t3.charCodeAt(0), o = i === 47;
+            o ? (r2.root = "/", n2 = 1) : n2 = 0;
+            for (var a = -1, h = 0, s = -1, f = true, u = t3.length - 1, c = 0; u >= n2; --u)
+              if ((i = t3.charCodeAt(u)) !== 47)
+                s === -1 && (f = false, s = u + 1), i === 46 ? a === -1 ? a = u : c !== 1 && (c = 1) : a !== -1 && (c = -1);
+              else if (!f) {
+                h = u + 1;
+                break;
+              }
+            return a === -1 || s === -1 || c === 0 || c === 1 && a === s - 1 && a === h + 1 ? s !== -1 && (r2.base = r2.name = h === 0 && o ? t3.slice(1, s) : t3.slice(h, s)) : (h === 0 && o ? (r2.name = t3.slice(1, a), r2.base = t3.slice(1, s)) : (r2.name = t3.slice(h, a), r2.base = t3.slice(h, s)), r2.ext = t3.slice(a, s)), h > 0 ? r2.dir = t3.slice(0, h - 1) : o && (r2.dir = "/"), r2;
+          }, sep: "/", delimiter: ":", win32: null, posix: null };
+          n.posix = n, t2.exports = n;
+        }, 465: (t2, e2, r) => {
+          Object.defineProperty(e2, "__esModule", { value: true }), e2.Utils = e2.URI = void 0;
+          var n = r(796);
+          Object.defineProperty(e2, "URI", { enumerable: true, get: function() {
+            return n.URI;
+          } });
+          var i = r(679);
+          Object.defineProperty(e2, "Utils", { enumerable: true, get: function() {
+            return i.Utils;
+          } });
+        }, 674: (t2, e2) => {
+          if (Object.defineProperty(e2, "__esModule", { value: true }), e2.isWindows = void 0, typeof process == "object")
+            e2.isWindows = process.platform === "win32";
+          else if (typeof navigator == "object") {
+            var r = navigator.userAgent;
+            e2.isWindows = r.indexOf("Windows") >= 0;
           }
-          const identifier = { uri: document.uri, version: document.version };
-          const edits = await __privateGet(this, _context).getFixes(document);
-          const actions = [
-            CodeAction.create(`Fix all Stylelint auto-fixable problems`, { documentChanges: [TextDocumentEdit.create(identifier, edits)] }, StylelintCodeActionKind.StylelintSourceFixAll)
-          ];
-          __privateGet(this, _logger)?.debug("Returning code actions", { actions });
-          return actions;
+        }, 796: function(t2, e2, r) {
+          var n, i, o = this && this.__extends || (n = function(t3, e3) {
+            return (n = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(t4, e4) {
+              t4.__proto__ = e4;
+            } || function(t4, e4) {
+              for (var r2 in e4)
+                Object.prototype.hasOwnProperty.call(e4, r2) && (t4[r2] = e4[r2]);
+            })(t3, e3);
+          }, function(t3, e3) {
+            function r2() {
+              this.constructor = t3;
+            }
+            n(t3, e3), t3.prototype = e3 === null ? Object.create(e3) : (r2.prototype = e3.prototype, new r2());
+          });
+          Object.defineProperty(e2, "__esModule", { value: true }), e2.uriToFsPath = e2.URI = void 0;
+          var a = r(674), h = /^\w[\w\d+.-]*$/, s = /^\//, f = /^\/\//, u = "", c = "/", l = /^(([^:/?#]+?):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/, p = function() {
+            function t3(t4, e3, r2, n2, i2, o2) {
+              o2 === void 0 && (o2 = false), typeof t4 == "object" ? (this.scheme = t4.scheme || u, this.authority = t4.authority || u, this.path = t4.path || u, this.query = t4.query || u, this.fragment = t4.fragment || u) : (this.scheme = function(t5, e4) {
+                return t5 || e4 ? t5 : "file";
+              }(t4, o2), this.authority = e3 || u, this.path = function(t5, e4) {
+                switch (t5) {
+                  case "https":
+                  case "http":
+                  case "file":
+                    e4 ? e4[0] !== c && (e4 = c + e4) : e4 = c;
+                }
+                return e4;
+              }(this.scheme, r2 || u), this.query = n2 || u, this.fragment = i2 || u, function(t5, e4) {
+                if (!t5.scheme && e4)
+                  throw new Error('[UriError]: Scheme is missing: {scheme: "", authority: "' + t5.authority + '", path: "' + t5.path + '", query: "' + t5.query + '", fragment: "' + t5.fragment + '"}');
+                if (t5.scheme && !h.test(t5.scheme))
+                  throw new Error("[UriError]: Scheme contains illegal characters.");
+                if (t5.path) {
+                  if (t5.authority) {
+                    if (!s.test(t5.path))
+                      throw new Error('[UriError]: If a URI contains an authority component, then the path component must either be empty or begin with a slash ("/") character');
+                  } else if (f.test(t5.path))
+                    throw new Error('[UriError]: If a URI does not contain an authority component, then the path cannot begin with two slash characters ("//")');
+                }
+              }(this, o2));
+            }
+            return t3.isUri = function(e3) {
+              return e3 instanceof t3 || !!e3 && typeof e3.authority == "string" && typeof e3.fragment == "string" && typeof e3.path == "string" && typeof e3.query == "string" && typeof e3.scheme == "string" && typeof e3.fsPath == "function" && typeof e3.with == "function" && typeof e3.toString == "function";
+            }, Object.defineProperty(t3.prototype, "fsPath", { get: function() {
+              return b(this, false);
+            }, enumerable: false, configurable: true }), t3.prototype.with = function(t4) {
+              if (!t4)
+                return this;
+              var e3 = t4.scheme, r2 = t4.authority, n2 = t4.path, i2 = t4.query, o2 = t4.fragment;
+              return e3 === void 0 ? e3 = this.scheme : e3 === null && (e3 = u), r2 === void 0 ? r2 = this.authority : r2 === null && (r2 = u), n2 === void 0 ? n2 = this.path : n2 === null && (n2 = u), i2 === void 0 ? i2 = this.query : i2 === null && (i2 = u), o2 === void 0 ? o2 = this.fragment : o2 === null && (o2 = u), e3 === this.scheme && r2 === this.authority && n2 === this.path && i2 === this.query && o2 === this.fragment ? this : new g(e3, r2, n2, i2, o2);
+            }, t3.parse = function(t4, e3) {
+              e3 === void 0 && (e3 = false);
+              var r2 = l.exec(t4);
+              return r2 ? new g(r2[2] || u, _(r2[4] || u), _(r2[5] || u), _(r2[7] || u), _(r2[9] || u), e3) : new g(u, u, u, u, u);
+            }, t3.file = function(t4) {
+              var e3 = u;
+              if (a.isWindows && (t4 = t4.replace(/\\/g, c)), t4[0] === c && t4[1] === c) {
+                var r2 = t4.indexOf(c, 2);
+                r2 === -1 ? (e3 = t4.substring(2), t4 = c) : (e3 = t4.substring(2, r2), t4 = t4.substring(r2) || c);
+              }
+              return new g("file", e3, t4, u, u);
+            }, t3.from = function(t4) {
+              return new g(t4.scheme, t4.authority, t4.path, t4.query, t4.fragment);
+            }, t3.prototype.toString = function(t4) {
+              return t4 === void 0 && (t4 = false), C(this, t4);
+            }, t3.prototype.toJSON = function() {
+              return this;
+            }, t3.revive = function(e3) {
+              if (e3) {
+                if (e3 instanceof t3)
+                  return e3;
+                var r2 = new g(e3);
+                return r2._formatted = e3.external, r2._fsPath = e3._sep === d ? e3.fsPath : null, r2;
+              }
+              return e3;
+            }, t3;
+          }();
+          e2.URI = p;
+          var d = a.isWindows ? 1 : void 0, g = function(t3) {
+            function e3() {
+              var e4 = t3 !== null && t3.apply(this, arguments) || this;
+              return e4._formatted = null, e4._fsPath = null, e4;
+            }
+            return o(e3, t3), Object.defineProperty(e3.prototype, "fsPath", { get: function() {
+              return this._fsPath || (this._fsPath = b(this, false)), this._fsPath;
+            }, enumerable: false, configurable: true }), e3.prototype.toString = function(t4) {
+              return t4 === void 0 && (t4 = false), t4 ? C(this, true) : (this._formatted || (this._formatted = C(this, false)), this._formatted);
+            }, e3.prototype.toJSON = function() {
+              var t4 = { $mid: 1 };
+              return this._fsPath && (t4.fsPath = this._fsPath, t4._sep = d), this._formatted && (t4.external = this._formatted), this.path && (t4.path = this.path), this.scheme && (t4.scheme = this.scheme), this.authority && (t4.authority = this.authority), this.query && (t4.query = this.query), this.fragment && (t4.fragment = this.fragment), t4;
+            }, e3;
+          }(p), v = ((i = {})[58] = "%3A", i[47] = "%2F", i[63] = "%3F", i[35] = "%23", i[91] = "%5B", i[93] = "%5D", i[64] = "%40", i[33] = "%21", i[36] = "%24", i[38] = "%26", i[39] = "%27", i[40] = "%28", i[41] = "%29", i[42] = "%2A", i[43] = "%2B", i[44] = "%2C", i[59] = "%3B", i[61] = "%3D", i[32] = "%20", i);
+          function m(t3, e3) {
+            for (var r2 = void 0, n2 = -1, i2 = 0; i2 < t3.length; i2++) {
+              var o2 = t3.charCodeAt(i2);
+              if (o2 >= 97 && o2 <= 122 || o2 >= 65 && o2 <= 90 || o2 >= 48 && o2 <= 57 || o2 === 45 || o2 === 46 || o2 === 95 || o2 === 126 || e3 && o2 === 47)
+                n2 !== -1 && (r2 += encodeURIComponent(t3.substring(n2, i2)), n2 = -1), r2 !== void 0 && (r2 += t3.charAt(i2));
+              else {
+                r2 === void 0 && (r2 = t3.substr(0, i2));
+                var a2 = v[o2];
+                a2 !== void 0 ? (n2 !== -1 && (r2 += encodeURIComponent(t3.substring(n2, i2)), n2 = -1), r2 += a2) : n2 === -1 && (n2 = i2);
+              }
+            }
+            return n2 !== -1 && (r2 += encodeURIComponent(t3.substring(n2))), r2 !== void 0 ? r2 : t3;
+          }
+          function y(t3) {
+            for (var e3 = void 0, r2 = 0; r2 < t3.length; r2++) {
+              var n2 = t3.charCodeAt(r2);
+              n2 === 35 || n2 === 63 ? (e3 === void 0 && (e3 = t3.substr(0, r2)), e3 += v[n2]) : e3 !== void 0 && (e3 += t3[r2]);
+            }
+            return e3 !== void 0 ? e3 : t3;
+          }
+          function b(t3, e3) {
+            var r2;
+            return r2 = t3.authority && t3.path.length > 1 && t3.scheme === "file" ? "//" + t3.authority + t3.path : t3.path.charCodeAt(0) === 47 && (t3.path.charCodeAt(1) >= 65 && t3.path.charCodeAt(1) <= 90 || t3.path.charCodeAt(1) >= 97 && t3.path.charCodeAt(1) <= 122) && t3.path.charCodeAt(2) === 58 ? e3 ? t3.path.substr(1) : t3.path[1].toLowerCase() + t3.path.substr(2) : t3.path, a.isWindows && (r2 = r2.replace(/\//g, "\\")), r2;
+          }
+          function C(t3, e3) {
+            var r2 = e3 ? y : m, n2 = "", i2 = t3.scheme, o2 = t3.authority, a2 = t3.path, h2 = t3.query, s2 = t3.fragment;
+            if (i2 && (n2 += i2, n2 += ":"), (o2 || i2 === "file") && (n2 += c, n2 += c), o2) {
+              var f2 = o2.indexOf("@");
+              if (f2 !== -1) {
+                var u2 = o2.substr(0, f2);
+                o2 = o2.substr(f2 + 1), (f2 = u2.indexOf(":")) === -1 ? n2 += r2(u2, false) : (n2 += r2(u2.substr(0, f2), false), n2 += ":", n2 += r2(u2.substr(f2 + 1), false)), n2 += "@";
+              }
+              (f2 = (o2 = o2.toLowerCase()).indexOf(":")) === -1 ? n2 += r2(o2, false) : (n2 += r2(o2.substr(0, f2), false), n2 += o2.substr(f2));
+            }
+            if (a2) {
+              if (a2.length >= 3 && a2.charCodeAt(0) === 47 && a2.charCodeAt(2) === 58)
+                (l2 = a2.charCodeAt(1)) >= 65 && l2 <= 90 && (a2 = "/" + String.fromCharCode(l2 + 32) + ":" + a2.substr(3));
+              else if (a2.length >= 2 && a2.charCodeAt(1) === 58) {
+                var l2;
+                (l2 = a2.charCodeAt(0)) >= 65 && l2 <= 90 && (a2 = String.fromCharCode(l2 + 32) + ":" + a2.substr(2));
+              }
+              n2 += r2(a2, true);
+            }
+            return h2 && (n2 += "?", n2 += r2(h2, false)), s2 && (n2 += "#", n2 += e3 ? s2 : m(s2, false)), n2;
+          }
+          function A(t3) {
+            try {
+              return decodeURIComponent(t3);
+            } catch (e3) {
+              return t3.length > 3 ? t3.substr(0, 3) + A(t3.substr(3)) : t3;
+            }
+          }
+          e2.uriToFsPath = b;
+          var w = /(%[0-9A-Za-z][0-9A-Za-z])+/g;
+          function _(t3) {
+            return t3.match(w) ? t3.replace(w, function(t4) {
+              return A(t4);
+            }) : t3;
+          }
+        }, 679: function(t2, e2, r) {
+          var n = this && this.__spreadArrays || function() {
+            for (var t3 = 0, e3 = 0, r2 = arguments.length; e3 < r2; e3++)
+              t3 += arguments[e3].length;
+            var n2 = Array(t3), i2 = 0;
+            for (e3 = 0; e3 < r2; e3++)
+              for (var o2 = arguments[e3], a2 = 0, h = o2.length; a2 < h; a2++, i2++)
+                n2[i2] = o2[a2];
+            return n2;
+          };
+          Object.defineProperty(e2, "__esModule", { value: true }), e2.Utils = void 0;
+          var i, o = r(470), a = o.posix || o;
+          (i = e2.Utils || (e2.Utils = {})).joinPath = function(t3) {
+            for (var e3 = [], r2 = 1; r2 < arguments.length; r2++)
+              e3[r2 - 1] = arguments[r2];
+            return t3.with({ path: a.join.apply(a, n([t3.path], e3)) });
+          }, i.resolvePath = function(t3) {
+            for (var e3 = [], r2 = 1; r2 < arguments.length; r2++)
+              e3[r2 - 1] = arguments[r2];
+            var i2 = t3.path || "/";
+            return t3.with({ path: a.resolve.apply(a, n([i2], e3)) });
+          }, i.dirname = function(t3) {
+            var e3 = a.dirname(t3.path);
+            return e3.length === 1 && e3.charCodeAt(0) === 46 ? t3 : t3.with({ path: e3 });
+          }, i.basename = function(t3) {
+            return a.basename(t3.path);
+          }, i.extname = function(t3) {
+            return a.extname(t3.path);
+          };
+        } }, e = {};
+        return function r(n) {
+          if (e[n])
+            return e[n].exports;
+          var i = e[n] = { exports: {} };
+          return t[n].call(i.exports, i, i.exports, r), i.exports;
+        }(465);
+      })();
+    });
+  }
+});
+
+// build/utils/packages/find-package-root.js
+var require_find_package_root = __commonJS({
+  "build/utils/packages/find-package-root.js"(exports2) {
+    "use strict";
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.findPackageRoot = void 0;
+    var promises_1 = __importDefault2(require("fs/promises"));
+    var path_12 = __importDefault2(require("path"));
+    async function findPackageRoot(startPath, rootFile = "package.json") {
+      let currentDirectory = startPath;
+      while (true) {
+        const manifestPath = path_12.default.join(currentDirectory, rootFile);
+        try {
+          const stat = await promises_1.default.stat(manifestPath);
+          if (stat.isFile()) {
+            return currentDirectory;
+          }
+          const parent = path_12.default.dirname(currentDirectory);
+          if (!path_12.default.relative(parent, currentDirectory)) {
+            return void 0;
+          }
+          currentDirectory = parent;
+        } catch (error) {
+          if (error.code === "ENOENT" || error.code === "ENOTDIR") {
+            const parent = path_12.default.dirname(currentDirectory);
+            if (!path_12.default.relative(parent, currentDirectory)) {
+              return void 0;
+            }
+            currentDirectory = parent;
+          } else {
+            throw error;
+          }
+        }
+      }
+    }
+    exports2.findPackageRoot = findPackageRoot;
+  }
+});
+
+// build/utils/processes.js
+var require_processes = __commonJS({
+  "build/utils/processes.js"(exports2) {
+    "use strict";
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.runProcessFindLine = void 0;
+    var child_process_1 = __importDefault2(require("child_process"));
+    var readline_1 = __importDefault2(require("readline"));
+    function runProcessFindLine(command, args, options, matcher) {
+      return new Promise((resolve, reject) => {
+        const childProcess = child_process_1.default.spawn(command, args, options);
+        const stdoutReader = readline_1.default.createInterface({
+          input: childProcess.stdout
         });
-        __privateGet(this, _logger)?.debug("onCodeAction handler registered");
+        let returnValue = void 0;
+        let exitCode = void 0;
+        let resolved = false;
+        let streamClosed = false;
+        const resolveOrRejectIfNeeded = () => {
+          if (resolved || exitCode === void 0 || !streamClosed) {
+            return;
+          }
+          resolved = true;
+          if (exitCode === 0) {
+            resolve(returnValue);
+          } else {
+            reject(new Error(`Command "${command}" exited with code ${exitCode}.`));
+          }
+        };
+        const handleError = (error) => {
+          resolved = true;
+          childProcess.removeAllListeners();
+          stdoutReader.close();
+          try {
+            childProcess.kill();
+          } catch {
+          }
+          reject(error);
+        };
+        stdoutReader.on("line", (line) => {
+          if (resolved || returnValue !== void 0) {
+            return;
+          }
+          try {
+            const matched = matcher(line);
+            if (matched !== void 0) {
+              returnValue = matched;
+            }
+            resolveOrRejectIfNeeded();
+          } catch (error) {
+            handleError(error);
+          }
+        });
+        stdoutReader.on("close", () => {
+          if (resolved) {
+            return;
+          }
+          streamClosed = true;
+          resolveOrRejectIfNeeded();
+        });
+        childProcess.on("error", handleError);
+        childProcess.on("exit", (code, signal) => {
+          exitCode = code ?? signal;
+          resolveOrRejectIfNeeded();
+        });
+      });
+    }
+    exports2.runProcessFindLine = runProcessFindLine;
+  }
+});
+
+// build/utils/packages/global-path-resolver.js
+var require_global_path_resolver = __commonJS({
+  "build/utils/packages/global-path-resolver.js"(exports2) {
+    "use strict";
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    var _GlobalPathResolver_instances;
+    var _GlobalPathResolver_logger;
+    var _GlobalPathResolver_cache;
+    var _GlobalPathResolver_isWindows;
+    var _GlobalPathResolver_resolvers;
+    var _GlobalPathResolver_yarn;
+    var _GlobalPathResolver_npm;
+    var _GlobalPathResolver_pnpm;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.GlobalPathResolver = void 0;
+    var os_1 = __importDefault2(require("os"));
+    var path_12 = __importDefault2(require("path"));
+    var processes_1 = require_processes();
+    var GlobalPathResolver = class {
+      constructor(logger2) {
+        _GlobalPathResolver_instances.add(this);
+        _GlobalPathResolver_logger.set(this, void 0);
+        _GlobalPathResolver_cache.set(this, {
+          yarn: void 0,
+          npm: void 0,
+          pnpm: void 0
+        });
+        _GlobalPathResolver_isWindows.set(this, void 0);
+        _GlobalPathResolver_resolvers.set(this, {
+          yarn: __classPrivateFieldGet(this, _GlobalPathResolver_instances, "m", _GlobalPathResolver_yarn).bind(this),
+          npm: __classPrivateFieldGet(this, _GlobalPathResolver_instances, "m", _GlobalPathResolver_npm).bind(this),
+          pnpm: __classPrivateFieldGet(this, _GlobalPathResolver_instances, "m", _GlobalPathResolver_pnpm).bind(this)
+        });
+        __classPrivateFieldSet(this, _GlobalPathResolver_logger, logger2, "f");
+        __classPrivateFieldSet(this, _GlobalPathResolver_isWindows, os_1.default.platform() === "win32", "f");
+      }
+      async resolve(packageManager) {
+        const cached = __classPrivateFieldGet(this, _GlobalPathResolver_cache, "f")[packageManager];
+        if (cached) {
+          return cached;
+        }
+        const resolver = __classPrivateFieldGet(this, _GlobalPathResolver_resolvers, "f")[packageManager];
+        if (!resolver) {
+          __classPrivateFieldGet(this, _GlobalPathResolver_logger, "f")?.warn("Unsupported package manager.", { packageManager });
+          return void 0;
+        }
+        try {
+          const globalPath = await resolver();
+          if (globalPath) {
+            __classPrivateFieldGet(this, _GlobalPathResolver_cache, "f")[packageManager] = globalPath;
+          }
+          return globalPath;
+        } catch (error) {
+          __classPrivateFieldGet(this, _GlobalPathResolver_logger, "f")?.warn("Failed to resolve global node_modules path.", { packageManager, error });
+          return void 0;
+        }
       }
     };
-    _context = new WeakMap();
-    _logger = new WeakMap();
-    _shouldCodeAction = new WeakSet();
-    shouldCodeAction_fn = function(document) {
-      return __privateGet(this, _context).options.validate.includes(document.languageId);
-    };
-    __publicField(CodeActionModule, "id", "code-action");
-    module2.exports = {
-      CodeActionModule
+    exports2.GlobalPathResolver = GlobalPathResolver;
+    _GlobalPathResolver_logger = new WeakMap(), _GlobalPathResolver_cache = new WeakMap(), _GlobalPathResolver_isWindows = new WeakMap(), _GlobalPathResolver_resolvers = new WeakMap(), _GlobalPathResolver_instances = new WeakSet(), _GlobalPathResolver_yarn = async function _GlobalPathResolver_yarn2() {
+      const tryParseLog = (line) => {
+        try {
+          return JSON.parse(line);
+        } catch {
+          return void 0;
+        }
+      };
+      const yarnGlobalPath = await (0, processes_1.runProcessFindLine)("yarn", ["global", "dir", "--json"], __classPrivateFieldGet(this, _GlobalPathResolver_isWindows, "f") ? { shell: true } : void 0, (line) => {
+        const log = tryParseLog(line);
+        if (!log || log.type !== "log" || !log.data) {
+          return void 0;
+        }
+        const globalPath = path_12.default.join(log.data, "node_modules");
+        __classPrivateFieldGet(this, _GlobalPathResolver_logger, "f")?.debug("Yarn returned global node_modules path.", { path: globalPath });
+        return globalPath;
+      });
+      if (!yarnGlobalPath) {
+        __classPrivateFieldGet(this, _GlobalPathResolver_logger, "f")?.warn('"yarn global dir --json" did not return a path.');
+        return void 0;
+      }
+      return yarnGlobalPath;
+    }, _GlobalPathResolver_npm = async function _GlobalPathResolver_npm2() {
+      const npmGlobalPath = await (0, processes_1.runProcessFindLine)("npm", ["config", "get", "prefix"], __classPrivateFieldGet(this, _GlobalPathResolver_isWindows, "f") ? { shell: true } : void 0, (line) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return void 0;
+        }
+        const globalPath = __classPrivateFieldGet(this, _GlobalPathResolver_isWindows, "f") ? path_12.default.join(trimmed, "node_modules") : path_12.default.join(trimmed, "lib/node_modules");
+        __classPrivateFieldGet(this, _GlobalPathResolver_logger, "f")?.debug("npm returned global node_modules path.", { path: globalPath });
+        return globalPath;
+      });
+      if (!npmGlobalPath) {
+        __classPrivateFieldGet(this, _GlobalPathResolver_logger, "f")?.warn('"npm config get prefix" did not return a path.');
+        return void 0;
+      }
+      return npmGlobalPath;
+    }, _GlobalPathResolver_pnpm = async function _GlobalPathResolver_pnpm2() {
+      const pnpmGlobalPath = await (0, processes_1.runProcessFindLine)("pnpm", ["root", "-g"], __classPrivateFieldGet(this, _GlobalPathResolver_isWindows, "f") ? { shell: true } : void 0, (line) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return void 0;
+        }
+        __classPrivateFieldGet(this, _GlobalPathResolver_logger, "f")?.debug("pnpm returned global node_modules path.", { path: trimmed });
+        return trimmed;
+      });
+      if (!pnpmGlobalPath) {
+        __classPrivateFieldGet(this, _GlobalPathResolver_logger, "f")?.warn('"pnpm root -g" did not return a path.');
+        return void 0;
+      }
+      return pnpmGlobalPath;
     };
   }
 });
@@ -19570,509 +20600,100 @@ var require_diff = __commonJS({
   }
 });
 
-// src/utils/documents/create-text-edits.js
+// build/utils/documents/create-text-edits.js
 var require_create_text_edits = __commonJS({
-  "src/utils/documents/create-text-edits.js"(exports2, module2) {
+  "build/utils/documents/create-text-edits.js"(exports2) {
     "use strict";
-    var diff = require_diff();
-    var { Range, TextEdit } = require_main2();
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.createTextEdits = void 0;
+    var fast_diff_1 = __importDefault2(require_diff());
+    var vscode_languageserver_types_1 = require_main2();
     function createTextEdits(document, newContents) {
-      const diffs = diff(document.getText(), newContents);
+      const diffs = (0, fast_diff_1.default)(document.getText(), newContents);
       const edits = [];
       let offset = 0;
       for (const [op, text] of diffs) {
         const start = offset;
         switch (op) {
-          case diff.EQUAL:
+          case fast_diff_1.default.EQUAL:
             offset += text.length;
             break;
-          case diff.DELETE:
+          case fast_diff_1.default.DELETE:
             offset += text.length;
-            edits.push(TextEdit.del(Range.create(document.positionAt(start), document.positionAt(offset))));
+            edits.push(vscode_languageserver_types_1.TextEdit.del(vscode_languageserver_types_1.Range.create(document.positionAt(start), document.positionAt(offset))));
             break;
-          case diff.INSERT:
-            edits.push(TextEdit.insert(document.positionAt(start), text));
+          case fast_diff_1.default.INSERT:
+            edits.push(vscode_languageserver_types_1.TextEdit.insert(document.positionAt(start), text));
             break;
         }
       }
       return edits;
     }
-    module2.exports = {
-      createTextEdits
-    };
+    exports2.createTextEdits = createTextEdits;
   }
 });
 
-// src/utils/documents/get-disable-type.js
+// build/utils/documents/get-disable-type.js
 var require_get_disable_type = __commonJS({
-  "src/utils/documents/get-disable-type.js"(exports2, module2) {
+  "build/utils/documents/get-disable-type.js"(exports2) {
     "use strict";
-    var { Position } = require_main2();
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getDisableType = void 0;
+    var vscode_languageserver_types_1 = require_main2();
     function getDisableType(document, position) {
-      const lineStartOffset = document.offsetAt(Position.create(position.line, 0));
-      const lineEndOffset = document.offsetAt(Position.create(position.line + 1, 0));
+      const lineStartOffset = document.offsetAt(vscode_languageserver_types_1.Position.create(position.line, 0));
+      const lineEndOffset = document.offsetAt(vscode_languageserver_types_1.Position.create(position.line + 1, 0));
       const line = document.getText().slice(lineStartOffset, lineEndOffset);
       const before = line.slice(0, position.character);
       const after = line.slice(position.character);
       const disableKind = before.match(/\/\*\s*(stylelint-disable(?:(?:-next)?-line)?)\s[a-z\-/\s,]*$/i)?.[1]?.toLowerCase();
       return disableKind && /^[a-z\-/\s,]*\*\//i.test(after) ? disableKind : void 0;
     }
-    module2.exports = {
-      getDisableType
-    };
+    exports2.getDisableType = getDisableType;
   }
 });
 
-// src/utils/documents/get-fixes.js
+// build/utils/documents/get-fixes.js
 var require_get_fixes = __commonJS({
-  "src/utils/documents/get-fixes.js"(exports2, module2) {
+  "build/utils/documents/get-fixes.js"(exports2) {
     "use strict";
-    var { createTextEdits } = require_create_text_edits();
-    async function getFixes(runner, document, linterOptions = {}, extensionOptions = {}) {
-      const result = await runner.lintDocument(document, { ...linterOptions, fix: true }, extensionOptions);
-      return typeof result.output === "string" ? createTextEdits(document, result.output) : [];
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getFixes = void 0;
+    var create_text_edits_1 = require_create_text_edits();
+    async function getFixes(runner, document, linterOptions = {}, runnerOptions = {}) {
+      const result = await runner.lintDocument(document, { ...linterOptions, fix: true }, runnerOptions);
+      return typeof result.output === "string" ? (0, create_text_edits_1.createTextEdits)(document, result.output) : [];
     }
-    module2.exports = {
-      getFixes
-    };
+    exports2.getFixes = getFixes;
   }
 });
 
-// node_modules/path-is-inside/lib/path-is-inside.js
-var require_path_is_inside = __commonJS({
-  "node_modules/path-is-inside/lib/path-is-inside.js"(exports2, module2) {
-    "use strict";
-    var path = require("path");
-    module2.exports = function(thePath, potentialParent) {
-      thePath = stripTrailingSep(thePath);
-      potentialParent = stripTrailingSep(potentialParent);
-      if (process.platform === "win32") {
-        thePath = thePath.toLowerCase();
-        potentialParent = potentialParent.toLowerCase();
-      }
-      return thePath.lastIndexOf(potentialParent, 0) === 0 && (thePath[potentialParent.length] === path.sep || thePath[potentialParent.length] === void 0);
-    };
-    function stripTrailingSep(thePath) {
-      if (thePath[thePath.length - 1] === path.sep) {
-        return thePath.slice(0, -1);
-      }
-      return thePath;
-    }
-  }
-});
-
-// node_modules/vscode-uri/lib/umd/index.js
-var require_umd = __commonJS({
-  "node_modules/vscode-uri/lib/umd/index.js"(exports2, module2) {
-    !function(t, e) {
-      if (typeof exports2 == "object" && typeof module2 == "object")
-        module2.exports = e();
-      else if (typeof define == "function" && define.amd)
-        define([], e);
-      else {
-        var r = e();
-        for (var n in r)
-          (typeof exports2 == "object" ? exports2 : t)[n] = r[n];
-      }
-    }(exports2, function() {
-      return (() => {
-        "use strict";
-        var t = { 470: (t2) => {
-          function e2(t3) {
-            if (typeof t3 != "string")
-              throw new TypeError("Path must be a string. Received " + JSON.stringify(t3));
-          }
-          function r(t3, e3) {
-            for (var r2, n2 = "", i = 0, o = -1, a = 0, h = 0; h <= t3.length; ++h) {
-              if (h < t3.length)
-                r2 = t3.charCodeAt(h);
-              else {
-                if (r2 === 47)
-                  break;
-                r2 = 47;
-              }
-              if (r2 === 47) {
-                if (o === h - 1 || a === 1)
-                  ;
-                else if (o !== h - 1 && a === 2) {
-                  if (n2.length < 2 || i !== 2 || n2.charCodeAt(n2.length - 1) !== 46 || n2.charCodeAt(n2.length - 2) !== 46) {
-                    if (n2.length > 2) {
-                      var s = n2.lastIndexOf("/");
-                      if (s !== n2.length - 1) {
-                        s === -1 ? (n2 = "", i = 0) : i = (n2 = n2.slice(0, s)).length - 1 - n2.lastIndexOf("/"), o = h, a = 0;
-                        continue;
-                      }
-                    } else if (n2.length === 2 || n2.length === 1) {
-                      n2 = "", i = 0, o = h, a = 0;
-                      continue;
-                    }
-                  }
-                  e3 && (n2.length > 0 ? n2 += "/.." : n2 = "..", i = 2);
-                } else
-                  n2.length > 0 ? n2 += "/" + t3.slice(o + 1, h) : n2 = t3.slice(o + 1, h), i = h - o - 1;
-                o = h, a = 0;
-              } else
-                r2 === 46 && a !== -1 ? ++a : a = -1;
-            }
-            return n2;
-          }
-          var n = { resolve: function() {
-            for (var t3, n2 = "", i = false, o = arguments.length - 1; o >= -1 && !i; o--) {
-              var a;
-              o >= 0 ? a = arguments[o] : (t3 === void 0 && (t3 = process.cwd()), a = t3), e2(a), a.length !== 0 && (n2 = a + "/" + n2, i = a.charCodeAt(0) === 47);
-            }
-            return n2 = r(n2, !i), i ? n2.length > 0 ? "/" + n2 : "/" : n2.length > 0 ? n2 : ".";
-          }, normalize: function(t3) {
-            if (e2(t3), t3.length === 0)
-              return ".";
-            var n2 = t3.charCodeAt(0) === 47, i = t3.charCodeAt(t3.length - 1) === 47;
-            return (t3 = r(t3, !n2)).length !== 0 || n2 || (t3 = "."), t3.length > 0 && i && (t3 += "/"), n2 ? "/" + t3 : t3;
-          }, isAbsolute: function(t3) {
-            return e2(t3), t3.length > 0 && t3.charCodeAt(0) === 47;
-          }, join: function() {
-            if (arguments.length === 0)
-              return ".";
-            for (var t3, r2 = 0; r2 < arguments.length; ++r2) {
-              var i = arguments[r2];
-              e2(i), i.length > 0 && (t3 === void 0 ? t3 = i : t3 += "/" + i);
-            }
-            return t3 === void 0 ? "." : n.normalize(t3);
-          }, relative: function(t3, r2) {
-            if (e2(t3), e2(r2), t3 === r2)
-              return "";
-            if ((t3 = n.resolve(t3)) === (r2 = n.resolve(r2)))
-              return "";
-            for (var i = 1; i < t3.length && t3.charCodeAt(i) === 47; ++i)
-              ;
-            for (var o = t3.length, a = o - i, h = 1; h < r2.length && r2.charCodeAt(h) === 47; ++h)
-              ;
-            for (var s = r2.length - h, f = a < s ? a : s, u = -1, c = 0; c <= f; ++c) {
-              if (c === f) {
-                if (s > f) {
-                  if (r2.charCodeAt(h + c) === 47)
-                    return r2.slice(h + c + 1);
-                  if (c === 0)
-                    return r2.slice(h + c);
-                } else
-                  a > f && (t3.charCodeAt(i + c) === 47 ? u = c : c === 0 && (u = 0));
-                break;
-              }
-              var l = t3.charCodeAt(i + c);
-              if (l !== r2.charCodeAt(h + c))
-                break;
-              l === 47 && (u = c);
-            }
-            var p = "";
-            for (c = i + u + 1; c <= o; ++c)
-              c !== o && t3.charCodeAt(c) !== 47 || (p.length === 0 ? p += ".." : p += "/..");
-            return p.length > 0 ? p + r2.slice(h + u) : (h += u, r2.charCodeAt(h) === 47 && ++h, r2.slice(h));
-          }, _makeLong: function(t3) {
-            return t3;
-          }, dirname: function(t3) {
-            if (e2(t3), t3.length === 0)
-              return ".";
-            for (var r2 = t3.charCodeAt(0), n2 = r2 === 47, i = -1, o = true, a = t3.length - 1; a >= 1; --a)
-              if ((r2 = t3.charCodeAt(a)) === 47) {
-                if (!o) {
-                  i = a;
-                  break;
-                }
-              } else
-                o = false;
-            return i === -1 ? n2 ? "/" : "." : n2 && i === 1 ? "//" : t3.slice(0, i);
-          }, basename: function(t3, r2) {
-            if (r2 !== void 0 && typeof r2 != "string")
-              throw new TypeError('"ext" argument must be a string');
-            e2(t3);
-            var n2, i = 0, o = -1, a = true;
-            if (r2 !== void 0 && r2.length > 0 && r2.length <= t3.length) {
-              if (r2.length === t3.length && r2 === t3)
-                return "";
-              var h = r2.length - 1, s = -1;
-              for (n2 = t3.length - 1; n2 >= 0; --n2) {
-                var f = t3.charCodeAt(n2);
-                if (f === 47) {
-                  if (!a) {
-                    i = n2 + 1;
-                    break;
-                  }
-                } else
-                  s === -1 && (a = false, s = n2 + 1), h >= 0 && (f === r2.charCodeAt(h) ? --h == -1 && (o = n2) : (h = -1, o = s));
-              }
-              return i === o ? o = s : o === -1 && (o = t3.length), t3.slice(i, o);
-            }
-            for (n2 = t3.length - 1; n2 >= 0; --n2)
-              if (t3.charCodeAt(n2) === 47) {
-                if (!a) {
-                  i = n2 + 1;
-                  break;
-                }
-              } else
-                o === -1 && (a = false, o = n2 + 1);
-            return o === -1 ? "" : t3.slice(i, o);
-          }, extname: function(t3) {
-            e2(t3);
-            for (var r2 = -1, n2 = 0, i = -1, o = true, a = 0, h = t3.length - 1; h >= 0; --h) {
-              var s = t3.charCodeAt(h);
-              if (s !== 47)
-                i === -1 && (o = false, i = h + 1), s === 46 ? r2 === -1 ? r2 = h : a !== 1 && (a = 1) : r2 !== -1 && (a = -1);
-              else if (!o) {
-                n2 = h + 1;
-                break;
-              }
-            }
-            return r2 === -1 || i === -1 || a === 0 || a === 1 && r2 === i - 1 && r2 === n2 + 1 ? "" : t3.slice(r2, i);
-          }, format: function(t3) {
-            if (t3 === null || typeof t3 != "object")
-              throw new TypeError('The "pathObject" argument must be of type Object. Received type ' + typeof t3);
-            return function(t4, e3) {
-              var r2 = e3.dir || e3.root, n2 = e3.base || (e3.name || "") + (e3.ext || "");
-              return r2 ? r2 === e3.root ? r2 + n2 : r2 + "/" + n2 : n2;
-            }(0, t3);
-          }, parse: function(t3) {
-            e2(t3);
-            var r2 = { root: "", dir: "", base: "", ext: "", name: "" };
-            if (t3.length === 0)
-              return r2;
-            var n2, i = t3.charCodeAt(0), o = i === 47;
-            o ? (r2.root = "/", n2 = 1) : n2 = 0;
-            for (var a = -1, h = 0, s = -1, f = true, u = t3.length - 1, c = 0; u >= n2; --u)
-              if ((i = t3.charCodeAt(u)) !== 47)
-                s === -1 && (f = false, s = u + 1), i === 46 ? a === -1 ? a = u : c !== 1 && (c = 1) : a !== -1 && (c = -1);
-              else if (!f) {
-                h = u + 1;
-                break;
-              }
-            return a === -1 || s === -1 || c === 0 || c === 1 && a === s - 1 && a === h + 1 ? s !== -1 && (r2.base = r2.name = h === 0 && o ? t3.slice(1, s) : t3.slice(h, s)) : (h === 0 && o ? (r2.name = t3.slice(1, a), r2.base = t3.slice(1, s)) : (r2.name = t3.slice(h, a), r2.base = t3.slice(h, s)), r2.ext = t3.slice(a, s)), h > 0 ? r2.dir = t3.slice(0, h - 1) : o && (r2.dir = "/"), r2;
-          }, sep: "/", delimiter: ":", win32: null, posix: null };
-          n.posix = n, t2.exports = n;
-        }, 465: (t2, e2, r) => {
-          Object.defineProperty(e2, "__esModule", { value: true }), e2.Utils = e2.URI = void 0;
-          var n = r(796);
-          Object.defineProperty(e2, "URI", { enumerable: true, get: function() {
-            return n.URI;
-          } });
-          var i = r(679);
-          Object.defineProperty(e2, "Utils", { enumerable: true, get: function() {
-            return i.Utils;
-          } });
-        }, 674: (t2, e2) => {
-          if (Object.defineProperty(e2, "__esModule", { value: true }), e2.isWindows = void 0, typeof process == "object")
-            e2.isWindows = process.platform === "win32";
-          else if (typeof navigator == "object") {
-            var r = navigator.userAgent;
-            e2.isWindows = r.indexOf("Windows") >= 0;
-          }
-        }, 796: function(t2, e2, r) {
-          var n, i, o = this && this.__extends || (n = function(t3, e3) {
-            return (n = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(t4, e4) {
-              t4.__proto__ = e4;
-            } || function(t4, e4) {
-              for (var r2 in e4)
-                Object.prototype.hasOwnProperty.call(e4, r2) && (t4[r2] = e4[r2]);
-            })(t3, e3);
-          }, function(t3, e3) {
-            function r2() {
-              this.constructor = t3;
-            }
-            n(t3, e3), t3.prototype = e3 === null ? Object.create(e3) : (r2.prototype = e3.prototype, new r2());
-          });
-          Object.defineProperty(e2, "__esModule", { value: true }), e2.uriToFsPath = e2.URI = void 0;
-          var a = r(674), h = /^\w[\w\d+.-]*$/, s = /^\//, f = /^\/\//, u = "", c = "/", l = /^(([^:/?#]+?):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/, p = function() {
-            function t3(t4, e3, r2, n2, i2, o2) {
-              o2 === void 0 && (o2 = false), typeof t4 == "object" ? (this.scheme = t4.scheme || u, this.authority = t4.authority || u, this.path = t4.path || u, this.query = t4.query || u, this.fragment = t4.fragment || u) : (this.scheme = function(t5, e4) {
-                return t5 || e4 ? t5 : "file";
-              }(t4, o2), this.authority = e3 || u, this.path = function(t5, e4) {
-                switch (t5) {
-                  case "https":
-                  case "http":
-                  case "file":
-                    e4 ? e4[0] !== c && (e4 = c + e4) : e4 = c;
-                }
-                return e4;
-              }(this.scheme, r2 || u), this.query = n2 || u, this.fragment = i2 || u, function(t5, e4) {
-                if (!t5.scheme && e4)
-                  throw new Error('[UriError]: Scheme is missing: {scheme: "", authority: "' + t5.authority + '", path: "' + t5.path + '", query: "' + t5.query + '", fragment: "' + t5.fragment + '"}');
-                if (t5.scheme && !h.test(t5.scheme))
-                  throw new Error("[UriError]: Scheme contains illegal characters.");
-                if (t5.path) {
-                  if (t5.authority) {
-                    if (!s.test(t5.path))
-                      throw new Error('[UriError]: If a URI contains an authority component, then the path component must either be empty or begin with a slash ("/") character');
-                  } else if (f.test(t5.path))
-                    throw new Error('[UriError]: If a URI does not contain an authority component, then the path cannot begin with two slash characters ("//")');
-                }
-              }(this, o2));
-            }
-            return t3.isUri = function(e3) {
-              return e3 instanceof t3 || !!e3 && typeof e3.authority == "string" && typeof e3.fragment == "string" && typeof e3.path == "string" && typeof e3.query == "string" && typeof e3.scheme == "string" && typeof e3.fsPath == "function" && typeof e3.with == "function" && typeof e3.toString == "function";
-            }, Object.defineProperty(t3.prototype, "fsPath", { get: function() {
-              return b(this, false);
-            }, enumerable: false, configurable: true }), t3.prototype.with = function(t4) {
-              if (!t4)
-                return this;
-              var e3 = t4.scheme, r2 = t4.authority, n2 = t4.path, i2 = t4.query, o2 = t4.fragment;
-              return e3 === void 0 ? e3 = this.scheme : e3 === null && (e3 = u), r2 === void 0 ? r2 = this.authority : r2 === null && (r2 = u), n2 === void 0 ? n2 = this.path : n2 === null && (n2 = u), i2 === void 0 ? i2 = this.query : i2 === null && (i2 = u), o2 === void 0 ? o2 = this.fragment : o2 === null && (o2 = u), e3 === this.scheme && r2 === this.authority && n2 === this.path && i2 === this.query && o2 === this.fragment ? this : new g(e3, r2, n2, i2, o2);
-            }, t3.parse = function(t4, e3) {
-              e3 === void 0 && (e3 = false);
-              var r2 = l.exec(t4);
-              return r2 ? new g(r2[2] || u, _(r2[4] || u), _(r2[5] || u), _(r2[7] || u), _(r2[9] || u), e3) : new g(u, u, u, u, u);
-            }, t3.file = function(t4) {
-              var e3 = u;
-              if (a.isWindows && (t4 = t4.replace(/\\/g, c)), t4[0] === c && t4[1] === c) {
-                var r2 = t4.indexOf(c, 2);
-                r2 === -1 ? (e3 = t4.substring(2), t4 = c) : (e3 = t4.substring(2, r2), t4 = t4.substring(r2) || c);
-              }
-              return new g("file", e3, t4, u, u);
-            }, t3.from = function(t4) {
-              return new g(t4.scheme, t4.authority, t4.path, t4.query, t4.fragment);
-            }, t3.prototype.toString = function(t4) {
-              return t4 === void 0 && (t4 = false), C(this, t4);
-            }, t3.prototype.toJSON = function() {
-              return this;
-            }, t3.revive = function(e3) {
-              if (e3) {
-                if (e3 instanceof t3)
-                  return e3;
-                var r2 = new g(e3);
-                return r2._formatted = e3.external, r2._fsPath = e3._sep === d ? e3.fsPath : null, r2;
-              }
-              return e3;
-            }, t3;
-          }();
-          e2.URI = p;
-          var d = a.isWindows ? 1 : void 0, g = function(t3) {
-            function e3() {
-              var e4 = t3 !== null && t3.apply(this, arguments) || this;
-              return e4._formatted = null, e4._fsPath = null, e4;
-            }
-            return o(e3, t3), Object.defineProperty(e3.prototype, "fsPath", { get: function() {
-              return this._fsPath || (this._fsPath = b(this, false)), this._fsPath;
-            }, enumerable: false, configurable: true }), e3.prototype.toString = function(t4) {
-              return t4 === void 0 && (t4 = false), t4 ? C(this, true) : (this._formatted || (this._formatted = C(this, false)), this._formatted);
-            }, e3.prototype.toJSON = function() {
-              var t4 = { $mid: 1 };
-              return this._fsPath && (t4.fsPath = this._fsPath, t4._sep = d), this._formatted && (t4.external = this._formatted), this.path && (t4.path = this.path), this.scheme && (t4.scheme = this.scheme), this.authority && (t4.authority = this.authority), this.query && (t4.query = this.query), this.fragment && (t4.fragment = this.fragment), t4;
-            }, e3;
-          }(p), v = ((i = {})[58] = "%3A", i[47] = "%2F", i[63] = "%3F", i[35] = "%23", i[91] = "%5B", i[93] = "%5D", i[64] = "%40", i[33] = "%21", i[36] = "%24", i[38] = "%26", i[39] = "%27", i[40] = "%28", i[41] = "%29", i[42] = "%2A", i[43] = "%2B", i[44] = "%2C", i[59] = "%3B", i[61] = "%3D", i[32] = "%20", i);
-          function m(t3, e3) {
-            for (var r2 = void 0, n2 = -1, i2 = 0; i2 < t3.length; i2++) {
-              var o2 = t3.charCodeAt(i2);
-              if (o2 >= 97 && o2 <= 122 || o2 >= 65 && o2 <= 90 || o2 >= 48 && o2 <= 57 || o2 === 45 || o2 === 46 || o2 === 95 || o2 === 126 || e3 && o2 === 47)
-                n2 !== -1 && (r2 += encodeURIComponent(t3.substring(n2, i2)), n2 = -1), r2 !== void 0 && (r2 += t3.charAt(i2));
-              else {
-                r2 === void 0 && (r2 = t3.substr(0, i2));
-                var a2 = v[o2];
-                a2 !== void 0 ? (n2 !== -1 && (r2 += encodeURIComponent(t3.substring(n2, i2)), n2 = -1), r2 += a2) : n2 === -1 && (n2 = i2);
-              }
-            }
-            return n2 !== -1 && (r2 += encodeURIComponent(t3.substring(n2))), r2 !== void 0 ? r2 : t3;
-          }
-          function y(t3) {
-            for (var e3 = void 0, r2 = 0; r2 < t3.length; r2++) {
-              var n2 = t3.charCodeAt(r2);
-              n2 === 35 || n2 === 63 ? (e3 === void 0 && (e3 = t3.substr(0, r2)), e3 += v[n2]) : e3 !== void 0 && (e3 += t3[r2]);
-            }
-            return e3 !== void 0 ? e3 : t3;
-          }
-          function b(t3, e3) {
-            var r2;
-            return r2 = t3.authority && t3.path.length > 1 && t3.scheme === "file" ? "//" + t3.authority + t3.path : t3.path.charCodeAt(0) === 47 && (t3.path.charCodeAt(1) >= 65 && t3.path.charCodeAt(1) <= 90 || t3.path.charCodeAt(1) >= 97 && t3.path.charCodeAt(1) <= 122) && t3.path.charCodeAt(2) === 58 ? e3 ? t3.path.substr(1) : t3.path[1].toLowerCase() + t3.path.substr(2) : t3.path, a.isWindows && (r2 = r2.replace(/\//g, "\\")), r2;
-          }
-          function C(t3, e3) {
-            var r2 = e3 ? y : m, n2 = "", i2 = t3.scheme, o2 = t3.authority, a2 = t3.path, h2 = t3.query, s2 = t3.fragment;
-            if (i2 && (n2 += i2, n2 += ":"), (o2 || i2 === "file") && (n2 += c, n2 += c), o2) {
-              var f2 = o2.indexOf("@");
-              if (f2 !== -1) {
-                var u2 = o2.substr(0, f2);
-                o2 = o2.substr(f2 + 1), (f2 = u2.indexOf(":")) === -1 ? n2 += r2(u2, false) : (n2 += r2(u2.substr(0, f2), false), n2 += ":", n2 += r2(u2.substr(f2 + 1), false)), n2 += "@";
-              }
-              (f2 = (o2 = o2.toLowerCase()).indexOf(":")) === -1 ? n2 += r2(o2, false) : (n2 += r2(o2.substr(0, f2), false), n2 += o2.substr(f2));
-            }
-            if (a2) {
-              if (a2.length >= 3 && a2.charCodeAt(0) === 47 && a2.charCodeAt(2) === 58)
-                (l2 = a2.charCodeAt(1)) >= 65 && l2 <= 90 && (a2 = "/" + String.fromCharCode(l2 + 32) + ":" + a2.substr(3));
-              else if (a2.length >= 2 && a2.charCodeAt(1) === 58) {
-                var l2;
-                (l2 = a2.charCodeAt(0)) >= 65 && l2 <= 90 && (a2 = String.fromCharCode(l2 + 32) + ":" + a2.substr(2));
-              }
-              n2 += r2(a2, true);
-            }
-            return h2 && (n2 += "?", n2 += r2(h2, false)), s2 && (n2 += "#", n2 += e3 ? s2 : m(s2, false)), n2;
-          }
-          function A(t3) {
-            try {
-              return decodeURIComponent(t3);
-            } catch (e3) {
-              return t3.length > 3 ? t3.substr(0, 3) + A(t3.substr(3)) : t3;
-            }
-          }
-          e2.uriToFsPath = b;
-          var w = /(%[0-9A-Za-z][0-9A-Za-z])+/g;
-          function _(t3) {
-            return t3.match(w) ? t3.replace(w, function(t4) {
-              return A(t4);
-            }) : t3;
-          }
-        }, 679: function(t2, e2, r) {
-          var n = this && this.__spreadArrays || function() {
-            for (var t3 = 0, e3 = 0, r2 = arguments.length; e3 < r2; e3++)
-              t3 += arguments[e3].length;
-            var n2 = Array(t3), i2 = 0;
-            for (e3 = 0; e3 < r2; e3++)
-              for (var o2 = arguments[e3], a2 = 0, h = o2.length; a2 < h; a2++, i2++)
-                n2[i2] = o2[a2];
-            return n2;
-          };
-          Object.defineProperty(e2, "__esModule", { value: true }), e2.Utils = void 0;
-          var i, o = r(470), a = o.posix || o;
-          (i = e2.Utils || (e2.Utils = {})).joinPath = function(t3) {
-            for (var e3 = [], r2 = 1; r2 < arguments.length; r2++)
-              e3[r2 - 1] = arguments[r2];
-            return t3.with({ path: a.join.apply(a, n([t3.path], e3)) });
-          }, i.resolvePath = function(t3) {
-            for (var e3 = [], r2 = 1; r2 < arguments.length; r2++)
-              e3[r2 - 1] = arguments[r2];
-            var i2 = t3.path || "/";
-            return t3.with({ path: a.resolve.apply(a, n([i2], e3)) });
-          }, i.dirname = function(t3) {
-            var e3 = a.dirname(t3.path);
-            return e3.length === 1 && e3.charCodeAt(0) === 46 ? t3 : t3.with({ path: e3 });
-          }, i.basename = function(t3) {
-            return a.basename(t3.path);
-          }, i.extname = function(t3) {
-            return a.extname(t3.path);
-          };
-        } }, e = {};
-        return function r(n) {
-          if (e[n])
-            return e[n].exports;
-          var i = e[n] = { exports: {} };
-          return t[n].call(i.exports, i, i.exports, r), i.exports;
-        }(465);
-      })();
-    });
-  }
-});
-
-// src/utils/documents/get-workspace-folder.js
+// build/utils/documents/get-workspace-folder.js
 var require_get_workspace_folder = __commonJS({
-  "src/utils/documents/get-workspace-folder.js"(exports2, module2) {
+  "build/utils/documents/get-workspace-folder.js"(exports2) {
     "use strict";
-    var pathIsInside = require_path_is_inside();
-    var { URI } = require_umd();
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getWorkspaceFolder = void 0;
+    var path_is_inside_1 = __importDefault2(require_path_is_inside());
+    var vscode_uri_1 = require_umd();
     async function getWorkspaceFolder(connection2, document) {
-      const { scheme, fsPath } = URI.parse(document.uri);
+      const { scheme, fsPath } = vscode_uri_1.URI.parse(document.uri);
       if (scheme === "untitled") {
         const uri = (await connection2.workspace.getWorkspaceFolders())?.[0]?.uri;
-        return uri ? URI.parse(uri).fsPath : void 0;
+        return uri ? vscode_uri_1.URI.parse(uri).fsPath : void 0;
       }
       if (fsPath) {
         const workspaceFolders = await connection2.workspace.getWorkspaceFolders();
         if (workspaceFolders) {
           for (const { uri } of workspaceFolders) {
-            const workspacePath = URI.parse(uri).fsPath;
-            if (pathIsInside(fsPath, workspacePath)) {
+            const workspacePath = vscode_uri_1.URI.parse(uri).fsPath;
+            if ((0, path_is_inside_1.default)(fsPath, workspacePath)) {
               return workspacePath;
             }
           }
@@ -20080,346 +20701,44 @@ var require_get_workspace_folder = __commonJS({
       }
       return void 0;
     }
-    module2.exports = {
-      getWorkspaceFolder
-    };
+    exports2.getWorkspaceFolder = getWorkspaceFolder;
   }
 });
 
-// src/utils/documents/index.js
+// build/utils/documents/index.js
 var require_documents = __commonJS({
-  "src/utils/documents/index.js"(exports2, module2) {
+  "build/utils/documents/index.js"(exports2) {
     "use strict";
-    module2.exports = {
-      ...require_create_text_edits(),
-      ...require_get_disable_type(),
-      ...require_get_fixes(),
-      ...require_get_workspace_folder()
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
     };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_create_text_edits(), exports2);
+    __exportStar(require_get_disable_type(), exports2);
+    __exportStar(require_get_fixes(), exports2);
+    __exportStar(require_get_workspace_folder(), exports2);
   }
 });
 
-// src/utils/lsp/create-disable-completion-item.js
-var require_create_disable_completion_item = __commonJS({
-  "src/utils/lsp/create-disable-completion-item.js"(exports2, module2) {
-    "use strict";
-    var {
-      CompletionItem,
-      CompletionItemKind,
-      InsertTextFormat,
-      MarkupKind
-    } = require_main2();
-    function createDisableCompletionItem(disableType, rule = "") {
-      const item = CompletionItem.create(disableType);
-      item.kind = CompletionItemKind.Snippet;
-      item.insertTextFormat = InsertTextFormat.Snippet;
-      if (disableType === "stylelint-disable") {
-        item.insertText = `/* stylelint-disable \${0:${rule || "rule"}} */
-/* stylelint-enable \${0:${rule || "rule"}} */`;
-        item.detail = "Turn off all Stylelint or individual rules, after which you do not need to re-enable Stylelint. (Stylelint)";
-        item.documentation = {
-          kind: MarkupKind.Markdown,
-          value: `\`\`\`css
-/* stylelint-disable ${rule || "rule"} */
-/* stylelint-enable ${rule || "rule"} */
-\`\`\``
-        };
-      } else {
-        item.insertText = `/* ${disableType} \${0:${rule || "rule"}} */`;
-        item.detail = disableType === "stylelint-disable-line" ? "Turn off Stylelint rules for individual lines only, after which you do not need to explicitly re-enable them. (Stylelint)" : "Turn off Stylelint rules for the next line only, after which you do not need to explicitly re-enable them. (Stylelint)";
-        item.documentation = {
-          kind: MarkupKind.Markdown,
-          value: `\`\`\`css
-/* ${disableType} ${rule || "rule"} */
-\`\`\``
-        };
-      }
-      return item;
-    }
-    module2.exports = {
-      createDisableCompletionItem
-    };
-  }
-});
-
-// src/utils/iterables.js
-var require_iterables = __commonJS({
-  "src/utils/iterables.js"(exports2, module2) {
-    "use strict";
-    function isIterable(obj) {
-      return obj !== null && obj !== void 0 && typeof obj[Symbol.iterator] === "function";
-    }
-    function isIterableObject(obj) {
-      return isIterable(obj) && typeof obj === "object";
-    }
-    module2.exports = {
-      isIterable,
-      isIterableObject
-    };
-  }
-});
-
-// src/utils/lsp/display-error.js
-var require_display_error = __commonJS({
-  "src/utils/lsp/display-error.js"(exports2, module2) {
-    "use strict";
-    var { isIterableObject } = require_iterables();
-    function displayError(connection2, err) {
-      if (!(err instanceof Error)) {
-        connection2.window.showErrorMessage(String(err).replace(/\n/gu, " "));
-        return;
-      }
-      if (isIterableObject(err?.reasons)) {
-        for (const reason of err.reasons) {
-          connection2.window.showErrorMessage(`Stylelint: ${reason}`);
-        }
-        return;
-      }
-      if (err?.code === 78) {
-        connection2.window.showErrorMessage(`Stylelint: ${err.message}`);
-        return;
-      }
-      connection2.window.showErrorMessage((err.stack || err.message).replace(/\n/gu, " "));
-    }
-    module2.exports = {
-      displayError
-    };
-  }
-});
-
-// src/utils/lsp/index.js
-var require_lsp = __commonJS({
-  "src/utils/lsp/index.js"(exports2, module2) {
-    "use strict";
-    module2.exports = {
-      ...require_create_disable_completion_item(),
-      ...require_display_error()
-    };
-  }
-});
-
-// src/utils/packages/find-package-root.js
-var require_find_package_root = __commonJS({
-  "src/utils/packages/find-package-root.js"(exports2, module2) {
-    "use strict";
-    var fs = require("fs/promises");
-    var path = require("path");
-    async function findPackageRoot(startPath, rootFile = "package.json") {
-      let currentDirectory = startPath;
-      while (true) {
-        const manifestPath = path.join(currentDirectory, rootFile);
-        try {
-          const stat = await fs.stat(manifestPath);
-          if (stat.isFile()) {
-            return currentDirectory;
-          }
-          const parent = path.dirname(currentDirectory);
-          if (!path.relative(parent, currentDirectory)) {
-            return void 0;
-          }
-          currentDirectory = parent;
-        } catch (error) {
-          if (error.code === "ENOENT" || error.code === "ENOTDIR") {
-            const parent = path.dirname(currentDirectory);
-            if (!path.relative(parent, currentDirectory)) {
-              return void 0;
-            }
-            currentDirectory = parent;
-          } else {
-            throw error;
-          }
-        }
-      }
-    }
-    module2.exports = {
-      findPackageRoot
-    };
-  }
-});
-
-// src/utils/processes.js
-var require_processes = __commonJS({
-  "src/utils/processes.js"(exports2, module2) {
-    "use strict";
-    var cp = require("child_process");
-    var readline = require("readline");
-    function runProcessFindLine(command, args, options, matcher) {
-      return new Promise((resolve, reject) => {
-        const childProcess = cp.spawn(command, args, options);
-        const stdoutReader = readline.createInterface({
-          input: childProcess.stdout
-        });
-        let returnValue = void 0;
-        let exitCode = void 0;
-        let resolved = false;
-        let streamClosed = false;
-        const resolveOrRejectIfNeeded = () => {
-          if (resolved || exitCode === void 0 || !streamClosed) {
-            return;
-          }
-          resolved = true;
-          if (exitCode === 0) {
-            resolve(returnValue);
-          } else {
-            reject(new Error(`Command "${command}" exited with code ${exitCode}.`));
-          }
-        };
-        const handleError = (error) => {
-          resolved = true;
-          childProcess.removeAllListeners();
-          stdoutReader.close();
-          try {
-            childProcess.kill();
-          } catch {
-          }
-          reject(error);
-        };
-        stdoutReader.on("line", (line) => {
-          if (resolved || returnValue !== void 0) {
-            return;
-          }
-          try {
-            const matched = matcher(line);
-            if (matched !== void 0) {
-              returnValue = matched;
-            }
-            resolveOrRejectIfNeeded();
-          } catch (error) {
-            handleError(error);
-          }
-        });
-        stdoutReader.on("close", () => {
-          if (resolved) {
-            return;
-          }
-          streamClosed = true;
-          resolveOrRejectIfNeeded();
-        });
-        childProcess.on("error", handleError);
-        childProcess.on("exit", (code, signal) => {
-          exitCode = code ?? signal;
-          resolveOrRejectIfNeeded();
-        });
-      });
-    }
-    module2.exports = {
-      runProcessFindLine
-    };
-  }
-});
-
-// src/utils/packages/global-path-resolver.js
-var require_global_path_resolver = __commonJS({
-  "src/utils/packages/global-path-resolver.js"(exports2, module2) {
-    "use strict";
-    var os = require("os");
-    var path = require("path");
-    var { runProcessFindLine } = require_processes();
-    var GlobalPathResolver = class {
-      #logger;
-      #cache = {
-        yarn: void 0,
-        npm: void 0,
-        pnpm: void 0
-      };
-      #isWindows;
-      #resolvers = {
-        yarn: this.#yarn.bind(this),
-        npm: this.#npm.bind(this),
-        pnpm: this.#pnpm.bind(this)
-      };
-      constructor(logger2) {
-        this.#logger = logger2;
-        this.#isWindows = os.platform() === "win32";
-      }
-      async #yarn() {
-        const tryParseLog = (line) => {
-          let log;
-          try {
-            log = JSON.parse(line);
-          } catch {
-            return void 0;
-          }
-          return log;
-        };
-        const yarnGlobalPath = await runProcessFindLine("yarn", ["global", "dir", "--json"], this.#isWindows ? { shell: true } : void 0, (line) => {
-          const log = tryParseLog(line);
-          if (!log || log.type !== "log" || !log.data) {
-            return void 0;
-          }
-          const globalPath = path.join(log.data, "node_modules");
-          this.#logger?.debug("Yarn returned global node_modules path.", { path: globalPath });
-          return globalPath;
-        });
-        if (!yarnGlobalPath) {
-          this.#logger?.warn('"yarn global dir --json" did not return a path.');
-          return void 0;
-        }
-        return yarnGlobalPath;
-      }
-      async #npm() {
-        const npmGlobalPath = await runProcessFindLine("npm", ["config", "get", "prefix"], this.#isWindows ? { shell: true } : void 0, (line) => {
-          const trimmed = line.trim();
-          if (!trimmed) {
-            return void 0;
-          }
-          const globalPath = this.#isWindows ? path.join(trimmed, "node_modules") : path.join(trimmed, "lib/node_modules");
-          this.#logger?.debug("npm returned global node_modules path.", { path: globalPath });
-          return globalPath;
-        });
-        if (!npmGlobalPath) {
-          this.#logger?.warn('"npm config get prefix" did not return a path.');
-          return void 0;
-        }
-        return npmGlobalPath;
-      }
-      async #pnpm() {
-        const pnpmGlobalPath = await runProcessFindLine("pnpm", ["root", "-g"], this.#isWindows ? { shell: true } : void 0, (line) => {
-          const trimmed = line.trim();
-          if (!trimmed) {
-            return void 0;
-          }
-          this.#logger?.debug("pnpm returned global node_modules path.", { path: trimmed });
-          return trimmed;
-        });
-        if (!pnpmGlobalPath) {
-          this.#logger?.warn('"pnpm root -g" did not return a path.');
-          return void 0;
-        }
-        return pnpmGlobalPath;
-      }
-      async resolve(packageManager) {
-        const cached = this.#cache[packageManager];
-        if (cached) {
-          return cached;
-        }
-        const resolver = this.#resolvers[packageManager];
-        if (!resolver) {
-          this.#logger?.warn("Unsupported package manager.", { packageManager });
-          return void 0;
-        }
-        try {
-          const globalPath = await resolver();
-          if (globalPath) {
-            this.#cache[packageManager] = globalPath;
-          }
-          return globalPath;
-        } catch (error) {
-          this.#logger?.warn("Failed to resolve global node_modules path.", { packageManager, error });
-          return void 0;
-        }
-      }
-    };
-    module2.exports = {
-      GlobalPathResolver
-    };
-  }
-});
-
-// src/utils/functions/get-first-return-value.js
+// build/utils/functions/get-first-return-value.js
 var require_get_first_return_value = __commonJS({
-  "src/utils/functions/get-first-return-value.js"(exports2, module2) {
+  "build/utils/functions/get-first-return-value.js"(exports2) {
     "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getFirstResolvedValue = exports2.getFirstReturnValue = void 0;
     function getFirstReturnValue(...functions) {
       for (const func of functions) {
         const result = func();
@@ -20429,6 +20748,7 @@ var require_get_first_return_value = __commonJS({
       }
       return void 0;
     }
+    exports2.getFirstReturnValue = getFirstReturnValue;
     async function getFirstResolvedValue(...functions) {
       for (const func of functions) {
         const result = await func();
@@ -20438,17 +20758,16 @@ var require_get_first_return_value = __commonJS({
       }
       return void 0;
     }
-    module2.exports = {
-      getFirstReturnValue,
-      getFirstResolvedValue
-    };
+    exports2.getFirstResolvedValue = getFirstResolvedValue;
   }
 });
 
-// src/utils/functions/lazy-call.js
+// build/utils/functions/lazy-call.js
 var require_lazy_call = __commonJS({
-  "src/utils/functions/lazy-call.js"(exports2, module2) {
+  "build/utils/functions/lazy-call.js"(exports2) {
     "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.lazyCallAsync = exports2.lazyCall = void 0;
     function lazyCall(inner) {
       let cached = false;
       let cache;
@@ -20460,6 +20779,7 @@ var require_lazy_call = __commonJS({
         return cache;
       };
     }
+    exports2.lazyCall = lazyCall;
     function lazyCallAsync(inner) {
       let cached = false;
       let cache;
@@ -20471,258 +20791,316 @@ var require_lazy_call = __commonJS({
         return cache;
       };
     }
-    module2.exports = {
-      lazyCall,
-      lazyCallAsync
-    };
+    exports2.lazyCallAsync = lazyCallAsync;
   }
 });
 
-// src/utils/functions/index.js
+// build/utils/functions/index.js
 var require_functions = __commonJS({
-  "src/utils/functions/index.js"(exports2, module2) {
+  "build/utils/functions/index.js"(exports2) {
     "use strict";
-    module2.exports = {
-      ...require_get_first_return_value(),
-      ...require_lazy_call()
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
     };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_get_first_return_value(), exports2);
+    __exportStar(require_lazy_call(), exports2);
   }
 });
 
-// src/utils/packages/stylelint-resolver.js
+// build/utils/packages/stylelint-resolver.js
 var require_stylelint_resolver = __commonJS({
-  "src/utils/packages/stylelint-resolver.js"(exports2, module2) {
+  "build/utils/packages/stylelint-resolver.js"(exports2) {
     "use strict";
-    var path = require("path");
-    var fs = require("fs/promises");
-    var { Files } = require_node3();
-    var { URI } = require_umd();
-    var { getWorkspaceFolder } = require_documents();
-    var { findPackageRoot } = require_find_package_root();
-    var { GlobalPathResolver } = require_global_path_resolver();
-    var { getFirstResolvedValue, lazyCallAsync } = require_functions();
-    var { createRequire } = require("module");
-    var process2 = require("process");
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    var _StylelintResolver_instances;
+    var _StylelintResolver_connection;
+    var _StylelintResolver_logger;
+    var _StylelintResolver_globalPathResolver;
+    var _StylelintResolver_logError;
+    var _StylelintResolver_findPnPLoader;
+    var _StylelintResolver_requirePnP;
+    var _StylelintResolver_requireNode;
+    var _StylelintResolver_getRequirePath;
+    var _StylelintResolver_resolveFromPath;
+    var _StylelintResolver_resolveFromModules;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.StylelintResolver = void 0;
+    var promises_1 = __importDefault2(require("fs/promises"));
+    var module_1 = require("module");
+    var path_12 = __importDefault2(require("path"));
+    var process_1 = __importDefault2(require("process"));
+    var node_12 = require_node3();
+    var vscode_uri_1 = require_umd();
+    var documents_1 = require_documents();
+    var find_package_root_1 = require_find_package_root();
+    var global_path_resolver_1 = require_global_path_resolver();
+    var functions_1 = require_functions();
     var StylelintResolver = class {
-      #connection;
-      #logger;
-      #globalPathResolver;
       constructor(connection2, logger2) {
-        this.#connection = connection2;
-        this.#logger = logger2;
-        this.#globalPathResolver = new GlobalPathResolver(logger2);
-      }
-      #logError(message, error) {
-        if (this.#logger) {
-          this.#logger?.error(message, error && { error });
-        }
-        if (this.#connection) {
-          this.#connection.window.showErrorMessage(`Stylelint: ${message}`);
-        }
-      }
-      async #findPnPLoader(directory) {
-        const pnpFilenames = [".pnp.cjs", ".pnp.js"];
-        for (const filename of pnpFilenames) {
-          const pnpPath = path.join(directory, filename);
-          try {
-            if ((await fs.stat(pnpPath)).isFile()) {
-              return pnpPath;
-            }
-          } catch (error) {
-            this.#logger?.debug("Did not find PnP loader at tested path", { path: pnpPath, error });
-          }
-        }
-        this.#logger?.debug("Could not find a PnP loader", { path: directory });
-        return void 0;
-      }
-      async #requirePnP(cwd) {
-        if (!cwd) {
-          return void 0;
-        }
-        const root = await findPackageRoot(cwd, "yarn.lock");
-        if (!root) {
-          this.#logger?.debug("Could not find a Yarn lockfile", { cwd });
-          return void 0;
-        }
-        const pnpPath = await this.#findPnPLoader(root);
-        if (!pnpPath) {
-          return void 0;
-        }
-        if (!process2.versions.pnp) {
-          try {
-            require(pnpPath).setup();
-          } catch (error) {
-            this.#logger?.warn("Could not setup PnP", { path: pnpPath, error });
-            return void 0;
-          }
-        }
-        try {
-          const rootRelativeRequire = createRequire(pnpPath);
-          const stylelintEntryPath = rootRelativeRequire.resolve("stylelint");
-          const stylelintPath = await findPackageRoot(stylelintEntryPath);
-          if (!stylelintPath) {
-            this.#logger?.warn("Failed to find the Stylelint package root", {
-              path: stylelintEntryPath
-            });
-            return void 0;
-          }
-          const stylelint = rootRelativeRequire("stylelint");
-          const result = {
-            stylelint,
-            resolvedPath: stylelintPath
-          };
-          this.#logger?.debug("Resolved Stylelint using PnP", {
-            path: pnpPath
-          });
-          return result;
-        } catch (error) {
-          this.#logger?.warn("Could not load Stylelint using PnP", { path: root, error });
-          return void 0;
-        }
-      }
-      async #requireNode(cwd, globalModulesPath, trace) {
-        try {
-          const stylelintPath = await Files.resolve("stylelint", globalModulesPath, cwd, trace);
-          const result = {
-            stylelint: require(stylelintPath),
-            resolvedPath: stylelintPath
-          };
-          this.#logger?.debug("Resolved Stylelint from node_modules", {
-            path: stylelintPath
-          });
-          return result;
-        } catch (error) {
-          this.#logger?.warn("Could not load Stylelint from node_modules", { error });
-          return void 0;
-        }
-      }
-      async #getRequirePath(stylelintPath, getWorkspaceFolderFn) {
-        if (!this.#connection || path.isAbsolute(stylelintPath)) {
-          return stylelintPath;
-        }
-        const workspaceFolder = await getWorkspaceFolderFn();
-        return workspaceFolder ? path.join(workspaceFolder, stylelintPath) : stylelintPath;
-      }
-      async #resolveFromPath(stylelintPath, getWorkspaceFolderFn) {
-        if (!stylelintPath) {
-          return void 0;
-        }
-        const errorMessage = `Failed to load Stylelint from "stylelintPath": ${stylelintPath}.`;
-        try {
-          const requirePath = await this.#getRequirePath(stylelintPath, getWorkspaceFolderFn);
-          const stylelint = require(requirePath);
-          if (stylelint && typeof stylelint.lint === "function") {
-            return {
-              stylelint,
-              resolvedPath: requirePath
-            };
-          }
-        } catch (err) {
-          this.#logError(errorMessage, err);
-          throw err;
-        }
-        this.#logError(errorMessage);
-        return void 0;
-      }
-      async #resolveFromModules(textDocument, getWorkspaceFolderFn, packageManager) {
-        const connection2 = this.#connection;
-        try {
-          const globalModulesPath = packageManager ? await this.#globalPathResolver.resolve(packageManager) : void 0;
-          const documentURI = URI.parse(textDocument.uri);
-          const cwd = documentURI.scheme === "file" ? path.dirname(documentURI.fsPath) : await getWorkspaceFolderFn();
-          const result = await getFirstResolvedValue(async () => await this.#requirePnP(cwd), async () => await this.#requireNode(cwd, globalModulesPath, (message, verbose) => {
-            this.#logger?.debug(message.replace(/\n/g, "  "), { verbose });
-            connection2?.tracer.log(message, verbose);
-          }));
-          if (!result) {
-            return void 0;
-          }
-          if (typeof result.stylelint?.lint !== "function") {
-            this.#logError("stylelint.lint is not a function.");
-            return void 0;
-          }
-          return result;
-        } catch (error) {
-          this.#logger?.debug("Failed to resolve Stylelint from workspace or globally-installed packages.", { error });
-        }
-        return void 0;
+        _StylelintResolver_instances.add(this);
+        _StylelintResolver_connection.set(this, void 0);
+        _StylelintResolver_logger.set(this, void 0);
+        _StylelintResolver_globalPathResolver.set(this, void 0);
+        __classPrivateFieldSet(this, _StylelintResolver_connection, connection2, "f");
+        __classPrivateFieldSet(this, _StylelintResolver_logger, logger2, "f");
+        __classPrivateFieldSet(this, _StylelintResolver_globalPathResolver, new global_path_resolver_1.GlobalPathResolver(logger2), "f");
       }
       async resolve({ packageManager, stylelintPath }, textDocument) {
-        const getWorkspaceFolderFn = lazyCallAsync(async () => this.#connection && await getWorkspaceFolder(this.#connection, textDocument));
-        const stylelint = await getFirstResolvedValue(() => this.#resolveFromPath(stylelintPath, getWorkspaceFolderFn), () => this.#resolveFromModules(textDocument, getWorkspaceFolderFn, packageManager));
+        const getWorkspaceFolderFn = (0, functions_1.lazyCallAsync)(async () => __classPrivateFieldGet(this, _StylelintResolver_connection, "f") && await (0, documents_1.getWorkspaceFolder)(__classPrivateFieldGet(this, _StylelintResolver_connection, "f"), textDocument));
+        const stylelint = await (0, functions_1.getFirstResolvedValue)(() => __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_resolveFromPath).call(this, stylelintPath, getWorkspaceFolderFn), () => __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_resolveFromModules).call(this, textDocument, getWorkspaceFolderFn, packageManager));
         if (!stylelint) {
-          this.#logger?.warn("Failed to load Stylelint either globally or from the current workspace.");
+          __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.warn("Failed to load Stylelint either globally or from the current workspace.");
           return void 0;
         }
         return stylelint;
       }
     };
-    module2.exports = {
-      StylelintResolver
+    exports2.StylelintResolver = StylelintResolver;
+    _StylelintResolver_connection = new WeakMap(), _StylelintResolver_logger = new WeakMap(), _StylelintResolver_globalPathResolver = new WeakMap(), _StylelintResolver_instances = new WeakSet(), _StylelintResolver_logError = function _StylelintResolver_logError2(message, error) {
+      if (__classPrivateFieldGet(this, _StylelintResolver_logger, "f")) {
+        __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.error(message, error && { error });
+      }
+      if (__classPrivateFieldGet(this, _StylelintResolver_connection, "f")) {
+        __classPrivateFieldGet(this, _StylelintResolver_connection, "f").window.showErrorMessage(`Stylelint: ${message}`);
+      }
+    }, _StylelintResolver_findPnPLoader = async function _StylelintResolver_findPnPLoader2(directory) {
+      const pnpFilenames = [".pnp.cjs", ".pnp.js"];
+      for (const filename of pnpFilenames) {
+        const pnpPath = path_12.default.join(directory, filename);
+        try {
+          if ((await promises_1.default.stat(pnpPath)).isFile()) {
+            return pnpPath;
+          }
+        } catch (error) {
+          __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.debug("Did not find PnP loader at tested path", { path: pnpPath, error });
+        }
+      }
+      __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.debug("Could not find a PnP loader", { path: directory });
+      return void 0;
+    }, _StylelintResolver_requirePnP = async function _StylelintResolver_requirePnP2(cwd) {
+      if (!cwd) {
+        return void 0;
+      }
+      const root = await (0, find_package_root_1.findPackageRoot)(cwd, "yarn.lock");
+      if (!root) {
+        __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.debug("Could not find a Yarn lockfile", { cwd });
+        return void 0;
+      }
+      const pnpPath = await __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_findPnPLoader).call(this, root);
+      if (!pnpPath) {
+        return void 0;
+      }
+      if (!process_1.default.versions.pnp) {
+        try {
+          require(pnpPath).setup();
+        } catch (error) {
+          __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.warn("Could not setup PnP", { path: pnpPath, error });
+          return void 0;
+        }
+      }
+      try {
+        const rootRelativeRequire = (0, module_1.createRequire)(pnpPath);
+        const stylelintEntryPath = rootRelativeRequire.resolve("stylelint");
+        const stylelintPath = await (0, find_package_root_1.findPackageRoot)(stylelintEntryPath);
+        if (!stylelintPath) {
+          __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.warn("Failed to find the Stylelint package root", {
+            path: stylelintEntryPath
+          });
+          return void 0;
+        }
+        const stylelint = rootRelativeRequire("stylelint");
+        const result = {
+          stylelint,
+          resolvedPath: stylelintPath
+        };
+        __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.debug("Resolved Stylelint using PnP", {
+          path: pnpPath
+        });
+        return result;
+      } catch (error) {
+        __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.warn("Could not load Stylelint using PnP", { path: root, error });
+        return void 0;
+      }
+    }, _StylelintResolver_requireNode = async function _StylelintResolver_requireNode2(cwd, globalModulesPath, trace) {
+      try {
+        const stylelintPath = await node_12.Files.resolve("stylelint", globalModulesPath, cwd, trace);
+        const result = {
+          stylelint: require(stylelintPath),
+          resolvedPath: stylelintPath
+        };
+        __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.debug("Resolved Stylelint from node_modules", {
+          path: stylelintPath
+        });
+        return result;
+      } catch (error) {
+        __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.warn("Could not load Stylelint from node_modules", { error });
+        return void 0;
+      }
+    }, _StylelintResolver_getRequirePath = async function _StylelintResolver_getRequirePath2(stylelintPath, getWorkspaceFolderFn) {
+      if (!__classPrivateFieldGet(this, _StylelintResolver_connection, "f") || path_12.default.isAbsolute(stylelintPath)) {
+        return stylelintPath;
+      }
+      const workspaceFolder = await getWorkspaceFolderFn();
+      return workspaceFolder ? path_12.default.join(workspaceFolder, stylelintPath) : stylelintPath;
+    }, _StylelintResolver_resolveFromPath = async function _StylelintResolver_resolveFromPath2(stylelintPath, getWorkspaceFolderFn) {
+      if (!stylelintPath) {
+        return void 0;
+      }
+      const errorMessage = `Failed to load Stylelint from "stylelintPath": ${stylelintPath}.`;
+      try {
+        const requirePath = await __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_getRequirePath).call(this, stylelintPath, getWorkspaceFolderFn);
+        const stylelint = require(requirePath);
+        if (stylelint && typeof stylelint.lint === "function") {
+          return {
+            stylelint,
+            resolvedPath: requirePath
+          };
+        }
+      } catch (err) {
+        __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_logError).call(this, errorMessage, err);
+        throw err;
+      }
+      __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_logError).call(this, errorMessage);
+      return void 0;
+    }, _StylelintResolver_resolveFromModules = async function _StylelintResolver_resolveFromModules2(textDocument, getWorkspaceFolderFn, packageManager) {
+      const connection2 = __classPrivateFieldGet(this, _StylelintResolver_connection, "f");
+      try {
+        const globalModulesPath = packageManager ? await __classPrivateFieldGet(this, _StylelintResolver_globalPathResolver, "f").resolve(packageManager) : void 0;
+        const documentURI = vscode_uri_1.URI.parse(textDocument.uri);
+        const cwd = documentURI.scheme === "file" ? path_12.default.dirname(documentURI.fsPath) : await getWorkspaceFolderFn();
+        const result = await (0, functions_1.getFirstResolvedValue)(async () => await __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_requirePnP).call(this, cwd), async () => await __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_requireNode).call(this, cwd, globalModulesPath, (message, verbose) => {
+          __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.debug(message.replace(/\n/g, "  "), { verbose });
+          connection2?.tracer.log(message, verbose);
+        }));
+        if (!result) {
+          return void 0;
+        }
+        if (typeof result.stylelint?.lint !== "function") {
+          __classPrivateFieldGet(this, _StylelintResolver_instances, "m", _StylelintResolver_logError).call(this, "stylelint.lint is not a function.");
+          return void 0;
+        }
+        return result;
+      } catch (error) {
+        __classPrivateFieldGet(this, _StylelintResolver_logger, "f")?.debug("Failed to resolve Stylelint from workspace or globally-installed packages.", { error });
+      }
+      return void 0;
     };
   }
 });
 
-// src/utils/packages/index.js
+// build/utils/packages/types.js
+var require_types3 = __commonJS({
+  "build/utils/packages/types.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+  }
+});
+
+// build/utils/packages/index.js
 var require_packages = __commonJS({
-  "src/utils/packages/index.js"(exports2, module2) {
+  "build/utils/packages/index.js"(exports2) {
     "use strict";
-    module2.exports = {
-      ...require_find_package_root(),
-      ...require_global_path_resolver(),
-      ...require_stylelint_resolver()
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
     };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_find_package_root(), exports2);
+    __exportStar(require_global_path_resolver(), exports2);
+    __exportStar(require_stylelint_resolver(), exports2);
+    __exportStar(require_types3(), exports2);
   }
 });
 
-// src/utils/stylelint/build-stylelint-options.js
+// build/utils/stylelint/build-stylelint-options.js
 var require_build_stylelint_options = __commonJS({
-  "src/utils/stylelint/build-stylelint-options.js"(exports2, module2) {
+  "build/utils/stylelint/build-stylelint-options.js"(exports2) {
     "use strict";
-    var path = require("path");
-    var pathIsInside = require_path_is_inside();
-    var { URI } = require_umd();
-    var { findPackageRoot } = require_packages();
-    async function buildStylelintOptions(uri, workspaceFolder, baseOptions = {}, {
-      config,
-      configFile,
-      configBasedir,
-      customSyntax,
-      ignoreDisables,
-      reportNeedlessDisables,
-      reportInvalidScopeDisables
-    } = {}) {
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.buildStylelintOptions = void 0;
+    var path_12 = __importDefault2(require("path"));
+    var path_is_inside_1 = __importDefault2(require_path_is_inside());
+    var vscode_uri_1 = require_umd();
+    var packages_1 = require_packages();
+    async function buildStylelintOptions(uri, workspaceFolder, baseOptions = {}, { config, configFile, configBasedir, customSyntax, ignoreDisables, reportNeedlessDisables, reportInvalidScopeDisables } = {}) {
       const options = {
         ...baseOptions,
         config: config ?? baseOptions.config,
         configFile: configFile ? workspaceFolder ? configFile.replace(/\$\{workspaceFolder\}/gu, workspaceFolder) : configFile : baseOptions.configFile,
-        configBasedir: configBasedir ? path.isAbsolute(configBasedir) ? configBasedir : path.join(workspaceFolder ?? "", configBasedir) : baseOptions.configBasedir,
+        configBasedir: configBasedir ? path_12.default.isAbsolute(configBasedir) ? configBasedir : path_12.default.join(workspaceFolder ?? "", configBasedir) : baseOptions.configBasedir,
         customSyntax: customSyntax ? workspaceFolder ? customSyntax.replace(/\$\{workspaceFolder\}/gu, workspaceFolder) : customSyntax : baseOptions.customSyntax,
         ignoreDisables: ignoreDisables ?? baseOptions.ignoreDisables,
         reportNeedlessDisables: reportNeedlessDisables ?? baseOptions.reportNeedlessDisables,
         reportInvalidScopeDisables: reportInvalidScopeDisables ?? baseOptions.reportInvalidScopeDisables
       };
-      const documentPath = URI.parse(uri).fsPath;
+      const documentPath = vscode_uri_1.URI.parse(uri).fsPath;
       if (documentPath) {
-        if (workspaceFolder && pathIsInside(documentPath, workspaceFolder)) {
-          options.ignorePath = path.join(workspaceFolder, ".stylelintignore");
+        if (workspaceFolder && (0, path_is_inside_1.default)(documentPath, workspaceFolder)) {
+          options.ignorePath = path_12.default.join(workspaceFolder, ".stylelintignore");
         }
         if (options.ignorePath === void 0) {
-          options.ignorePath = path.join(await findPackageRoot(documentPath) || path.parse(documentPath).root, ".stylelintignore");
+          options.ignorePath = path_12.default.join(await (0, packages_1.findPackageRoot)(documentPath) || path_12.default.parse(documentPath).root, ".stylelintignore");
         }
       }
       return options;
     }
-    module2.exports = {
-      buildStylelintOptions
-    };
+    exports2.buildStylelintOptions = buildStylelintOptions;
   }
 });
 
-// src/utils/sets.js
+// build/utils/sets.js
 var require_sets = __commonJS({
-  "src/utils/sets.js"(exports2, module2) {
+  "build/utils/sets.js"(exports2) {
     "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.intersect = void 0;
     function intersect(set1, set2) {
       if (!set1) {
         return set2;
@@ -20739,101 +21117,133 @@ var require_sets = __commonJS({
       }
       return result;
     }
-    module2.exports = {
-      intersect
-    };
+    exports2.intersect = intersect;
   }
 });
 
-// src/utils/stylelint/get-disable-diagnostic-rule.js
-var require_get_disable_diagnostic_rule = __commonJS({
-  "src/utils/stylelint/get-disable-diagnostic-rule.js"(exports2, module2) {
+// build/utils/stylelint/types.js
+var require_types4 = __commonJS({
+  "build/utils/stylelint/types.js"(exports2) {
     "use strict";
-    var { DisableReportRuleNames } = require_types();
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.InvalidOptionError = exports2.DisableReportRuleNames = void 0;
+    var DisableReportRuleNames;
+    (function(DisableReportRuleNames2) {
+      DisableReportRuleNames2["Needless"] = "--report-needless-disables";
+      DisableReportRuleNames2["InvalidScope"] = "--report-invalid-scope-disables";
+      DisableReportRuleNames2["Descriptionless"] = "--report-descriptionless-disables";
+      DisableReportRuleNames2["Illegal"] = "reportDisables";
+    })(DisableReportRuleNames = exports2.DisableReportRuleNames || (exports2.DisableReportRuleNames = {}));
+    var InvalidOptionError = class extends Error {
+      constructor(warnings) {
+        const reasons = warnings.map((warning) => warning.text);
+        super(reasons.join("\n"));
+        this.reasons = reasons;
+      }
+    };
+    exports2.InvalidOptionError = InvalidOptionError;
+  }
+});
+
+// build/utils/stylelint/get-disable-diagnostic-rule.js
+var require_get_disable_diagnostic_rule = __commonJS({
+  "build/utils/stylelint/get-disable-diagnostic-rule.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getDisableDiagnosticRule = void 0;
+    var types_1 = require_types4();
     function getDisableDiagnosticRule(diagnostic) {
       switch (diagnostic.code) {
-        case DisableReportRuleNames.Needless:
+        case types_1.DisableReportRuleNames.Needless:
           return diagnostic.message.match(/^Needless disable for "(.+)"$/)?.[1];
-        case DisableReportRuleNames.InvalidScope:
+        case types_1.DisableReportRuleNames.InvalidScope:
           return diagnostic.message.match(/^Rule "(.+)" isn't enabled$/)?.[1];
-        case DisableReportRuleNames.Descriptionless:
+        case types_1.DisableReportRuleNames.Descriptionless:
           return diagnostic.message.match(/^Disable for "(.+)" is missing a description$/)?.[1];
-        case DisableReportRuleNames.Illegal:
+        case types_1.DisableReportRuleNames.Illegal:
           return diagnostic.message.match(/^Rule "(.+)" may not be disabled$/)?.[1];
         default:
           return void 0;
       }
     }
-    module2.exports = {
-      getDisableDiagnosticRule
-    };
+    exports2.getDisableDiagnosticRule = getDisableDiagnosticRule;
   }
 });
 
-// src/utils/stylelint/disable-metadata-lookup-table.js
+// build/utils/stylelint/disable-metadata-lookup-table.js
 var require_disable_metadata_lookup_table = __commonJS({
-  "src/utils/stylelint/disable-metadata-lookup-table.js"(exports2, module2) {
+  "build/utils/stylelint/disable-metadata-lookup-table.js"(exports2) {
     "use strict";
-    var { intersect } = require_sets();
-    var { getDisableDiagnosticRule } = require_get_disable_diagnostic_rule();
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _DisableMetadataLookupTable_instances;
+    var _DisableMetadataLookupTable_reportsByType;
+    var _DisableMetadataLookupTable_reportsByRule;
+    var _DisableMetadataLookupTable_reportsByRange;
+    var _DisableMetadataLookupTable_getRangeKey;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.DisableMetadataLookupTable = void 0;
+    var sets_1 = require_sets();
+    var get_disable_diagnostic_rule_1 = require_get_disable_diagnostic_rule();
     var DisableMetadataLookupTable = class {
-      #reportsByType = new Map();
-      #reportsByRule = new Map();
-      #reportsByRange = new Map();
       constructor(diagnostics) {
+        _DisableMetadataLookupTable_instances.add(this);
+        _DisableMetadataLookupTable_reportsByType.set(this, new Map());
+        _DisableMetadataLookupTable_reportsByRule.set(this, new Map());
+        _DisableMetadataLookupTable_reportsByRange.set(this, new Map());
         for (const diagnostic of diagnostics) {
-          const rule = getDisableDiagnosticRule(diagnostic);
+          const rule = (0, get_disable_diagnostic_rule_1.getDisableDiagnosticRule)(diagnostic);
           if (!rule) {
             continue;
           }
           const code = diagnostic.code;
-          const existingByType = this.#reportsByType.get(code);
+          const existingByType = __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByType, "f").get(code);
           if (existingByType) {
             existingByType.add(diagnostic);
           } else {
-            this.#reportsByType.set(code, new Set([diagnostic]));
+            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByType, "f").set(code, new Set([diagnostic]));
           }
-          const existingByRule = this.#reportsByRule.get(rule);
+          const existingByRule = __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRule, "f").get(rule);
           if (existingByRule) {
             existingByRule.add(diagnostic);
           } else {
-            this.#reportsByRule.set(rule, new Set([diagnostic]));
+            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRule, "f").set(rule, new Set([diagnostic]));
           }
-          const rangeKey = this.#getRangeKey(diagnostic.range);
-          const existingByRange = this.#reportsByRange.get(rangeKey);
+          const rangeKey = __classPrivateFieldGet(this, _DisableMetadataLookupTable_instances, "m", _DisableMetadataLookupTable_getRangeKey).call(this, diagnostic.range);
+          const existingByRange = __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRange, "f").get(rangeKey);
           if (existingByRange) {
             existingByRange.add(diagnostic);
           } else {
-            this.#reportsByRange.set(rangeKey, new Set([diagnostic]));
+            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRange, "f").set(rangeKey, new Set([diagnostic]));
           }
         }
       }
-      #getRangeKey({ start, end }) {
-        return `${start.line}:${start.character}:${end.line}:${end.character}`;
-      }
       find({ type, rule, range }) {
-        const reportsByType = type ? this.#reportsByType.get(type) : void 0;
-        const reportsByRule = rule ? this.#reportsByRule.get(rule) : void 0;
-        const reportsByRange = range ? this.#reportsByRange.get(this.#getRangeKey(range)) : void 0;
-        return intersect(intersect(reportsByType, reportsByRule), reportsByRange) ?? new Set();
+        const reportsByType = type ? __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByType, "f").get(type) : void 0;
+        const reportsByRule = rule ? __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRule, "f").get(rule) : void 0;
+        const reportsByRange = range ? __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRange, "f").get(__classPrivateFieldGet(this, _DisableMetadataLookupTable_instances, "m", _DisableMetadataLookupTable_getRangeKey).call(this, range)) : void 0;
+        return (0, sets_1.intersect)((0, sets_1.intersect)(reportsByType, reportsByRule), reportsByRange) ?? new Set();
       }
     };
-    module2.exports = {
-      DisableMetadataLookupTable
+    exports2.DisableMetadataLookupTable = DisableMetadataLookupTable;
+    _DisableMetadataLookupTable_reportsByType = new WeakMap(), _DisableMetadataLookupTable_reportsByRule = new WeakMap(), _DisableMetadataLookupTable_reportsByRange = new WeakMap(), _DisableMetadataLookupTable_instances = new WeakSet(), _DisableMetadataLookupTable_getRangeKey = function _DisableMetadataLookupTable_getRangeKey2({ start, end }) {
+      return `${start.line}:${start.character}:${end.line}:${end.character}`;
     };
   }
 });
 
-// src/utils/stylelint/formatting-options-to-rules.js
+// build/utils/stylelint/formatting-options-to-rules.js
 var require_formatting_options_to_rules = __commonJS({
-  "src/utils/stylelint/formatting-options-to-rules.js"(exports2, module2) {
+  "build/utils/stylelint/formatting-options-to-rules.js"(exports2) {
     "use strict";
-    function formattingOptionsToRules({
-      insertSpaces,
-      tabSize,
-      insertFinalNewline,
-      trimTrailingWhitespace
-    }) {
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.formattingOptionsToRules = void 0;
+    function formattingOptionsToRules({ insertSpaces, tabSize, insertFinalNewline, trimTrailingWhitespace }) {
       const rules = {
         indentation: [insertSpaces ? tabSize : "tab"]
       };
@@ -20845,38 +21255,61 @@ var require_formatting_options_to_rules = __commonJS({
       }
       return rules;
     }
-    module2.exports = {
-      formattingOptionsToRules
-    };
+    exports2.formattingOptionsToRules = formattingOptionsToRules;
   }
 });
 
-// src/utils/stylelint/warning-to-diagnostic.js
-var require_warning_to_diagnostic = __commonJS({
-  "src/utils/stylelint/warning-to-diagnostic.js"(exports2, module2) {
+// build/utils/stylelint/is-disable-report-rule.js
+var require_is_disable_report_rule = __commonJS({
+  "build/utils/stylelint/is-disable-report-rule.js"(exports2) {
     "use strict";
-    var { Diagnostic, DiagnosticSeverity, Position, Range } = require_main2();
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.isDisableReportRule = void 0;
+    var types_1 = require_types4();
+    function isDisableReportRule(rule) {
+      switch (rule) {
+        case types_1.DisableReportRuleNames.Descriptionless:
+        case types_1.DisableReportRuleNames.Illegal:
+        case types_1.DisableReportRuleNames.InvalidScope:
+        case types_1.DisableReportRuleNames.Needless:
+          return true;
+        default:
+          return false;
+      }
+    }
+    exports2.isDisableReportRule = isDisableReportRule;
+  }
+});
+
+// build/utils/stylelint/warning-to-diagnostic.js
+var require_warning_to_diagnostic = __commonJS({
+  "build/utils/stylelint/warning-to-diagnostic.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.warningToDiagnostic = void 0;
+    var vscode_languageserver_types_1 = require_main2();
     function warningToDiagnostic(warning, rules) {
-      const position = Position.create(warning.line - 1, warning.column - 1);
+      const start = vscode_languageserver_types_1.Position.create(warning.line - 1, warning.column - 1);
+      const end = vscode_languageserver_types_1.Position.create(warning.line - 1, warning.column);
       const ruleDocUrl = rules?.[warning.rule] && `https://stylelint.io/user-guide/rules/${warning.rule}`;
-      const diagnostic = Diagnostic.create(Range.create(position, position), warning.text, DiagnosticSeverity[warning.severity === "warning" ? "Warning" : "Error"], warning.rule, "Stylelint");
+      const diagnostic = vscode_languageserver_types_1.Diagnostic.create(vscode_languageserver_types_1.Range.create(start, end), warning.text, vscode_languageserver_types_1.DiagnosticSeverity[warning.severity === "warning" ? "Warning" : "Error"], warning.rule, "Stylelint");
       if (ruleDocUrl) {
         diagnostic.codeDescription = { href: ruleDocUrl };
       }
       return diagnostic;
     }
-    module2.exports = {
-      warningToDiagnostic
-    };
+    exports2.warningToDiagnostic = warningToDiagnostic;
   }
 });
 
-// src/utils/stylelint/process-linter-result.js
+// build/utils/stylelint/process-linter-result.js
 var require_process_linter_result = __commonJS({
-  "src/utils/stylelint/process-linter-result.js"(exports2, module2) {
+  "build/utils/stylelint/process-linter-result.js"(exports2) {
     "use strict";
-    var { warningToDiagnostic } = require_warning_to_diagnostic();
-    var { InvalidOptionError } = require_types();
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.processLinterResult = void 0;
+    var warning_to_diagnostic_1 = require_warning_to_diagnostic();
+    var types_1 = require_types4();
     function processLinterResult(stylelint, { results, output }) {
       if (results.length === 0) {
         return { diagnostics: [] };
@@ -20886,51 +21319,73 @@ var require_process_linter_result = __commonJS({
         return { diagnostics: [] };
       }
       if (invalidOptionWarnings.length !== 0) {
-        throw new InvalidOptionError(invalidOptionWarnings);
+        throw new types_1.InvalidOptionError(invalidOptionWarnings);
       }
-      const diagnostics = warnings.map((warning) => warningToDiagnostic(warning, stylelint.rules));
+      const diagnostics = warnings.map((warning) => (0, warning_to_diagnostic_1.warningToDiagnostic)(warning, stylelint.rules));
       return output ? { output, diagnostics } : { diagnostics };
     }
-    module2.exports = {
-      processLinterResult
-    };
+    exports2.processLinterResult = processLinterResult;
   }
 });
 
-// src/utils/stylelint/stylelint-runner.js
+// build/utils/stylelint/stylelint-runner.js
 var require_stylelint_runner = __commonJS({
-  "src/utils/stylelint/stylelint-runner.js"(exports2, module2) {
+  "build/utils/stylelint/stylelint-runner.js"(exports2) {
     "use strict";
-    var os = require("os");
-    var { URI } = require_umd();
-    var { StylelintResolver } = require_packages();
-    var { getWorkspaceFolder } = require_documents();
-    var { processLinterResult } = require_process_linter_result();
-    var { buildStylelintOptions } = require_build_stylelint_options();
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    var _StylelintRunner_connection;
+    var _StylelintRunner_logger;
+    var _StylelintRunner_stylelintResolver;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.StylelintRunner = void 0;
+    var os_1 = __importDefault2(require("os"));
+    var vscode_uri_1 = require_umd();
+    var packages_1 = require_packages();
+    var documents_1 = require_documents();
+    var process_linter_result_1 = require_process_linter_result();
+    var build_stylelint_options_1 = require_build_stylelint_options();
     var StylelintRunner = class {
-      #connection;
-      #logger;
-      #stylelintResolver;
       constructor(connection2, logger2, resolver) {
-        this.#connection = connection2;
-        this.#logger = logger2;
-        this.#stylelintResolver = resolver ?? new StylelintResolver(connection2, logger2);
+        _StylelintRunner_connection.set(this, void 0);
+        _StylelintRunner_logger.set(this, void 0);
+        _StylelintRunner_stylelintResolver.set(this, void 0);
+        __classPrivateFieldSet(this, _StylelintRunner_connection, connection2, "f");
+        __classPrivateFieldSet(this, _StylelintRunner_logger, logger2, "f");
+        __classPrivateFieldSet(this, _StylelintRunner_stylelintResolver, resolver ?? new packages_1.StylelintResolver(connection2, logger2), "f");
       }
-      async lintDocument(document, linterOptions = {}, extensionOptions = {}) {
-        const workspaceFolder = this.#connection && await getWorkspaceFolder(this.#connection, document);
-        const result = await this.#stylelintResolver.resolve(extensionOptions, document);
+      async lintDocument(document, linterOptions = {}, runnerOptions = {}) {
+        const workspaceFolder = __classPrivateFieldGet(this, _StylelintRunner_connection, "f") && await (0, documents_1.getWorkspaceFolder)(__classPrivateFieldGet(this, _StylelintRunner_connection, "f"), document);
+        const result = await __classPrivateFieldGet(this, _StylelintRunner_stylelintResolver, "f").resolve(runnerOptions, document);
         if (!result) {
-          this.#logger?.info("No Stylelint found with which to lint document", {
+          __classPrivateFieldGet(this, _StylelintRunner_logger, "f")?.info("No Stylelint found with which to lint document", {
             uri: document.uri,
-            options: extensionOptions
+            options: runnerOptions
           });
           return { diagnostics: [] };
         }
         const { stylelint } = result;
-        const { fsPath } = URI.parse(document.uri);
-        const codeFilename = os.platform() === "win32" ? fsPath.replace(/^[a-z]:/, (match) => match.toUpperCase()) : fsPath;
+        const { fsPath } = vscode_uri_1.URI.parse(document.uri);
+        const codeFilename = os_1.default.platform() === "win32" ? fsPath.replace(/^[a-z]:/, (match) => match.toUpperCase()) : fsPath;
         const options = {
-          ...await buildStylelintOptions(document.uri, workspaceFolder, linterOptions, extensionOptions),
+          ...await (0, build_stylelint_options_1.buildStylelintOptions)(document.uri, workspaceFolder, linterOptions, runnerOptions),
           code: document.getText(),
           formatter: () => ""
         };
@@ -20939,59 +21394,285 @@ var require_stylelint_runner = __commonJS({
         } else if (!linterOptions?.config?.rules) {
           options.config = { rules: {} };
         }
-        if (this.#logger?.isDebugEnabled()) {
-          this.#logger?.debug("Running Stylelint", { options: { ...options, code: "..." } });
+        if (__classPrivateFieldGet(this, _StylelintRunner_logger, "f")?.isDebugEnabled()) {
+          __classPrivateFieldGet(this, _StylelintRunner_logger, "f")?.debug("Running Stylelint", { options: { ...options, code: "..." } });
         }
         try {
-          return processLinterResult(stylelint, await stylelint.lint(options));
+          return (0, process_linter_result_1.processLinterResult)(stylelint, await stylelint.lint(options));
         } catch (err) {
           if (err instanceof Error && (err.message.startsWith("No configuration provided for") || err.message.includes("No rules found within configuration"))) {
-            return processLinterResult(stylelint, await stylelint.lint({ ...options, config: { rules: {} } }));
+            return (0, process_linter_result_1.processLinterResult)(stylelint, await stylelint.lint({ ...options, config: { rules: {} } }));
           }
           throw err;
         }
       }
     };
-    module2.exports = {
-      StylelintRunner
-    };
+    exports2.StylelintRunner = StylelintRunner;
+    _StylelintRunner_connection = new WeakMap(), _StylelintRunner_logger = new WeakMap(), _StylelintRunner_stylelintResolver = new WeakMap();
   }
 });
 
-// src/utils/stylelint/index.js
+// build/utils/stylelint/index.js
 var require_stylelint = __commonJS({
-  "src/utils/stylelint/index.js"(exports2, module2) {
+  "build/utils/stylelint/index.js"(exports2) {
     "use strict";
-    module2.exports = {
-      ...require_build_stylelint_options(),
-      ...require_disable_metadata_lookup_table(),
-      ...require_formatting_options_to_rules(),
-      ...require_get_disable_diagnostic_rule(),
-      ...require_process_linter_result(),
-      ...require_stylelint_runner(),
-      ...require_warning_to_diagnostic()
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
     };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_build_stylelint_options(), exports2);
+    __exportStar(require_disable_metadata_lookup_table(), exports2);
+    __exportStar(require_formatting_options_to_rules(), exports2);
+    __exportStar(require_get_disable_diagnostic_rule(), exports2);
+    __exportStar(require_is_disable_report_rule(), exports2);
+    __exportStar(require_process_linter_result(), exports2);
+    __exportStar(require_stylelint_runner(), exports2);
+    __exportStar(require_types4(), exports2);
+    __exportStar(require_warning_to_diagnostic(), exports2);
   }
 });
 
-// src/server/modules/completion.js
-var require_completion = __commonJS({
-  "src/server/modules/completion.js"(exports2, module2) {
+// build/server/modules/code-action.js
+var require_code_action = __commonJS({
+  "build/server/modules/code-action.js"(exports2) {
     "use strict";
-    var { CompletionItemKind } = require_main2();
-    var { getDisableType } = require_documents();
-    var { createDisableCompletionItem } = require_lsp();
-    var { DisableReportRuleNames } = require_types();
-    var { DisableMetadataLookupTable } = require_stylelint();
-    var _context, _logger, _shouldComplete, shouldComplete_fn, _onCompletion, onCompletion_fn;
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports2 && exports2.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
+    };
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _CodeActionModule_instances;
+    var _CodeActionModule_context;
+    var _CodeActionModule_logger;
+    var _CodeActionModule_shouldCodeAction;
+    var _CodeActionModule_getAutoFixAllAction;
+    var _CodeActionModule_getAutoFixAllCommandAction;
+    var _CodeActionModule_getOpenRuleDocAction;
+    var _CodeActionModule_getCodeActions;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.CodeActionModule = void 0;
+    var LSP = __importStar(require_main3());
+    var types_1 = require_types();
+    var lsp_1 = require_lsp();
+    var stylelint_1 = require_stylelint();
+    var vscode_languageserver_protocol_1 = require_main3();
+    var CodeActionModule = class {
+      constructor({ context, logger: logger2 }) {
+        _CodeActionModule_instances.add(this);
+        _CodeActionModule_context.set(this, void 0);
+        _CodeActionModule_logger.set(this, void 0);
+        __classPrivateFieldSet(this, _CodeActionModule_context, context, "f");
+        __classPrivateFieldSet(this, _CodeActionModule_logger, logger2, "f");
+      }
+      onInitialize() {
+        return {
+          capabilities: {
+            codeActionProvider: {
+              codeActionKinds: [
+                LSP.CodeActionKind.QuickFix,
+                types_1.CodeActionKind.StylelintSourceFixAll
+              ]
+            },
+            executeCommandProvider: {
+              commands: [types_1.CommandId.OpenRuleDoc]
+            }
+          }
+        };
+      }
+      onDidRegisterHandlers() {
+        __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Registering onCodeAction handler");
+        __classPrivateFieldGet(this, _CodeActionModule_context, "f").connection.onCodeAction(async ({ context, textDocument: { uri } }) => {
+          __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Received onCodeAction", { context, uri });
+          const document = __classPrivateFieldGet(this, _CodeActionModule_context, "f").documents.get(uri);
+          if (!document) {
+            __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Unknown document, ignoring", { uri });
+            return [];
+          }
+          if (!await __classPrivateFieldGet(this, _CodeActionModule_instances, "m", _CodeActionModule_shouldCodeAction).call(this, document)) {
+            __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Document should not be validated, ignoring", {
+              uri,
+              language: document.languageId
+            });
+            return [];
+          }
+          const actions = await __classPrivateFieldGet(this, _CodeActionModule_instances, "m", _CodeActionModule_getCodeActions).call(this, document, context);
+          __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Returning code actions", { actions });
+          return actions;
+        });
+        __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("onCodeAction handler registered");
+        __classPrivateFieldGet(this, _CodeActionModule_context, "f").commands.on(types_1.CommandId.OpenRuleDoc, async ({ arguments: args }) => {
+          const params = args?.[0];
+          if (!params) {
+            __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("No URL provided, ignoring command request");
+            return {};
+          }
+          const { uri } = params;
+          __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Opening rule documentation", { uri });
+          const showURIResponse = await __classPrivateFieldGet(this, _CodeActionModule_context, "f").connection.window.showDocument({
+            uri,
+            external: true
+          });
+          if (!showURIResponse.success) {
+            __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.warn("Failed to open rule documentation", { uri });
+            return new LSP.ResponseError(LSP.ErrorCodes.InternalError, "Failed to open rule documentation");
+          }
+          return {};
+        });
+        __classPrivateFieldGet(this, _CodeActionModule_context, "f").notifications.on(vscode_languageserver_protocol_1.InitializedNotification.type, () => __classPrivateFieldGet(this, _CodeActionModule_context, "f").connection.sendNotification(types_1.Notification.DidRegisterCodeActionRequestHandler));
+      }
+    };
+    exports2.CodeActionModule = CodeActionModule;
+    _CodeActionModule_context = new WeakMap(), _CodeActionModule_logger = new WeakMap(), _CodeActionModule_instances = new WeakSet(), _CodeActionModule_shouldCodeAction = async function _CodeActionModule_shouldCodeAction2(document) {
+      const options = await __classPrivateFieldGet(this, _CodeActionModule_context, "f").getOptions(document.uri);
+      return options.validate.includes(document.languageId);
+    }, _CodeActionModule_getAutoFixAllAction = async function _CodeActionModule_getAutoFixAllAction2(document) {
+      const edits = await __classPrivateFieldGet(this, _CodeActionModule_context, "f").getFixes(document);
+      return edits.length > 0 ? LSP.CodeAction.create("Fix all Stylelint auto-fixable problems", { documentChanges: [LSP.TextDocumentEdit.create(document, edits)] }, types_1.CodeActionKind.StylelintSourceFixAll) : void 0;
+    }, _CodeActionModule_getAutoFixAllCommandAction = function _CodeActionModule_getAutoFixAllCommandAction2(document) {
+      const command = LSP.Command.create("Fix all Stylelint auto-fixable problems", types_1.CommandId.ApplyAutoFix, { uri: document.uri, version: document.version });
+      return LSP.CodeAction.create("Fix all Stylelint auto-fixable problems", command, LSP.CodeActionKind.Source);
+    }, _CodeActionModule_getOpenRuleDocAction = function _CodeActionModule_getOpenRuleDocAction2({ code, codeDescription }) {
+      const uri = codeDescription?.href;
+      if (!uri) {
+        return void 0;
+      }
+      const command = LSP.Command.create(`Open documentation for ${code}`, types_1.CommandId.OpenRuleDoc, {
+        uri
+      });
+      return LSP.CodeAction.create(`Show documentation for ${code}`, command, LSP.CodeActionKind.QuickFix);
+    }, _CodeActionModule_getCodeActions = async function _CodeActionModule_getCodeActions2(document, context) {
+      const only = context.only && new Set(context.only);
+      __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Creating code actions", { only: context.only });
+      if (only?.has(LSP.CodeActionKind.SourceFixAll) || only?.has(types_1.CodeActionKind.StylelintSourceFixAll)) {
+        __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug('Creating "source-fix-all" code action');
+        const action = await __classPrivateFieldGet(this, _CodeActionModule_instances, "m", _CodeActionModule_getAutoFixAllAction).call(this, document);
+        return action ? [action] : [];
+      }
+      if (only?.has(LSP.CodeActionKind.Source)) {
+        __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug('Creating "source" code action');
+        return [__classPrivateFieldGet(this, _CodeActionModule_instances, "m", _CodeActionModule_getAutoFixAllCommandAction).call(this, document)];
+      }
+      if (only && !only.has(LSP.CodeActionKind.QuickFix)) {
+        __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("No quick fix actions requested, skipping action creation");
+        return [];
+      }
+      const actions = new lsp_1.RuleCodeActionsCollection();
+      for (const diagnostic of context.diagnostics) {
+        const { source, code } = diagnostic;
+        if (source !== "Stylelint" || typeof code !== "string") {
+          continue;
+        }
+        if (!(0, stylelint_1.isDisableReportRule)(code)) {
+          const options = await __classPrivateFieldGet(this, _CodeActionModule_context, "f").getOptions(document.uri);
+          const { location } = options.codeAction.disableRuleComment;
+          __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Creating disable rule for line code action", { rule: code, location });
+          actions.get(code).disableLine = (0, lsp_1.createDisableRuleLineCodeAction)(document, diagnostic, location);
+          if (!actions.get(code).disableFile) {
+            __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Creating disable rule for file code action", { rule: code });
+            actions.get(code).disableFile = (0, lsp_1.createDisableRuleFileCodeAction)(document, diagnostic);
+          }
+        }
+        if (!actions.get(code).documentation) {
+          __classPrivateFieldGet(this, _CodeActionModule_logger, "f")?.debug("Creating documentation code action", { rule: code });
+          actions.get(code).documentation = __classPrivateFieldGet(this, _CodeActionModule_instances, "m", _CodeActionModule_getOpenRuleDocAction).call(this, diagnostic);
+        }
+      }
+      return [...actions];
+    };
+    CodeActionModule.id = "code-action";
+  }
+});
+
+// build/server/modules/completion.js
+var require_completion = __commonJS({
+  "build/server/modules/completion.js"(exports2) {
+    "use strict";
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _CompletionModule_instances;
+    var _CompletionModule_context;
+    var _CompletionModule_logger;
+    var _CompletionModule_shouldComplete;
+    var _CompletionModule_onCompletion;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.CompletionModule = void 0;
+    var vscode_languageserver_types_1 = require_main2();
+    var documents_1 = require_documents();
+    var lsp_1 = require_lsp();
+    var stylelint_1 = require_stylelint();
     var CompletionModule = class {
       constructor({ context, logger: logger2 }) {
-        __privateAdd(this, _shouldComplete);
-        __privateAdd(this, _onCompletion);
-        __privateAdd(this, _context, void 0);
-        __privateAdd(this, _logger, void 0);
-        __privateSet(this, _context, context);
-        __privateSet(this, _logger, logger2);
+        _CompletionModule_instances.add(this);
+        _CompletionModule_context.set(this, void 0);
+        _CompletionModule_logger.set(this, void 0);
+        __classPrivateFieldSet(this, _CompletionModule_context, context, "f");
+        __classPrivateFieldSet(this, _CompletionModule_logger, logger2, "f");
       }
       onInitialize() {
         return {
@@ -21001,28 +21682,25 @@ var require_completion = __commonJS({
         };
       }
       onDidRegisterHandlers() {
-        __privateGet(this, _logger)?.debug("Registering onCompletion handler");
-        __privateGet(this, _context).connection.onCompletion(__privateMethod(this, _onCompletion, onCompletion_fn).bind(this));
-        __privateGet(this, _logger)?.debug("onCompletion handler registered");
+        __classPrivateFieldGet(this, _CompletionModule_logger, "f")?.debug("Registering onCompletion handler");
+        __classPrivateFieldGet(this, _CompletionModule_context, "f").connection.onCompletion(__classPrivateFieldGet(this, _CompletionModule_instances, "m", _CompletionModule_onCompletion).bind(this));
+        __classPrivateFieldGet(this, _CompletionModule_logger, "f")?.debug("onCompletion handler registered");
       }
     };
-    _context = new WeakMap();
-    _logger = new WeakMap();
-    _shouldComplete = new WeakSet();
-    shouldComplete_fn = function(document) {
-      return __privateGet(this, _context).options.validate.includes(document.languageId) && __privateGet(this, _context).options.snippet.includes(document.languageId);
-    };
-    _onCompletion = new WeakSet();
-    onCompletion_fn = function({ textDocument, position }) {
+    exports2.CompletionModule = CompletionModule;
+    _CompletionModule_context = new WeakMap(), _CompletionModule_logger = new WeakMap(), _CompletionModule_instances = new WeakSet(), _CompletionModule_shouldComplete = async function _CompletionModule_shouldComplete2(document) {
+      const options = await __classPrivateFieldGet(this, _CompletionModule_context, "f").getOptions(document.uri);
+      return options.validate.includes(document.languageId) && options.snippet.includes(document.languageId);
+    }, _CompletionModule_onCompletion = async function _CompletionModule_onCompletion2({ textDocument, position }) {
       const { uri } = textDocument;
-      __privateGet(this, _logger)?.debug("Received onCompletion", { uri, position });
-      const document = __privateGet(this, _context).documents.get(uri);
-      if (!document || !__privateMethod(this, _shouldComplete, shouldComplete_fn).call(this, document)) {
-        if (__privateGet(this, _logger)?.isDebugEnabled()) {
+      __classPrivateFieldGet(this, _CompletionModule_logger, "f")?.debug("Received onCompletion", { uri, position });
+      const document = __classPrivateFieldGet(this, _CompletionModule_context, "f").documents.get(uri);
+      if (!document || !await __classPrivateFieldGet(this, _CompletionModule_instances, "m", _CompletionModule_shouldComplete).call(this, document)) {
+        if (__classPrivateFieldGet(this, _CompletionModule_logger, "f")?.isDebugEnabled()) {
           if (!document) {
-            __privateGet(this, _logger).debug("Unknown document, ignoring", { uri });
+            __classPrivateFieldGet(this, _CompletionModule_logger, "f").debug("Unknown document, ignoring", { uri });
           } else {
-            __privateGet(this, _logger).debug("Snippets or validation not enabled for language, ignoring", {
+            __classPrivateFieldGet(this, _CompletionModule_logger, "f").debug("Snippets or validation not enabled for language, ignoring", {
               uri,
               language: document.languageId
             });
@@ -21030,15 +21708,15 @@ var require_completion = __commonJS({
         }
         return [];
       }
-      const validatorModule = __privateGet(this, _context).getModule("validator");
+      const validatorModule = __classPrivateFieldGet(this, _CompletionModule_context, "f").getModule("validator");
       const diagnostics = validatorModule?.getDiagnostics(uri);
       if (!diagnostics || diagnostics.length === 0) {
         const items = [
-          createDisableCompletionItem("stylelint-disable-line"),
-          createDisableCompletionItem("stylelint-disable-next-line"),
-          createDisableCompletionItem("stylelint-disable")
+          (0, lsp_1.createDisableCompletionItem)("stylelint-disable-line"),
+          (0, lsp_1.createDisableCompletionItem)("stylelint-disable-next-line"),
+          (0, lsp_1.createDisableCompletionItem)("stylelint-disable")
         ];
-        __privateGet(this, _logger)?.debug("No diagnostics for document, returning generic completion items", {
+        __classPrivateFieldGet(this, _CompletionModule_logger, "f")?.debug("No diagnostics for document, returning generic completion items", {
           uri,
           items
         });
@@ -21046,10 +21724,10 @@ var require_completion = __commonJS({
       }
       const thisLineRules = new Set();
       const nextLineRules = new Set();
-      const disableTable = new DisableMetadataLookupTable(diagnostics);
+      const disableTable = new stylelint_1.DisableMetadataLookupTable(diagnostics);
       for (const { code, range } of diagnostics) {
         if (!code || typeof code !== "string" || code === "CssSyntaxError" || disableTable.find({
-          type: DisableReportRuleNames.Needless,
+          type: stylelint_1.DisableReportRuleNames.Needless,
           rule: code,
           range
         }).size > 0) {
@@ -21062,12 +21740,12 @@ var require_completion = __commonJS({
         }
       }
       const results = [];
-      const disableType = getDisableType(document, position);
+      const disableType = (0, documents_1.getDisableType)(document, position);
       if (disableType === "stylelint-disable-line") {
         for (const rule of thisLineRules) {
           results.push({
             label: rule,
-            kind: CompletionItemKind.Snippet,
+            kind: vscode_languageserver_types_1.CompletionItemKind.Snippet,
             detail: `disable ${rule} rule. (Stylelint)`
           });
         }
@@ -21075,67 +21753,119 @@ var require_completion = __commonJS({
         for (const rule of nextLineRules) {
           results.push({
             label: rule,
-            kind: CompletionItemKind.Snippet,
+            kind: vscode_languageserver_types_1.CompletionItemKind.Snippet,
             detail: `disable ${rule} rule. (Stylelint)`
           });
         }
       } else {
-        results.push(createDisableCompletionItem("stylelint-disable-line", thisLineRules.size === 1 ? thisLineRules.values().next().value : void 0));
-        results.push(createDisableCompletionItem("stylelint-disable-next-line", nextLineRules.size === 1 ? nextLineRules.values().next().value : void 0));
-        results.push(createDisableCompletionItem("stylelint-disable"));
+        results.push((0, lsp_1.createDisableCompletionItem)("stylelint-disable-line", thisLineRules.size === 1 ? thisLineRules.values().next().value : void 0));
+        results.push((0, lsp_1.createDisableCompletionItem)("stylelint-disable-next-line", nextLineRules.size === 1 ? nextLineRules.values().next().value : void 0));
+        results.push((0, lsp_1.createDisableCompletionItem)("stylelint-disable"));
       }
-      __privateGet(this, _logger)?.debug("Returning completion items", { uri, results });
+      __classPrivateFieldGet(this, _CompletionModule_logger, "f")?.debug("Returning completion items", { uri, results });
       return results;
     };
-    __publicField(CompletionModule, "id", "completion");
-    module2.exports = {
-      CompletionModule
-    };
+    CompletionModule.id = "completion";
   }
 });
 
-// src/server/modules/formatter.js
+// build/server/modules/formatter.js
 var require_formatter = __commonJS({
-  "src/server/modules/formatter.js"(exports2, module2) {
+  "build/server/modules/formatter.js"(exports2) {
     "use strict";
-    var { DocumentFormattingRequest } = require_main3();
-    var { formattingOptionsToRules } = require_stylelint();
-    var { Notification } = require_types();
-    var _context, _logger, _registerDynamically, _registration, _shouldFormat, shouldFormat_fn;
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports2 && exports2.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
+    };
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _FormatterModule_instances;
+    var _FormatterModule_context;
+    var _FormatterModule_logger;
+    var _FormatterModule_registerDynamically;
+    var _FormatterModule_registrations;
+    var _FormatterModule_shouldFormat;
+    var _FormatterModule_register;
+    var _FormatterModule_deregister;
+    var _FormatterModule_deregisterAll;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.FormatterModule = void 0;
+    var LSP = __importStar(require_main3());
+    var stylelint_1 = require_stylelint();
+    var types_1 = require_types();
+    var vscode_uri_1 = require_umd();
     var FormatterModule = class {
       constructor({ context, logger: logger2 }) {
-        __privateAdd(this, _shouldFormat);
-        __privateAdd(this, _context, void 0);
-        __privateAdd(this, _logger, void 0);
-        __privateAdd(this, _registerDynamically, false);
-        __privateAdd(this, _registration, void 0);
-        __privateSet(this, _context, context);
-        __privateSet(this, _logger, logger2);
+        _FormatterModule_instances.add(this);
+        _FormatterModule_context.set(this, void 0);
+        _FormatterModule_logger.set(this, void 0);
+        _FormatterModule_registerDynamically.set(this, false);
+        _FormatterModule_registrations.set(this, new Map());
+        __classPrivateFieldSet(this, _FormatterModule_context, context, "f");
+        __classPrivateFieldSet(this, _FormatterModule_logger, logger2, "f");
       }
       onInitialize({ capabilities }) {
-        __privateSet(this, _registerDynamically, Boolean(capabilities.textDocument?.formatting?.dynamicRegistration));
+        __classPrivateFieldSet(this, _FormatterModule_registerDynamically, Boolean(capabilities.textDocument?.formatting?.dynamicRegistration), "f");
         return {
           capabilities: {
-            documentFormattingProvider: !__privateGet(this, _registerDynamically)
+            documentFormattingProvider: !__classPrivateFieldGet(this, _FormatterModule_registerDynamically, "f")
           }
         };
       }
       onDidRegisterHandlers() {
-        __privateGet(this, _logger)?.debug("Registering onDocumentFormatting handler");
-        __privateGet(this, _context).connection.onDocumentFormatting(({ textDocument, options }) => {
-          __privateGet(this, _logger)?.debug("Received onDocumentFormatting", { textDocument, options });
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Registering connection.onDocumentFormatting handler");
+        __classPrivateFieldGet(this, _FormatterModule_context, "f").connection.onDocumentFormatting(async ({ textDocument, options }) => {
+          __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Received onDocumentFormatting", { textDocument, options });
           if (!textDocument) {
-            __privateGet(this, _logger)?.debug("No text document provided, ignoring");
+            __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("No text document provided, ignoring");
             return null;
           }
           const { uri } = textDocument;
-          const document = __privateGet(this, _context).documents.get(uri);
-          if (!document || !__privateMethod(this, _shouldFormat, shouldFormat_fn).call(this, document)) {
-            if (__privateGet(this, _logger)?.isDebugEnabled()) {
+          const document = __classPrivateFieldGet(this, _FormatterModule_context, "f").documents.get(uri);
+          if (!document || !await __classPrivateFieldGet(this, _FormatterModule_instances, "m", _FormatterModule_shouldFormat).call(this, document)) {
+            if (__classPrivateFieldGet(this, _FormatterModule_logger, "f")?.isDebugEnabled()) {
               if (!document) {
-                __privateGet(this, _logger).debug("Unknown document, ignoring", { uri });
+                __classPrivateFieldGet(this, _FormatterModule_logger, "f").debug("Unknown document, ignoring", { uri });
               } else {
-                __privateGet(this, _logger).debug("Document should not be formatted, ignoring", {
+                __classPrivateFieldGet(this, _FormatterModule_logger, "f").debug("Document should not be formatted, ignoring", {
                   uri,
                   language: document.languageId
                 });
@@ -21145,53 +21875,70 @@ var require_formatter = __commonJS({
           }
           const linterOptions = {
             config: {
-              rules: formattingOptionsToRules(options)
+              rules: (0, stylelint_1.formattingOptionsToRules)(options)
             }
           };
-          __privateGet(this, _logger)?.debug("Formatting document", { uri, linterOptions });
-          const fixes = __privateGet(this, _context).getFixes(document, linterOptions);
-          __privateGet(this, _logger)?.debug("Returning fixes", { uri, fixes });
+          __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Formatting document", { uri, linterOptions });
+          const fixes = __classPrivateFieldGet(this, _FormatterModule_context, "f").getFixes(document, linterOptions);
+          __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Returning fixes", { uri, fixes });
           return fixes;
         });
-        __privateGet(this, _logger)?.debug("onDocumentFormatting handler registered");
-      }
-      async onDidChangeValidateLanguages({ languages }) {
-        if (__privateGet(this, _logger)?.isDebugEnabled()) {
-          __privateGet(this, _logger)?.debug("Received onDidChangeValidateLanguages", { languages: [...languages] });
-        }
-        if (__privateGet(this, _registerDynamically)) {
-          if (__privateGet(this, _registration)) {
-            __privateGet(this, _logger)?.debug("Disposing old formatter registration");
-            __privateGet(this, _registration).dispose();
-            __privateGet(this, _logger)?.debug("Old formatter registration disposed");
-          }
-          if (languages.size > 0) {
-            const documentSelector = [];
-            for (const language of languages) {
-              documentSelector.push({ language });
-            }
-            if (__privateGet(this, _logger)?.isDebugEnabled()) {
-              __privateGet(this, _logger)?.debug("Registering formatter for languages", { languages: [...languages] });
-            }
-            __privateSet(this, _registration, await __privateGet(this, _context).connection.client.register(DocumentFormattingRequest.type, { documentSelector }));
-            __privateGet(this, _context).connection.sendNotification(Notification.DidRegisterDocumentFormattingEditProvider, {});
-            __privateGet(this, _logger)?.debug("Formatter registered");
-          }
-        }
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("connection.onDocumentFormatting handler registered");
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Registering documents.onDidOpen handler");
+        __classPrivateFieldGet(this, _FormatterModule_context, "f").documents.onDidOpen(({ document }) => __classPrivateFieldGet(this, _FormatterModule_instances, "m", _FormatterModule_register).call(this, document));
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("documents.onDidOpen handler registered");
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Registering documents.onDidChangeContent handler");
+        __classPrivateFieldGet(this, _FormatterModule_context, "f").documents.onDidChangeContent(({ document }) => __classPrivateFieldGet(this, _FormatterModule_instances, "m", _FormatterModule_register).call(this, document));
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("documents.onDidChangeContent handler registered");
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Registering documents.onDidSave handler");
+        __classPrivateFieldGet(this, _FormatterModule_context, "f").documents.onDidSave(({ document }) => __classPrivateFieldGet(this, _FormatterModule_instances, "m", _FormatterModule_register).call(this, document));
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("documents.onDidSave handler registered");
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Registering documents.onDidClose handler");
+        __classPrivateFieldGet(this, _FormatterModule_context, "f").documents.onDidClose(({ document }) => __classPrivateFieldGet(this, _FormatterModule_instances, "m", _FormatterModule_deregister).call(this, document.uri));
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("documents.onDidClose handler registered");
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Registering DidChangeConfigurationNotification");
+        __classPrivateFieldGet(this, _FormatterModule_context, "f").notifications.on(LSP.DidChangeConfigurationNotification.type, () => __classPrivateFieldGet(this, _FormatterModule_instances, "m", _FormatterModule_deregisterAll).call(this));
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("DidChangeConfigurationNotification registered");
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Registering DidChangeWorkspaceFoldersNotification");
+        __classPrivateFieldGet(this, _FormatterModule_context, "f").notifications.on(LSP.DidChangeWorkspaceFoldersNotification.type, () => __classPrivateFieldGet(this, _FormatterModule_instances, "m", _FormatterModule_deregisterAll).call(this));
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("DidChangeWorkspaceFoldersNotification registered");
       }
     };
-    _context = new WeakMap();
-    _logger = new WeakMap();
-    _registerDynamically = new WeakMap();
-    _registration = new WeakMap();
-    _shouldFormat = new WeakSet();
-    shouldFormat_fn = function(document) {
-      return __privateGet(this, _context).options.validate.includes(document.languageId);
+    exports2.FormatterModule = FormatterModule;
+    _FormatterModule_context = new WeakMap(), _FormatterModule_logger = new WeakMap(), _FormatterModule_registerDynamically = new WeakMap(), _FormatterModule_registrations = new WeakMap(), _FormatterModule_instances = new WeakSet(), _FormatterModule_shouldFormat = async function _FormatterModule_shouldFormat2(document) {
+      const options = await __classPrivateFieldGet(this, _FormatterModule_context, "f").getOptions(document.uri);
+      return options.validate.includes(document.languageId);
+    }, _FormatterModule_register = async function _FormatterModule_register2(document) {
+      if (!__classPrivateFieldGet(this, _FormatterModule_registerDynamically, "f") || !await __classPrivateFieldGet(this, _FormatterModule_instances, "m", _FormatterModule_shouldFormat).call(this, document) || __classPrivateFieldGet(this, _FormatterModule_registrations, "f").has(document.uri)) {
+        return;
+      }
+      const { scheme, fsPath } = vscode_uri_1.URI.parse(document.uri);
+      const pattern = (scheme === "file" ? fsPath.replace(/\\/g, "/") : fsPath).replace(/[[\]{}]/g, "?");
+      const filter = { scheme, pattern };
+      const options = { documentSelector: [filter] };
+      __classPrivateFieldGet(this, _FormatterModule_registrations, "f").set(document.uri, __classPrivateFieldGet(this, _FormatterModule_context, "f").connection.client.register(LSP.DocumentFormattingRequest.type, options));
+      __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Registering formatter for document", { uri: document.uri, options });
+      __classPrivateFieldGet(this, _FormatterModule_context, "f").connection.sendNotification(types_1.Notification.DidRegisterDocumentFormattingEditProvider, { uri: document.uri, options });
+    }, _FormatterModule_deregister = function _FormatterModule_deregister2(uri) {
+      const registration = __classPrivateFieldGet(this, _FormatterModule_registrations, "f").get(uri);
+      if (!registration) {
+        return;
+      }
+      __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Deregistering formatter for document", { uri });
+      registration.then(({ dispose }) => dispose()).catch((error) => {
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.error("Error deregistering formatter for document", { uri, error });
+      });
+      __classPrivateFieldGet(this, _FormatterModule_registrations, "f").delete(uri);
+    }, _FormatterModule_deregisterAll = function _FormatterModule_deregisterAll2() {
+      for (const [uri, registration] of __classPrivateFieldGet(this, _FormatterModule_registrations, "f")) {
+        __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.debug("Deregistering formatter for document", { uri });
+        registration.then(({ dispose }) => dispose()).catch((error) => {
+          __classPrivateFieldGet(this, _FormatterModule_logger, "f")?.error("Error deregistering formatter for document", { uri, error });
+        });
+      }
+      __classPrivateFieldGet(this, _FormatterModule_registrations, "f").clear();
     };
-    __publicField(FormatterModule, "id", "formatter");
-    module2.exports = {
-      FormatterModule
-    };
+    FormatterModule.id = "formatter";
   }
 });
 
@@ -23465,128 +24212,149 @@ var require_semver2 = __commonJS({
   }
 });
 
-// src/server/modules/old-stylelint-warning.js
+// build/server/modules/old-stylelint-warning.js
 var require_old_stylelint_warning = __commonJS({
-  "src/server/modules/old-stylelint-warning.js"(exports2, module2) {
+  "build/server/modules/old-stylelint-warning.js"(exports2) {
     "use strict";
-    var path = require("path");
-    var fs = require("fs/promises");
-    var semver = require_semver2();
-    var { getWorkspaceFolder } = require_documents();
-    var { findPackageRoot } = require_packages();
-    var _context, _logger, _checkedWorkspaces, _openMigrationGuide, _getStylelintVersion, getStylelintVersion_fn, _check, check_fn;
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    var _OldStylelintWarningModule_instances;
+    var _OldStylelintWarningModule_context;
+    var _OldStylelintWarningModule_logger;
+    var _OldStylelintWarningModule_checkedWorkspaces;
+    var _OldStylelintWarningModule_openMigrationGuide;
+    var _OldStylelintWarningModule_getStylelintVersion;
+    var _OldStylelintWarningModule_check;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.OldStylelintWarningModule = void 0;
+    var path_12 = __importDefault2(require("path"));
+    var promises_1 = __importDefault2(require("fs/promises"));
+    var semver_1 = __importDefault2(require_semver2());
+    var documents_1 = require_documents();
+    var packages_1 = require_packages();
     var OldStylelintWarningModule = class {
       constructor({ context, logger: logger2 }) {
-        __privateAdd(this, _getStylelintVersion);
-        __privateAdd(this, _check);
-        __privateAdd(this, _context, void 0);
-        __privateAdd(this, _logger, void 0);
-        __privateAdd(this, _checkedWorkspaces, new Set());
-        __privateAdd(this, _openMigrationGuide, false);
-        __privateSet(this, _context, context);
-        __privateSet(this, _logger, logger2);
+        _OldStylelintWarningModule_instances.add(this);
+        _OldStylelintWarningModule_context.set(this, void 0);
+        _OldStylelintWarningModule_logger.set(this, void 0);
+        _OldStylelintWarningModule_checkedWorkspaces.set(this, new Set());
+        _OldStylelintWarningModule_openMigrationGuide.set(this, false);
+        __classPrivateFieldSet(this, _OldStylelintWarningModule_context, context, "f");
+        __classPrivateFieldSet(this, _OldStylelintWarningModule_logger, logger2, "f");
       }
       onInitialize({ capabilities }) {
-        __privateSet(this, _openMigrationGuide, capabilities.window?.showDocument?.support ?? false);
+        __classPrivateFieldSet(this, _OldStylelintWarningModule_openMigrationGuide, capabilities.window?.showDocument?.support ?? false, "f");
       }
       onDidRegisterHandlers() {
-        __privateGet(this, _logger)?.debug("Registering onDidOpen handler");
-        __privateGet(this, _context).documents.onDidOpen(async ({ document }) => {
-          const stylelintVersion = await __privateMethod(this, _check, check_fn).call(this, document);
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("Registering onDidOpen handler");
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_context, "f").documents.onDidOpen(async ({ document }) => {
+          const stylelintVersion = await __classPrivateFieldGet(this, _OldStylelintWarningModule_instances, "m", _OldStylelintWarningModule_check).call(this, document);
           if (!stylelintVersion) {
             return;
           }
-          __privateGet(this, _logger)?.warn(`Found unsupported version of Stylelint: ${stylelintVersion}`);
-          const message = `Stylelint version ${stylelintVersion} is no longer supported \u2014 you may encounter unexpected behavior. Please upgrade to version 14.0.0 or newer. See the migration guide for more information.`;
-          if (!__privateGet(this, _openMigrationGuide)) {
-            __privateGet(this, _context).connection.window.showWarningMessage(message);
+          __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.warn(`Found unsupported version of Stylelint: ${stylelintVersion}`);
+          const message = `Stylelint version ${stylelintVersion} is no longer supported. While it may continue to work for a while, you may encounter unexpected behavior. Please upgrade to version 14.0.0 or newer. See the migration guide for more information.`;
+          if (!__classPrivateFieldGet(this, _OldStylelintWarningModule_openMigrationGuide, "f")) {
+            __classPrivateFieldGet(this, _OldStylelintWarningModule_context, "f").connection.window.showWarningMessage(message);
             return;
           }
-          const warningResponse = await __privateGet(this, _context).connection.window.showWarningMessage(message, {
+          const warningResponse = await __classPrivateFieldGet(this, _OldStylelintWarningModule_context, "f").connection.window.showWarningMessage(message, {
             title: "Open migration guide"
           });
           if (warningResponse?.title === "Open migration guide") {
-            const showURIResponse = await __privateGet(this, _context).connection.window.showDocument({
+            const showURIResponse = await __classPrivateFieldGet(this, _OldStylelintWarningModule_context, "f").connection.window.showDocument({
               uri: "https://github.com/stylelint/vscode-stylelint#migrating-from-vscode-stylelint-0xstylelint-13x",
               external: true
             });
             if (!showURIResponse.success) {
-              __privateGet(this, _logger)?.warn("Failed to open migration guide");
+              __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.warn("Failed to open migration guide");
             }
           }
         });
-        __privateGet(this, _logger)?.debug("onDidOpen handler registered");
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("onDidOpen handler registered");
       }
     };
-    _context = new WeakMap();
-    _logger = new WeakMap();
-    _checkedWorkspaces = new WeakMap();
-    _openMigrationGuide = new WeakMap();
-    _getStylelintVersion = new WeakSet();
-    getStylelintVersion_fn = async function(document) {
-      const result = await __privateGet(this, _context).resolveStylelint(document);
+    exports2.OldStylelintWarningModule = OldStylelintWarningModule;
+    _OldStylelintWarningModule_context = new WeakMap(), _OldStylelintWarningModule_logger = new WeakMap(), _OldStylelintWarningModule_checkedWorkspaces = new WeakMap(), _OldStylelintWarningModule_openMigrationGuide = new WeakMap(), _OldStylelintWarningModule_instances = new WeakSet(), _OldStylelintWarningModule_getStylelintVersion = async function _OldStylelintWarningModule_getStylelintVersion2(document) {
+      const result = await __classPrivateFieldGet(this, _OldStylelintWarningModule_context, "f").resolveStylelint(document);
       if (!result) {
-        __privateGet(this, _logger)?.debug("Stylelint not found", {
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("Stylelint not found", {
           uri: document.uri
         });
         return void 0;
       }
-      const packageDir = await findPackageRoot(result.resolvedPath);
+      const packageDir = await (0, packages_1.findPackageRoot)(result.resolvedPath);
       if (!packageDir) {
-        __privateGet(this, _logger)?.debug("Stylelint package root not found", {
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("Stylelint package root not found", {
           uri: document.uri
         });
         return void 0;
       }
-      const manifestPath = path.join(packageDir, "package.json");
+      const manifestPath = path_12.default.join(packageDir, "package.json");
       try {
-        const rawManifest = await fs.readFile(manifestPath, "utf8");
+        const rawManifest = await promises_1.default.readFile(manifestPath, "utf8");
         const manifest = JSON.parse(rawManifest);
         return manifest.version;
       } catch (error) {
-        __privateGet(this, _logger)?.debug("Stylelint package manifest could not be read", {
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("Stylelint package manifest could not be read", {
           uri: document.uri,
           manifestPath,
           error
         });
         return void 0;
       }
-    };
-    _check = new WeakSet();
-    check_fn = async function(document) {
-      if (!__privateGet(this, _context).options.validate.includes(document.languageId)) {
-        __privateGet(this, _logger)?.debug("Document should not be validated, ignoring", {
+    }, _OldStylelintWarningModule_check = async function _OldStylelintWarningModule_check2(document) {
+      const options = await __classPrivateFieldGet(this, _OldStylelintWarningModule_context, "f").getOptions(document.uri);
+      if (!options.validate.includes(document.languageId)) {
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("Document should not be validated, ignoring", {
           uri: document.uri,
           language: document.languageId
         });
         return void 0;
       }
-      const workspaceFolder = await getWorkspaceFolder(__privateGet(this, _context).connection, document);
+      const workspaceFolder = await (0, documents_1.getWorkspaceFolder)(__classPrivateFieldGet(this, _OldStylelintWarningModule_context, "f").connection, document);
       if (!workspaceFolder) {
-        __privateGet(this, _logger)?.debug("Document not part of a workspace, ignoring", {
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("Document not part of a workspace, ignoring", {
           uri: document.uri
         });
         return void 0;
       }
-      if (__privateGet(this, _checkedWorkspaces).has(workspaceFolder)) {
-        __privateGet(this, _logger)?.debug("Document has already been checked, ignoring", {
+      if (__classPrivateFieldGet(this, _OldStylelintWarningModule_checkedWorkspaces, "f").has(workspaceFolder)) {
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("Document has already been checked, ignoring", {
           uri: document.uri
         });
         return void 0;
       }
-      __privateGet(this, _checkedWorkspaces).add(workspaceFolder);
-      const stylelintVersion = await __privateMethod(this, _getStylelintVersion, getStylelintVersion_fn).call(this, document);
+      __classPrivateFieldGet(this, _OldStylelintWarningModule_checkedWorkspaces, "f").add(workspaceFolder);
+      const stylelintVersion = await __classPrivateFieldGet(this, _OldStylelintWarningModule_instances, "m", _OldStylelintWarningModule_getStylelintVersion).call(this, document);
       if (!stylelintVersion) {
         return void 0;
       }
       try {
-        const coerced = semver.coerce(stylelintVersion);
+        const coerced = semver_1.default.coerce(stylelintVersion);
         if (!coerced) {
           throw new Error(`Could not coerce version "${stylelintVersion}"`);
         }
-        return semver.lt(coerced, "14.0.0") ? stylelintVersion : void 0;
+        return semver_1.default.lt(coerced, "14.0.0") ? stylelintVersion : void 0;
       } catch (error) {
-        __privateGet(this, _logger)?.debug("Stylelint version could not be parsed", {
+        __classPrivateFieldGet(this, _OldStylelintWarningModule_logger, "f")?.debug("Stylelint version could not be parsed", {
           uri: document.uri,
           version: stylelintVersion,
           error
@@ -23594,129 +24362,149 @@ var require_old_stylelint_warning = __commonJS({
         return void 0;
       }
     };
-    __publicField(OldStylelintWarningModule, "id", "old-stylelint-warning");
-    module2.exports = {
-      OldStylelintWarningModule
-    };
+    OldStylelintWarningModule.id = "old-stylelint-warning";
   }
 });
 
-// src/server/modules/validator.js
+// build/server/modules/validator.js
 var require_validator = __commonJS({
-  "src/server/modules/validator.js"(exports2, module2) {
+  "build/server/modules/validator.js"(exports2) {
     "use strict";
-    var _context, _logger, _documentDiagnostics, _shouldValidate, shouldValidate_fn, _validate, validate_fn, _validateAll, validateAll_fn, _clearDiagnostics, clearDiagnostics_fn;
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _ValidatorModule_instances;
+    var _ValidatorModule_context;
+    var _ValidatorModule_logger;
+    var _ValidatorModule_documentDiagnostics;
+    var _ValidatorModule_shouldValidate;
+    var _ValidatorModule_validate;
+    var _ValidatorModule_validateAll;
+    var _ValidatorModule_clearDiagnostics;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.ValidatorModule = void 0;
+    var vscode_languageserver_protocol_1 = require_main3();
     var ValidatorModule = class {
       constructor({ context, logger: logger2 }) {
-        __privateAdd(this, _shouldValidate);
-        __privateAdd(this, _validate);
-        __privateAdd(this, _validateAll);
-        __privateAdd(this, _clearDiagnostics);
-        __privateAdd(this, _context, void 0);
-        __privateAdd(this, _logger, void 0);
-        __privateAdd(this, _documentDiagnostics, new Map());
-        __privateSet(this, _context, context);
-        __privateSet(this, _logger, logger2);
+        _ValidatorModule_instances.add(this);
+        _ValidatorModule_context.set(this, void 0);
+        _ValidatorModule_logger.set(this, void 0);
+        _ValidatorModule_documentDiagnostics.set(this, new Map());
+        __classPrivateFieldSet(this, _ValidatorModule_context, context, "f");
+        __classPrivateFieldSet(this, _ValidatorModule_logger, logger2, "f");
       }
       getDiagnostics(uri) {
-        return __privateGet(this, _documentDiagnostics).get(uri) ?? [];
+        return __classPrivateFieldGet(this, _ValidatorModule_documentDiagnostics, "f").get(uri) ?? [];
       }
       onInitialize() {
-        void __privateMethod(this, _validateAll, validateAll_fn).call(this);
+        void __classPrivateFieldGet(this, _ValidatorModule_instances, "m", _ValidatorModule_validateAll).call(this);
       }
       onDidRegisterHandlers() {
-        __privateGet(this, _logger)?.debug("Registering handlers");
-        __privateGet(this, _context).connection.onDidChangeWatchedFiles(async () => await __privateMethod(this, _validateAll, validateAll_fn).call(this));
-        __privateGet(this, _logger)?.debug("onDidChangeWatchedFiles handler registered");
-        __privateGet(this, _context).documents.onDidChangeContent(async ({ document }) => await __privateMethod(this, _validate, validate_fn).call(this, document));
-        __privateGet(this, _logger)?.debug("onDidChangeContent handler registered");
-        __privateGet(this, _context).documents.onDidClose(({ document }) => {
-          __privateMethod(this, _clearDiagnostics, clearDiagnostics_fn).call(this, document);
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Registering handlers");
+        __classPrivateFieldGet(this, _ValidatorModule_context, "f").notifications.on(vscode_languageserver_protocol_1.DidChangeWatchedFilesNotification.type, async () => await __classPrivateFieldGet(this, _ValidatorModule_instances, "m", _ValidatorModule_validateAll).call(this));
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("onDidChangeWatchedFiles handler registered");
+        __classPrivateFieldGet(this, _ValidatorModule_context, "f").documents.onDidChangeContent(async ({ document }) => await __classPrivateFieldGet(this, _ValidatorModule_instances, "m", _ValidatorModule_validate).call(this, document));
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("onDidChangeContent handler registered");
+        __classPrivateFieldGet(this, _ValidatorModule_context, "f").documents.onDidClose(({ document }) => {
+          __classPrivateFieldGet(this, _ValidatorModule_instances, "m", _ValidatorModule_clearDiagnostics).call(this, document);
         });
-        __privateGet(this, _logger)?.debug("onDidClose handler registered");
-        __privateGet(this, _logger)?.debug("Handlers registered");
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("onDidClose handler registered");
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Handlers registered");
       }
       async onDidChangeConfiguration() {
-        __privateGet(this, _logger)?.debug("Received onDidChangeConfiguration");
-        await __privateMethod(this, _validateAll, validateAll_fn).call(this);
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Received onDidChangeConfiguration");
+        await __classPrivateFieldGet(this, _ValidatorModule_instances, "m", _ValidatorModule_validateAll).call(this);
       }
-      onDidChangeValidateLanguages({ removedLanguages }) {
-        if (__privateGet(this, _logger)?.isDebugEnabled()) {
-          __privateGet(this, _logger)?.debug("Received onDidChangeValidateLanguages", {
-            removedLanguages: [...removedLanguages]
+    };
+    exports2.ValidatorModule = ValidatorModule;
+    _ValidatorModule_context = new WeakMap(), _ValidatorModule_logger = new WeakMap(), _ValidatorModule_documentDiagnostics = new WeakMap(), _ValidatorModule_instances = new WeakSet(), _ValidatorModule_shouldValidate = async function _ValidatorModule_shouldValidate2(document) {
+      const options = await __classPrivateFieldGet(this, _ValidatorModule_context, "f").getOptions(document.uri);
+      return options.validate.includes(document.languageId);
+    }, _ValidatorModule_validate = async function _ValidatorModule_validate2(document) {
+      if (!await __classPrivateFieldGet(this, _ValidatorModule_instances, "m", _ValidatorModule_shouldValidate).call(this, document)) {
+        if (__classPrivateFieldGet(this, _ValidatorModule_documentDiagnostics, "f").has(document.uri)) {
+          __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Document should not be validated, clearing diagnostics", {
+            uri: document.uri,
+            language: document.languageId
+          });
+          __classPrivateFieldGet(this, _ValidatorModule_instances, "m", _ValidatorModule_clearDiagnostics).call(this, document);
+        } else {
+          __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Document should not be validated, ignoring", {
+            uri: document.uri,
+            language: document.languageId
           });
         }
-        for (const document of __privateGet(this, _context).documents.all()) {
-          if (removedLanguages.has(document.languageId)) {
-            __privateMethod(this, _clearDiagnostics, clearDiagnostics_fn).call(this, document);
-          }
-        }
-      }
-    };
-    _context = new WeakMap();
-    _logger = new WeakMap();
-    _documentDiagnostics = new WeakMap();
-    _shouldValidate = new WeakSet();
-    shouldValidate_fn = function(document) {
-      return __privateGet(this, _context).options.validate.includes(document.languageId);
-    };
-    _validate = new WeakSet();
-    validate_fn = async function(document) {
-      if (!__privateMethod(this, _shouldValidate, shouldValidate_fn).call(this, document)) {
-        __privateGet(this, _logger)?.debug("Document should not be validated, ignoring", {
-          uri: document.uri,
-          language: document.languageId
-        });
         return;
       }
-      const result = await __privateGet(this, _context).lintDocument(document);
+      const result = await __classPrivateFieldGet(this, _ValidatorModule_context, "f").lintDocument(document);
       if (!result) {
-        __privateGet(this, _logger)?.debug("No lint result, ignoring", { uri: document.uri });
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("No lint result, ignoring", { uri: document.uri });
         return;
       }
-      __privateGet(this, _logger)?.debug("Sending diagnostics", { uri: document.uri, result });
+      __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Sending diagnostics", { uri: document.uri, result });
       try {
-        __privateGet(this, _context).connection.sendDiagnostics({
+        __classPrivateFieldGet(this, _ValidatorModule_context, "f").connection.sendDiagnostics({
           uri: document.uri,
           diagnostics: result.diagnostics
         });
-        __privateGet(this, _documentDiagnostics).set(document.uri, result.diagnostics);
-        __privateGet(this, _logger)?.debug("Diagnostics sent", { uri: document.uri });
+        __classPrivateFieldGet(this, _ValidatorModule_documentDiagnostics, "f").set(document.uri, result.diagnostics);
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Diagnostics sent", { uri: document.uri });
       } catch (error) {
-        __privateGet(this, _context).displayError(error);
-        __privateGet(this, _logger)?.error("Failed to send diagnostics", { uri: document.uri, error });
+        __classPrivateFieldGet(this, _ValidatorModule_context, "f").displayError(error);
+        __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.error("Failed to send diagnostics", { uri: document.uri, error });
       }
+    }, _ValidatorModule_validateAll = async function _ValidatorModule_validateAll2() {
+      await Promise.allSettled(__classPrivateFieldGet(this, _ValidatorModule_context, "f").documents.all().map((document) => __classPrivateFieldGet(this, _ValidatorModule_instances, "m", _ValidatorModule_validate).call(this, document)));
+    }, _ValidatorModule_clearDiagnostics = function _ValidatorModule_clearDiagnostics2({ uri }) {
+      __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Clearing diagnostics for document", { uri });
+      __classPrivateFieldGet(this, _ValidatorModule_documentDiagnostics, "f").delete(uri);
+      __classPrivateFieldGet(this, _ValidatorModule_context, "f").connection.sendDiagnostics({ uri, diagnostics: [] });
+      __classPrivateFieldGet(this, _ValidatorModule_logger, "f")?.debug("Diagnostics cleared", { uri });
     };
-    _validateAll = new WeakSet();
-    validateAll_fn = async function() {
-      await Promise.allSettled(__privateGet(this, _context).documents.all().map((document) => __privateMethod(this, _validate, validate_fn).call(this, document)));
-    };
-    _clearDiagnostics = new WeakSet();
-    clearDiagnostics_fn = function({ uri }) {
-      __privateGet(this, _logger)?.debug("Clearing diagnostics for document", { uri });
-      __privateGet(this, _documentDiagnostics).delete(uri);
-      __privateGet(this, _context).connection.sendDiagnostics({ uri, diagnostics: [] });
-      __privateGet(this, _logger)?.debug("Diagnostics cleared", { uri });
-    };
-    __publicField(ValidatorModule, "id", "validator");
-    module2.exports = {
-      ValidatorModule
-    };
+    ValidatorModule.id = "validator";
   }
 });
 
-// src/server/modules/index.js
+// build/server/modules/index.js
 var require_modules = __commonJS({
-  "src/server/modules/index.js"(exports2, module2) {
+  "build/server/modules/index.js"(exports2) {
     "use strict";
-    module2.exports = {
-      ...require_auto_fix(),
-      ...require_code_action(),
-      ...require_completion(),
-      ...require_formatter(),
-      ...require_old_stylelint_warning(),
-      ...require_validator()
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
     };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_auto_fix(), exports2);
+    __exportStar(require_code_action(), exports2);
+    __exportStar(require_completion(), exports2);
+    __exportStar(require_formatter(), exports2);
+    __exportStar(require_old_stylelint_warning(), exports2);
+    __exportStar(require_validator(), exports2);
   }
 });
 
@@ -23980,81 +24768,454 @@ var require_main5 = __commonJS({
   }
 });
 
-// src/utils/objects.js
-var require_objects = __commonJS({
-  "src/utils/objects.js"(exports2, module2) {
+// build/utils/objects/is-object.js
+var require_is_object = __commonJS({
+  "build/utils/objects/is-object.js"(exports2) {
     "use strict";
-    function deepAssign(target, source1, source2) {
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.isObject = void 0;
+    function isObject(value) {
+      return typeof value === "object" && value !== null;
+    }
+    exports2.isObject = isObject;
+  }
+});
+
+// build/utils/objects/merge-assign.js
+var require_merge_assign = __commonJS({
+  "build/utils/objects/merge-assign.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.mergeAssign = void 0;
+    var is_object_1 = require_is_object();
+    function mergeAssign(target, source1, source2) {
+      const targetAsUnion = target;
       for (const object of [source1, source2]) {
         if (!object) {
           continue;
         }
         for (const key of Object.keys(object)) {
           const value = object[key];
-          if (typeof value === "object" && value) {
-            if (!target[key]) {
-              target[key] = Array.isArray(value) ? [] : {};
+          if ((0, is_object_1.isObject)(value)) {
+            if (Array.isArray(value)) {
+              const existing = targetAsUnion[key];
+              targetAsUnion[key] = Array.isArray(existing) ? existing.concat(value) : value;
+              continue;
             }
-            target[key] = deepAssign(target[key], value);
+            if (!targetAsUnion[key]) {
+              targetAsUnion[key] = {};
+            }
+            targetAsUnion[key] = mergeAssign(targetAsUnion[key], value);
           } else {
-            target[key] = value;
+            targetAsUnion[key] = value;
           }
         }
       }
-      return target;
+      return targetAsUnion;
     }
-    module2.exports = {
-      deepAssign
-    };
+    exports2.mergeAssign = mergeAssign;
   }
 });
 
-// src/server/server.js
-var require_server2 = __commonJS({
-  "src/server/server.js"(exports2, module2) {
+// node_modules/rfdc/index.js
+var require_rfdc = __commonJS({
+  "node_modules/rfdc/index.js"(exports2, module2) {
     "use strict";
-    var { TextDocument } = require_main5();
-    var { TextDocuments } = require_node3();
-    var { TextDocumentSyncKind } = require_main3();
-    var { getFixes } = require_documents();
-    var { displayError } = require_lsp();
-    var { deepAssign } = require_objects();
-    var { StylelintRunner } = require_stylelint();
-    var { StylelintResolver } = require_packages();
-    var defaultOptions = {
-      packageManager: "npm",
-      validate: ["css", "postcss"],
-      snippet: ["css", "postcss"]
+    module2.exports = rfdc;
+    function copyBuffer(cur) {
+      if (cur instanceof Buffer) {
+        return Buffer.from(cur);
+      }
+      return new cur.constructor(cur.buffer.slice(), cur.byteOffset, cur.length);
+    }
+    function rfdc(opts) {
+      opts = opts || {};
+      if (opts.circles)
+        return rfdcCircles(opts);
+      return opts.proto ? cloneProto : clone;
+      function cloneArray(a, fn) {
+        var keys = Object.keys(a);
+        var a2 = new Array(keys.length);
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i];
+          var cur = a[k];
+          if (typeof cur !== "object" || cur === null) {
+            a2[k] = cur;
+          } else if (cur instanceof Date) {
+            a2[k] = new Date(cur);
+          } else if (ArrayBuffer.isView(cur)) {
+            a2[k] = copyBuffer(cur);
+          } else {
+            a2[k] = fn(cur);
+          }
+        }
+        return a2;
+      }
+      function clone(o) {
+        if (typeof o !== "object" || o === null)
+          return o;
+        if (o instanceof Date)
+          return new Date(o);
+        if (Array.isArray(o))
+          return cloneArray(o, clone);
+        if (o instanceof Map)
+          return new Map(cloneArray(Array.from(o), clone));
+        if (o instanceof Set)
+          return new Set(cloneArray(Array.from(o), clone));
+        var o2 = {};
+        for (var k in o) {
+          if (Object.hasOwnProperty.call(o, k) === false)
+            continue;
+          var cur = o[k];
+          if (typeof cur !== "object" || cur === null) {
+            o2[k] = cur;
+          } else if (cur instanceof Date) {
+            o2[k] = new Date(cur);
+          } else if (cur instanceof Map) {
+            o2[k] = new Map(cloneArray(Array.from(cur), clone));
+          } else if (cur instanceof Set) {
+            o2[k] = new Set(cloneArray(Array.from(cur), clone));
+          } else if (ArrayBuffer.isView(cur)) {
+            o2[k] = copyBuffer(cur);
+          } else {
+            o2[k] = clone(cur);
+          }
+        }
+        return o2;
+      }
+      function cloneProto(o) {
+        if (typeof o !== "object" || o === null)
+          return o;
+        if (o instanceof Date)
+          return new Date(o);
+        if (Array.isArray(o))
+          return cloneArray(o, cloneProto);
+        if (o instanceof Map)
+          return new Map(cloneArray(Array.from(o), cloneProto));
+        if (o instanceof Set)
+          return new Set(cloneArray(Array.from(o), cloneProto));
+        var o2 = {};
+        for (var k in o) {
+          var cur = o[k];
+          if (typeof cur !== "object" || cur === null) {
+            o2[k] = cur;
+          } else if (cur instanceof Date) {
+            o2[k] = new Date(cur);
+          } else if (cur instanceof Map) {
+            o2[k] = new Map(cloneArray(Array.from(cur), cloneProto));
+          } else if (cur instanceof Set) {
+            o2[k] = new Set(cloneArray(Array.from(cur), cloneProto));
+          } else if (ArrayBuffer.isView(cur)) {
+            o2[k] = copyBuffer(cur);
+          } else {
+            o2[k] = cloneProto(cur);
+          }
+        }
+        return o2;
+      }
+    }
+    function rfdcCircles(opts) {
+      var refs = [];
+      var refsNew = [];
+      return opts.proto ? cloneProto : clone;
+      function cloneArray(a, fn) {
+        var keys = Object.keys(a);
+        var a2 = new Array(keys.length);
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i];
+          var cur = a[k];
+          if (typeof cur !== "object" || cur === null) {
+            a2[k] = cur;
+          } else if (cur instanceof Date) {
+            a2[k] = new Date(cur);
+          } else if (ArrayBuffer.isView(cur)) {
+            a2[k] = copyBuffer(cur);
+          } else {
+            var index = refs.indexOf(cur);
+            if (index !== -1) {
+              a2[k] = refsNew[index];
+            } else {
+              a2[k] = fn(cur);
+            }
+          }
+        }
+        return a2;
+      }
+      function clone(o) {
+        if (typeof o !== "object" || o === null)
+          return o;
+        if (o instanceof Date)
+          return new Date(o);
+        if (Array.isArray(o))
+          return cloneArray(o, clone);
+        if (o instanceof Map)
+          return new Map(cloneArray(Array.from(o), clone));
+        if (o instanceof Set)
+          return new Set(cloneArray(Array.from(o), clone));
+        var o2 = {};
+        refs.push(o);
+        refsNew.push(o2);
+        for (var k in o) {
+          if (Object.hasOwnProperty.call(o, k) === false)
+            continue;
+          var cur = o[k];
+          if (typeof cur !== "object" || cur === null) {
+            o2[k] = cur;
+          } else if (cur instanceof Date) {
+            o2[k] = new Date(cur);
+          } else if (cur instanceof Map) {
+            o2[k] = new Map(cloneArray(Array.from(cur), clone));
+          } else if (cur instanceof Set) {
+            o2[k] = new Set(cloneArray(Array.from(cur), clone));
+          } else if (ArrayBuffer.isView(cur)) {
+            o2[k] = copyBuffer(cur);
+          } else {
+            var i = refs.indexOf(cur);
+            if (i !== -1) {
+              o2[k] = refsNew[i];
+            } else {
+              o2[k] = clone(cur);
+            }
+          }
+        }
+        refs.pop();
+        refsNew.pop();
+        return o2;
+      }
+      function cloneProto(o) {
+        if (typeof o !== "object" || o === null)
+          return o;
+        if (o instanceof Date)
+          return new Date(o);
+        if (Array.isArray(o))
+          return cloneArray(o, cloneProto);
+        if (o instanceof Map)
+          return new Map(cloneArray(Array.from(o), cloneProto));
+        if (o instanceof Set)
+          return new Set(cloneArray(Array.from(o), cloneProto));
+        var o2 = {};
+        refs.push(o);
+        refsNew.push(o2);
+        for (var k in o) {
+          var cur = o[k];
+          if (typeof cur !== "object" || cur === null) {
+            o2[k] = cur;
+          } else if (cur instanceof Date) {
+            o2[k] = new Date(cur);
+          } else if (cur instanceof Map) {
+            o2[k] = new Map(cloneArray(Array.from(cur), cloneProto));
+          } else if (cur instanceof Set) {
+            o2[k] = new Set(cloneArray(Array.from(cur), cloneProto));
+          } else if (ArrayBuffer.isView(cur)) {
+            o2[k] = copyBuffer(cur);
+          } else {
+            var i = refs.indexOf(cur);
+            if (i !== -1) {
+              o2[k] = refsNew[i];
+            } else {
+              o2[k] = cloneProto(cur);
+            }
+          }
+        }
+        refs.pop();
+        refsNew.pop();
+        return o2;
+      }
+    }
+  }
+});
+
+// build/utils/objects/merge-options-with-defaults.js
+var require_merge_options_with_defaults = __commonJS({
+  "build/utils/objects/merge-options-with-defaults.js"(exports2) {
+    "use strict";
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
     };
-    var StylelintLanguageServer2 = class {
-      #connection;
-      #logger;
-      #options;
-      #resolver;
-      #runner;
-      #documents;
-      #context;
-      #modules = new Map();
-      #hasSentInitialConfiguration = false;
-      constructor({ connection: connection2, logger: logger2, modules: modules2 }) {
-        this.#connection = connection2;
-        this.#logger = logger2?.child({ component: "language-server" });
-        this.#options = defaultOptions;
-        this.#resolver = new StylelintResolver(connection2, this.#logger);
-        this.#runner = new StylelintRunner(connection2, this.#logger, this.#resolver);
-        this.#documents = new TextDocuments(TextDocument);
-        this.#context = {
-          connection: this.#connection,
-          documents: this.#documents,
-          options: this.#options,
-          runner: this.#runner,
-          getModule: this.#getModule.bind(this),
-          getFixes: this.#getFixes.bind(this),
-          displayError: this.#displayError.bind(this),
-          lintDocument: this.#lintDocument.bind(this),
-          resolveStylelint: this.#resolveStylelint.bind(this)
-        };
-        const contextReadOnlyProxy = new Proxy(this.#context, {
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.mergeOptionsWithDefaults = void 0;
+    var rfdc_1 = __importDefault2(require_rfdc());
+    var is_object_1 = require_is_object();
+    var deepClone = (0, rfdc_1.default)();
+    function mergeOptionsWithDefaultsInner(options, defaults, seen, mapped, circulars) {
+      if (!(0, is_object_1.isObject)(options)) {
+        return deepClone(defaults);
+      }
+      const result = {};
+      for (const key of Object.keys(defaults)) {
+        const fromDefaults = defaults[key];
+        const fromOptions = options[key];
+        if (fromOptions !== void 0) {
+          if ((0, is_object_1.isObject)(fromOptions)) {
+            if (seen.has(fromOptions)) {
+              circulars.add([fromOptions, result, key]);
+              continue;
+            }
+            seen.add(fromOptions);
+            const value = Array.isArray(fromOptions) ? fromOptions.map((item) => deepClone(item)) : (0, is_object_1.isObject)(fromDefaults) && !Array.isArray(fromDefaults) ? mergeOptionsWithDefaultsInner(fromOptions, fromDefaults, seen, mapped, circulars) : deepClone(fromOptions);
+            mapped.set(fromOptions, value);
+            result[key] = value;
+            continue;
+          }
+          result[key] = fromOptions;
+          continue;
+        }
+        result[key] = deepClone(fromDefaults);
+      }
+      return result;
+    }
+    function mergeOptionsWithDefaults(options, defaults) {
+      const seen = new WeakSet();
+      const mapped = new WeakMap();
+      const circulars = new Set();
+      const result = mergeOptionsWithDefaultsInner(options, defaults, seen, mapped, circulars);
+      for (const [circular, obj, key] of circulars) {
+        obj[key] = mapped.get(circular);
+      }
+      return result;
+    }
+    exports2.mergeOptionsWithDefaults = mergeOptionsWithDefaults;
+  }
+});
+
+// build/utils/objects/index.js
+var require_objects = __commonJS({
+  "build/utils/objects/index.js"(exports2) {
+    "use strict";
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_is_object(), exports2);
+    __exportStar(require_merge_assign(), exports2);
+    __exportStar(require_merge_options_with_defaults(), exports2);
+  }
+});
+
+// build/server/server.js
+var require_server2 = __commonJS({
+  "build/server/server.js"(exports2) {
+    "use strict";
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var _StylelintLanguageServer_instances;
+    var _StylelintLanguageServer_connection;
+    var _StylelintLanguageServer_logger;
+    var _StylelintLanguageServer_notifications;
+    var _StylelintLanguageServer_commands;
+    var _StylelintLanguageServer_globalOptions;
+    var _StylelintLanguageServer_resolver;
+    var _StylelintLanguageServer_runner;
+    var _StylelintLanguageServer_documents;
+    var _StylelintLanguageServer_context;
+    var _StylelintLanguageServer_modules;
+    var _StylelintLanguageServer_hasConfigurationCapability;
+    var _StylelintLanguageServer_scopedOptions;
+    var _StylelintLanguageServer_displayError;
+    var _StylelintLanguageServer_getOptions;
+    var _StylelintLanguageServer_resolveStylelint;
+    var _StylelintLanguageServer_lintDocument;
+    var _StylelintLanguageServer_getFixes;
+    var _StylelintLanguageServer_getModule;
+    var _StylelintLanguageServer_registerHandlers;
+    var _StylelintLanguageServer_invokeHandlers;
+    var _StylelintLanguageServer_onInitialize;
+    var _StylelintLanguageServer_onInitialized;
+    var _StylelintLanguageServer_onDidCloseDocument;
+    var _StylelintLanguageServer_onDidChangeConfiguration;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.StylelintLanguageServer = void 0;
+    var vscode_languageserver_textdocument_1 = require_main5();
+    var node_12 = require_node3();
+    var vscode_languageserver_protocol_1 = require_main3();
+    var documents_1 = require_documents();
+    var lsp_1 = require_lsp();
+    var objects_1 = require_objects();
+    var stylelint_1 = require_stylelint();
+    var packages_1 = require_packages();
+    var types_1 = require_types();
+    var defaultOptions = {
+      codeAction: {
+        disableRuleComment: {
+          location: "separateLine"
+        }
+      },
+      config: null,
+      configFile: "",
+      configBasedir: "",
+      customSyntax: "",
+      ignoreDisables: false,
+      packageManager: "npm",
+      reportInvalidScopeDisables: false,
+      reportNeedlessDisables: false,
+      snippet: ["css", "postcss"],
+      stylelintPath: "",
+      validate: ["css", "postcss"]
+    };
+    var StylelintLanguageServer = class {
+      constructor({ connection: connection2, logger: logger2, modules }) {
+        _StylelintLanguageServer_instances.add(this);
+        _StylelintLanguageServer_connection.set(this, void 0);
+        _StylelintLanguageServer_logger.set(this, void 0);
+        _StylelintLanguageServer_notifications.set(this, void 0);
+        _StylelintLanguageServer_commands.set(this, void 0);
+        _StylelintLanguageServer_globalOptions.set(this, void 0);
+        _StylelintLanguageServer_resolver.set(this, void 0);
+        _StylelintLanguageServer_runner.set(this, void 0);
+        _StylelintLanguageServer_documents.set(this, void 0);
+        _StylelintLanguageServer_context.set(this, void 0);
+        _StylelintLanguageServer_modules.set(this, new Map());
+        _StylelintLanguageServer_hasConfigurationCapability.set(this, false);
+        _StylelintLanguageServer_scopedOptions.set(this, new Map());
+        __classPrivateFieldSet(this, _StylelintLanguageServer_connection, connection2, "f");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_logger, logger2?.child({ component: "language-server" }), "f");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_notifications, new lsp_1.NotificationManager(connection2, __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")), "f");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_commands, new lsp_1.CommandManager(connection2, __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")), "f");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_globalOptions, defaultOptions, "f");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_resolver, new packages_1.StylelintResolver(connection2, __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")), "f");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_runner, new stylelint_1.StylelintRunner(connection2, __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f"), __classPrivateFieldGet(this, _StylelintLanguageServer_resolver, "f")), "f");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_documents, new node_12.TextDocuments(vscode_languageserver_textdocument_1.TextDocument), "f");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_context, {
+          connection: __classPrivateFieldGet(this, _StylelintLanguageServer_connection, "f"),
+          notifications: __classPrivateFieldGet(this, _StylelintLanguageServer_notifications, "f"),
+          commands: __classPrivateFieldGet(this, _StylelintLanguageServer_commands, "f"),
+          documents: __classPrivateFieldGet(this, _StylelintLanguageServer_documents, "f"),
+          runner: __classPrivateFieldGet(this, _StylelintLanguageServer_runner, "f"),
+          getOptions: __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_getOptions).bind(this),
+          getModule: __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_getModule).bind(this),
+          getFixes: __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_getFixes).bind(this),
+          displayError: __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_displayError).bind(this),
+          lintDocument: __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_lintDocument).bind(this),
+          resolveStylelint: __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_resolveStylelint).bind(this)
+        }, "f");
+        const contextReadOnlyProxy = new Proxy(__classPrivateFieldGet(this, _StylelintLanguageServer_context, "f"), {
           get(target, name) {
             return target[name];
           },
@@ -24062,9 +25223,9 @@ var require_server2 = __commonJS({
             throw new Error("Cannot set read-only property");
           }
         });
-        if (modules2) {
-          for (const Module of modules2) {
-            this.#logger?.info("Registering module", { module: Module.id });
+        if (modules) {
+          for (const Module of modules) {
+            __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.info("Registering module", { module: Module.id });
             if (!Module.id) {
               throw new Error("Modules must have an ID");
             }
@@ -24075,181 +25236,217 @@ var require_server2 = __commonJS({
               context: contextReadOnlyProxy,
               logger: logger2?.child({ component: `language-server:${Module.id}` })
             });
-            if (this.#modules.has(Module.id)) {
+            if (__classPrivateFieldGet(this, _StylelintLanguageServer_modules, "f").has(Module.id)) {
               throw new Error(`Module with ID "${Module.id}" already registered`);
             }
-            this.#modules.set(Module.id, module3);
-            this.#logger?.info("Module registered", { module: Module.id });
+            __classPrivateFieldGet(this, _StylelintLanguageServer_modules, "f").set(Module.id, module3);
+            __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.info("Module registered", { module: Module.id });
           }
         }
       }
       start() {
-        this.#logger?.info("Starting language server");
-        this.#registerHandlers();
-        this.#documents.listen(this.#connection);
-        this.#connection.listen();
-        this.#logger?.info("Language server started");
-      }
-      #displayError(error) {
-        displayError(this.#connection, error);
-      }
-      async #resolveStylelint(document) {
-        this.#logger?.debug("Resolving Stylelint", { uri: document.uri });
-        try {
-          const result = await this.#resolver.resolve(this.#options, document);
-          if (result) {
-            this.#logger?.debug("Stylelint resolved", {
-              uri: document.uri,
-              resolvedPath: result.resolvedPath
-            });
-          } else {
-            this.#logger?.warn("Failed to resolve Stylelint", { uri: document.uri });
-          }
-          return result;
-        } catch (error) {
-          this.#displayError(error);
-          this.#logger?.error("Error resolving Stylelint", { uri: document.uri, error });
-          return void 0;
-        }
-      }
-      async #lintDocument(document, linterOptions = {}) {
-        this.#logger?.debug("Linting document", { uri: document.uri, linterOptions });
-        try {
-          const results = await this.#runner.lintDocument(document, linterOptions, this.#options);
-          this.#logger?.debug("Lint run complete", { uri: document.uri, results });
-          return results;
-        } catch (err) {
-          this.#displayError(err);
-          this.#logger?.error("Error running lint", { uri: document.uri, error: err });
-          return void 0;
-        }
-      }
-      async #getFixes(document, linterOptions = {}) {
-        try {
-          const edits = await getFixes(this.#runner, document, linterOptions, this.#options);
-          this.#logger?.debug("Fixes retrieved", { uri: document.uri, edits });
-          return edits;
-        } catch (error) {
-          this.#displayError(error);
-          this.#logger?.error("Error getting fixes", { uri: document.uri, error });
-          return [];
-        }
-      }
-      #getModule(id) {
-        return this.#modules.get(id);
-      }
-      #setOptions(options) {
-        this.#options = {
-          config: options.config,
-          configBasedir: options.configBasedir,
-          configFile: options.configFile,
-          customSyntax: options.customSyntax,
-          ignoreDisables: options.ignoreDisables,
-          packageManager: options.packageManager || defaultOptions.packageManager,
-          reportInvalidScopeDisables: options.reportInvalidScopeDisables,
-          reportNeedlessDisables: options.reportNeedlessDisables,
-          snippet: options.snippet ?? defaultOptions.snippet,
-          stylelintPath: options.stylelintPath,
-          validate: options.validate ?? defaultOptions.validate
-        };
-        Object.freeze(this.#options);
-        this.#context.options = this.#options;
-        this.#logger?.debug("Options updated", { options: this.#options });
-      }
-      #registerHandlers() {
-        this.#logger?.info("Registering handlers");
-        this.#connection.onInitialize(this.#onInitialize.bind(this));
-        this.#logger?.debug("onInitialize handler registered");
-        this.#connection.onDidChangeConfiguration(this.#onDidChangeConfiguration.bind(this));
-        this.#logger?.debug("onDidChangeConfiguration handler registered");
-        this.#invokeHandlers("onDidRegisterHandlers");
-        this.#logger?.info("Handlers registered");
-      }
-      #invokeHandlers(handlerName, ...params) {
-        this.#logger?.debug(`Invoking ${handlerName}`);
-        const returnValues = Object.create(null);
-        for (const [id, module3] of this.#modules) {
-          const handler = module3[handlerName];
-          if (handler) {
-            try {
-              returnValues[id] = handler.apply(module3, params);
-              this.#logger?.debug(`Invoked ${handlerName}`, {
-                module: id,
-                returnValue: returnValues[id]
-              });
-            } catch (error) {
-              this.#displayError(error);
-              this.#logger?.error(`Error invoking ${handlerName}`, {
-                module: id,
-                error
-              });
-            }
-          }
-        }
-        return returnValues;
-      }
-      #onInitialize(params) {
-        this.#logger?.debug("received onInitialize", { params });
-        const result = {
-          capabilities: {
-            textDocumentSync: {
-              openClose: true,
-              change: TextDocumentSyncKind.Full
-            }
-          }
-        };
-        for (const [, moduleResult] of Object.entries(this.#invokeHandlers("onInitialize", params))) {
-          if (moduleResult) {
-            deepAssign(result, moduleResult);
-          }
-        }
-        this.#logger?.debug("Returning initialization results", { result });
-        return result;
-      }
-      #onDidChangeConfiguration(params) {
-        this.#logger?.debug("received onDidChangeConfiguration", { params });
-        const oldOptions = this.#options;
-        this.#setOptions(params.settings.stylelint);
-        const validateLanguageSet = new Set(this.#options.validate);
-        const oldValidateLanguageSet = new Set(oldOptions.validate);
-        let changed = validateLanguageSet.size !== oldValidateLanguageSet.size;
-        const removedLanguages = new Set();
-        for (const language of oldValidateLanguageSet) {
-          if (!validateLanguageSet.has(language)) {
-            removedLanguages.add(language);
-            changed = true;
-          }
-        }
-        if (changed || !this.#hasSentInitialConfiguration) {
-          if (this.#logger?.isDebugEnabled()) {
-            this.#logger?.debug("Languages that should be validated changed", {
-              languages: [...validateLanguageSet],
-              removedLanguages: [...removedLanguages]
-            });
-          }
-          this.#invokeHandlers("onDidChangeValidateLanguages", {
-            languages: validateLanguageSet,
-            removedLanguages
-          });
-        }
-        this.#invokeHandlers("onDidChangeConfiguration", { settings: this.#options });
-        this.#hasSentInitialConfiguration = true;
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.info("Starting language server");
+        __classPrivateFieldGet(this, _StylelintLanguageServer_documents, "f").listen(__classPrivateFieldGet(this, _StylelintLanguageServer_connection, "f"));
+        __classPrivateFieldGet(this, _StylelintLanguageServer_connection, "f").listen();
+        __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_registerHandlers).call(this);
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.info("Language server started");
       }
     };
-    module2.exports = {
-      StylelintLanguageServer: StylelintLanguageServer2
+    exports2.StylelintLanguageServer = StylelintLanguageServer;
+    _StylelintLanguageServer_connection = new WeakMap(), _StylelintLanguageServer_logger = new WeakMap(), _StylelintLanguageServer_notifications = new WeakMap(), _StylelintLanguageServer_commands = new WeakMap(), _StylelintLanguageServer_globalOptions = new WeakMap(), _StylelintLanguageServer_resolver = new WeakMap(), _StylelintLanguageServer_runner = new WeakMap(), _StylelintLanguageServer_documents = new WeakMap(), _StylelintLanguageServer_context = new WeakMap(), _StylelintLanguageServer_modules = new WeakMap(), _StylelintLanguageServer_hasConfigurationCapability = new WeakMap(), _StylelintLanguageServer_scopedOptions = new WeakMap(), _StylelintLanguageServer_instances = new WeakSet(), _StylelintLanguageServer_displayError = function _StylelintLanguageServer_displayError2(error) {
+      (0, lsp_1.displayError)(__classPrivateFieldGet(this, _StylelintLanguageServer_connection, "f"), error);
+    }, _StylelintLanguageServer_getOptions = async function _StylelintLanguageServer_getOptions2(resource) {
+      if (!__classPrivateFieldGet(this, _StylelintLanguageServer_hasConfigurationCapability, "f")) {
+        return __classPrivateFieldGet(this, _StylelintLanguageServer_globalOptions, "f");
+      }
+      const cached = __classPrivateFieldGet(this, _StylelintLanguageServer_scopedOptions, "f").get(resource);
+      if (cached) {
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Returning cached options", { resource });
+        return cached;
+      }
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Requesting options from client", { resource });
+      const options = await __classPrivateFieldGet(this, _StylelintLanguageServer_connection, "f").workspace.getConfiguration({
+        scopeUri: resource,
+        section: "stylelint"
+      });
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Received options from client", { resource, options });
+      const withDefaults = (0, objects_1.mergeOptionsWithDefaults)(options, defaultOptions);
+      Object.freeze(withDefaults);
+      __classPrivateFieldGet(this, _StylelintLanguageServer_scopedOptions, "f").set(resource, withDefaults);
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Returning options", { resource, options: withDefaults });
+      return withDefaults;
+    }, _StylelintLanguageServer_resolveStylelint = async function _StylelintLanguageServer_resolveStylelint2(document) {
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Resolving Stylelint", { uri: document.uri });
+      try {
+        const options = await __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_getOptions).call(this, document.uri);
+        const result = await __classPrivateFieldGet(this, _StylelintLanguageServer_resolver, "f").resolve(options, document);
+        if (result) {
+          __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Stylelint resolved", {
+            uri: document.uri,
+            resolvedPath: result.resolvedPath
+          });
+        } else {
+          __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.warn("Failed to resolve Stylelint", { uri: document.uri });
+        }
+        return result;
+      } catch (error) {
+        __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_displayError).call(this, error);
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.error("Error resolving Stylelint", { uri: document.uri, error });
+        return void 0;
+      }
+    }, _StylelintLanguageServer_lintDocument = async function _StylelintLanguageServer_lintDocument2(document, linterOptions = {}) {
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Linting document", { uri: document.uri, linterOptions });
+      try {
+        const options = await __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_getOptions).call(this, document.uri);
+        const results = await __classPrivateFieldGet(this, _StylelintLanguageServer_runner, "f").lintDocument(document, linterOptions, options);
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Lint run complete", { uri: document.uri, results });
+        return results;
+      } catch (err) {
+        __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_displayError).call(this, err);
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.error("Error running lint", { uri: document.uri, error: err });
+        return void 0;
+      }
+    }, _StylelintLanguageServer_getFixes = async function _StylelintLanguageServer_getFixes2(document, linterOptions = {}) {
+      try {
+        const options = await __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_getOptions).call(this, document.uri);
+        const edits = await (0, documents_1.getFixes)(__classPrivateFieldGet(this, _StylelintLanguageServer_runner, "f"), document, linterOptions, options);
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Fixes retrieved", { uri: document.uri, edits });
+        return edits;
+      } catch (error) {
+        __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_displayError).call(this, error);
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.error("Error getting fixes", { uri: document.uri, error });
+        return [];
+      }
+    }, _StylelintLanguageServer_getModule = function _StylelintLanguageServer_getModule2(id) {
+      return __classPrivateFieldGet(this, _StylelintLanguageServer_modules, "f").get(id);
+    }, _StylelintLanguageServer_registerHandlers = function _StylelintLanguageServer_registerHandlers2() {
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.info("Registering handlers");
+      __classPrivateFieldGet(this, _StylelintLanguageServer_connection, "f").onInitialize(__classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_onInitialize).bind(this));
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("connection.onInitialize handler registered");
+      __classPrivateFieldGet(this, _StylelintLanguageServer_notifications, "f").on(vscode_languageserver_protocol_1.InitializedNotification.type, __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_onInitialized).bind(this));
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("connection.onInitialized handler registered");
+      __classPrivateFieldGet(this, _StylelintLanguageServer_commands, "f").register();
+      __classPrivateFieldGet(this, _StylelintLanguageServer_notifications, "f").on(vscode_languageserver_protocol_1.DidChangeConfigurationNotification.type, __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_onDidChangeConfiguration).bind(this));
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("connection.onDidChangeConfiguration handler registered");
+      __classPrivateFieldGet(this, _StylelintLanguageServer_documents, "f").onDidClose(__classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_onDidCloseDocument).bind(this));
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("documents.onDidClose handler registered");
+      __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_invokeHandlers).call(this, "onDidRegisterHandlers");
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.info("Handlers registered");
+    }, _StylelintLanguageServer_invokeHandlers = function _StylelintLanguageServer_invokeHandlers2(handlerName, ...params) {
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug(`Invoking ${String(handlerName)}`);
+      const returnValues = Object.create(null);
+      for (const [id, module3] of __classPrivateFieldGet(this, _StylelintLanguageServer_modules, "f")) {
+        const handler = module3[handlerName];
+        if (handler) {
+          try {
+            returnValues[id] = handler.apply(module3, params);
+            __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug(`Invoked ${String(handlerName)}`, {
+              module: id,
+              returnValue: returnValues[id]
+            });
+          } catch (error) {
+            __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_displayError).call(this, error);
+            __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.error(`Error invoking ${String(handlerName)}`, {
+              module: id,
+              error
+            });
+          }
+        }
+      }
+      return returnValues;
+    }, _StylelintLanguageServer_onInitialize = function _StylelintLanguageServer_onInitialize2(params) {
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("received onInitialize", { params });
+      const result = {
+        capabilities: {
+          textDocumentSync: {
+            openClose: true,
+            change: vscode_languageserver_protocol_1.TextDocumentSyncKind.Full
+          }
+        }
+      };
+      if (params.capabilities.workspace?.configuration) {
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Client reports workspace configuration support; using scoped configuration");
+        __classPrivateFieldSet(this, _StylelintLanguageServer_hasConfigurationCapability, true, "f");
+      }
+      for (const [, moduleResult] of Object.entries(__classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_invokeHandlers).call(this, "onInitialize", params))) {
+        if (moduleResult) {
+          (0, objects_1.mergeAssign)(result, moduleResult);
+        }
+      }
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Returning initialization results", { result });
+      return result;
+    }, _StylelintLanguageServer_onInitialized = async function _StylelintLanguageServer_onInitialized2(params) {
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("received onInitialized", { params });
+      if (__classPrivateFieldGet(this, _StylelintLanguageServer_hasConfigurationCapability, "f")) {
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Registering DidChangeConfigurationNotification");
+        await __classPrivateFieldGet(this, _StylelintLanguageServer_connection, "f").client.register(vscode_languageserver_protocol_1.DidChangeConfigurationNotification.type, {
+          section: "stylelint"
+        });
+      }
+    }, _StylelintLanguageServer_onDidCloseDocument = function _StylelintLanguageServer_onDidCloseDocument2({ document }) {
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("received documents.onDidClose, clearing cached options", {
+        uri: document.uri
+      });
+      __classPrivateFieldGet(this, _StylelintLanguageServer_scopedOptions, "f").delete(document.uri);
+    }, _StylelintLanguageServer_onDidChangeConfiguration = function _StylelintLanguageServer_onDidChangeConfiguration2(params) {
+      if (__classPrivateFieldGet(this, _StylelintLanguageServer_hasConfigurationCapability, "f")) {
+        __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("received onDidChangeConfiguration, clearing cached options", { params });
+        __classPrivateFieldGet(this, _StylelintLanguageServer_scopedOptions, "f").clear();
+        __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_invokeHandlers).call(this, "onDidChangeConfiguration");
+        __classPrivateFieldGet(this, _StylelintLanguageServer_connection, "f").sendNotification(types_1.Notification.DidResetConfiguration);
+        return;
+      }
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("received onDidChangeConfiguration", { params });
+      __classPrivateFieldSet(this, _StylelintLanguageServer_globalOptions, (0, objects_1.mergeOptionsWithDefaults)(params.settings.stylelint, defaultOptions), "f");
+      Object.freeze(__classPrivateFieldGet(this, _StylelintLanguageServer_globalOptions, "f"));
+      __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")?.debug("Global options updated", { options: __classPrivateFieldGet(this, _StylelintLanguageServer_globalOptions, "f") });
+      __classPrivateFieldGet(this, _StylelintLanguageServer_instances, "m", _StylelintLanguageServer_invokeHandlers).call(this, "onDidChangeConfiguration");
     };
   }
 });
 
-// src/server/index.js
+// build/server/index.js
 var require_server3 = __commonJS({
-  "src/server/index.js"(exports2, module2) {
+  "build/server/index.js"(exports2) {
     "use strict";
-    module2.exports = {
-      modules: require_modules(),
-      ...require_server2()
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports2 && exports2.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports2 && exports2.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
     };
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.modules = void 0;
+    exports2.modules = __importStar(require_modules());
+    __exportStar(require_server2(), exports2);
+    __exportStar(require_types(), exports2);
   }
 });
 
@@ -24384,12 +25581,15 @@ var require_serialize_error = __commonJS({
   }
 });
 
-// src/utils/errors.js
+// build/utils/errors.js
 var require_errors3 = __commonJS({
-  "src/utils/errors.js"(exports2, module2) {
+  "build/utils/errors.js"(exports2) {
     "use strict";
-    var { serializeError } = require_serialize_error();
-    var { isIterable } = require_iterables();
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.serializeErrors = void 0;
+    var serialize_error_1 = require_serialize_error();
+    var iterables_1 = require_iterables();
+    var objects_1 = require_objects();
     function serializeErrors(object) {
       const serializeInner = (obj, visited) => {
         if (!obj || typeof obj !== "object") {
@@ -24399,7 +25599,7 @@ var require_errors3 = __commonJS({
           return visited.get(obj);
         }
         if (obj instanceof Error) {
-          const result = serializeError(obj);
+          const result = (0, serialize_error_1.serializeError)(obj);
           visited.set(obj, result);
           return result;
         }
@@ -24409,10 +25609,10 @@ var require_errors3 = __commonJS({
           for (const [key, value] of obj) {
             const serializedKey = serializeInner(key, visited);
             const serializedValue = serializeInner(value, visited);
-            if (key && typeof key === "object") {
+            if ((0, objects_1.isObject)(key)) {
               visited.set(key, serializedKey);
             }
-            if (value && typeof value === "object") {
+            if ((0, objects_1.isObject)(value)) {
               visited.set(value, serializedValue);
             }
             result.set(serializedKey, serializedValue);
@@ -24423,7 +25623,7 @@ var require_errors3 = __commonJS({
           const result = new Set();
           visited.set(obj, result);
           for (const value of obj) {
-            if (!value || typeof value !== "object") {
+            if (!(0, objects_1.isObject)(value)) {
               result.add(value);
               continue;
             }
@@ -24433,7 +25633,7 @@ var require_errors3 = __commonJS({
           }
           return result;
         }
-        if (isIterable(obj)) {
+        if ((0, iterables_1.isIterable)(obj)) {
           const result = [];
           visited.set(obj, result);
           for (const value of obj) {
@@ -24443,14 +25643,14 @@ var require_errors3 = __commonJS({
         }
         visited.set(obj, "[Circular]");
         const serializedObj = Object.fromEntries(Object.entries(obj).map(([key, value]) => {
-          if (!value || typeof value !== "object") {
+          if (!(0, objects_1.isObject)(value)) {
             return [key, value];
           }
           if (visited.has(value)) {
             return [key, visited.get(value)];
           }
           if (value instanceof Error) {
-            const serialized = serializeError(value);
+            const serialized = (0, serialize_error_1.serializeError)(value);
             visited.set(value, serialized);
             return [key, serialized];
           }
@@ -24463,36 +25663,36 @@ var require_errors3 = __commonJS({
       };
       return serializeInner(object, new WeakMap());
     }
-    module2.exports = {
-      serializeErrors
-    };
+    exports2.serializeErrors = serializeErrors;
   }
 });
 
-// src/utils/logging/error-formatter.js
+// build/utils/logging/error-formatter.js
 var require_error_formatter = __commonJS({
-  "src/utils/logging/error-formatter.js"(exports2, module2) {
+  "build/utils/logging/error-formatter.js"(exports2) {
     "use strict";
-    var { serializeErrors } = require_errors3();
-    var ErrorFormatter2 = class {
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.ErrorFormatter = void 0;
+    var errors_1 = require_errors3();
+    var ErrorFormatter = class {
       transform(info) {
-        const transformed = serializeErrors({ ...info });
+        const transformed = (0, errors_1.serializeErrors)({ ...info });
         for (const key of Object.keys(transformed)) {
           info[key] = transformed[key];
         }
         return info;
       }
     };
-    module2.exports = {
-      ErrorFormatter: ErrorFormatter2
-    };
+    exports2.ErrorFormatter = ErrorFormatter;
   }
 });
 
-// src/utils/logging/get-log-function.js
+// build/utils/logging/get-log-function.js
 var require_get_log_function = __commonJS({
-  "src/utils/logging/get-log-function.js"(exports2, module2) {
+  "build/utils/logging/get-log-function.js"(exports2) {
     "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.getLogFunction = void 0;
     var getLogFunction = (remoteConsole, level2) => {
       const logFunction = remoteConsole[level2];
       if (typeof logFunction === "function") {
@@ -24500,54 +25700,55 @@ var require_get_log_function = __commonJS({
       }
       return void 0;
     };
-    module2.exports = {
-      getLogFunction
-    };
+    exports2.getLogFunction = getLogFunction;
   }
 });
 
-// src/utils/strings.js
+// build/utils/strings.js
 var require_strings = __commonJS({
-  "src/utils/strings.js"(exports2, module2) {
+  "build/utils/strings.js"(exports2) {
     "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.padNumber = exports2.padString = exports2.upperCaseFirstChar = void 0;
     var upperCaseFirstChar = (str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     };
+    exports2.upperCaseFirstChar = upperCaseFirstChar;
     var padString = (str, length) => {
       return str + " ".repeat(length - str.length);
     };
+    exports2.padString = padString;
     var padNumber = (number, length) => {
-      let str = String(number);
+      const str = String(number);
       return "0".repeat(length - str.length) + str;
     };
-    module2.exports = {
-      upperCaseFirstChar,
-      padString,
-      padNumber
-    };
+    exports2.padNumber = padNumber;
   }
 });
 
-// src/utils/logging/language-server-formatter.js
+// build/utils/logging/language-server-formatter.js
 var require_language_server_formatter = __commonJS({
-  "src/utils/logging/language-server-formatter.js"(exports2, module2) {
+  "build/utils/logging/language-server-formatter.js"(exports2) {
     "use strict";
-    var { LEVEL, MESSAGE } = require_triple_beam();
-    var { getLogFunction } = require_get_log_function();
-    var { padString, padNumber, upperCaseFirstChar } = require_strings();
-    var LanguageServerFormatter2 = class {
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.LanguageServerFormatter = void 0;
+    var triple_beam_1 = require_triple_beam();
+    var get_log_function_1 = require_get_log_function();
+    var strings_1 = require_strings();
+    var LanguageServerFormatter = class {
       constructor(options) {
         this.options = options;
       }
       transform(info) {
         const date = new Date();
-        const timestamp = `${date.getHours() % 12 || 12}:${padNumber(date.getMinutes(), 2)}:${padNumber(date.getSeconds(), 2)} ${date.getHours() < 12 ? "a.m." : "p.m."}`;
+        const timestamp = `${date.getHours() % 12 || 12}:${(0, strings_1.padNumber)(date.getMinutes(), 2)}:${(0, strings_1.padNumber)(date.getSeconds(), 2)} ${date.getHours() < 12 ? "a.m." : "p.m."}`;
         const messageParts = [];
-        if (!getLogFunction(this.options.connection.console, info[LEVEL])) {
-          messageParts.push(`[${padString(upperCaseFirstChar(info[LEVEL]), 5)} - ${timestamp}]`);
+        const level2 = String(info[triple_beam_1.LEVEL]);
+        if (!(0, get_log_function_1.getLogFunction)(this.options.connection.console, level2)) {
+          messageParts.push(`[${(0, strings_1.padString)((0, strings_1.upperCaseFirstChar)(level2), 5)} - ${timestamp}]`);
         }
         if (info.component) {
-          messageParts.push(`[${info.component}]`);
+          messageParts.push(`[${String(info.component)}]`);
         }
         messageParts.push(info.message);
         delete info.component;
@@ -24571,95 +25772,130 @@ var require_language_server_formatter = __commonJS({
           delete info[key];
         }
         const message = postMessageParts.length > 0 ? `${messageParts.join(" ")} | ${postMessageParts.join(" ")}` : messageParts.join(" ");
-        info[MESSAGE] = message;
+        info[triple_beam_1.MESSAGE] = message;
         info.message = message;
         return info;
       }
     };
-    module2.exports = {
-      LanguageServerFormatter: LanguageServerFormatter2
-    };
+    exports2.LanguageServerFormatter = LanguageServerFormatter;
   }
 });
 
-// src/utils/logging/language-server-transport.js
+// build/utils/logging/language-server-transport.js
 var require_language_server_transport = __commonJS({
-  "src/utils/logging/language-server-transport.js"(exports2, module2) {
+  "build/utils/logging/language-server-transport.js"(exports2) {
     "use strict";
-    var TransportStream = require_winston_transport();
-    var { LEVEL, MESSAGE } = require_triple_beam();
-    var { getLogFunction } = require_get_log_function();
-    var LanguageServerTransport2 = class extends TransportStream {
-      #console;
+    var __classPrivateFieldSet = exports2 && exports2.__classPrivateFieldSet || function(receiver, state, value, kind, f) {
+      if (kind === "m")
+        throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+    };
+    var __classPrivateFieldGet = exports2 && exports2.__classPrivateFieldGet || function(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+        throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+        throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+    };
+    var __importDefault2 = exports2 && exports2.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    var _LanguageServerTransport_console;
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.LanguageServerTransport = void 0;
+    var winston_transport_1 = __importDefault2(require_winston_transport());
+    var triple_beam_1 = require_triple_beam();
+    var get_log_function_1 = require_get_log_function();
+    var LanguageServerTransport = class extends winston_transport_1.default {
       constructor(options) {
         super(options);
-        this.#console = options.connection.console;
+        _LanguageServerTransport_console.set(this, void 0);
+        __classPrivateFieldSet(this, _LanguageServerTransport_console, options.connection.console, "f");
       }
       log(info, callback) {
         setImmediate(() => {
           this.emit("logged", info);
         });
-        const logFunc = getLogFunction(this.#console, info[LEVEL]);
+        const logFunc = (0, get_log_function_1.getLogFunction)(__classPrivateFieldGet(this, _LanguageServerTransport_console, "f"), String(info[triple_beam_1.LEVEL]));
         if (typeof logFunc === "function") {
-          logFunc.call(this.#console, String(info[MESSAGE]));
+          logFunc.call(__classPrivateFieldGet(this, _LanguageServerTransport_console, "f"), String(info[triple_beam_1.MESSAGE]));
         } else {
-          this.#console.log(String(info[MESSAGE]));
+          __classPrivateFieldGet(this, _LanguageServerTransport_console, "f").log(String(info[triple_beam_1.MESSAGE]));
         }
         callback();
       }
     };
-    module2.exports = {
-      LanguageServerTransport: LanguageServerTransport2
-    };
+    exports2.LanguageServerTransport = LanguageServerTransport;
+    _LanguageServerTransport_console = new WeakMap();
   }
 });
 
-// src/utils/logging/index.js
+// build/utils/logging/index.js
 var require_logging = __commonJS({
-  "src/utils/logging/index.js"(exports2, module2) {
+  "build/utils/logging/index.js"(exports2) {
     "use strict";
-    module2.exports = {
-      ...require_error_formatter(),
-      ...require_get_log_function(),
-      ...require_language_server_formatter(),
-      ...require_language_server_transport()
+    var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      Object.defineProperty(o, k2, { enumerable: true, get: function() {
+        return m[k];
+      } });
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
+      for (var p in m)
+        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
+          __createBinding(exports3, m, p);
     };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    __exportStar(require_error_formatter(), exports2);
+    __exportStar(require_get_log_function(), exports2);
+    __exportStar(require_language_server_formatter(), exports2);
+    __exportStar(require_language_server_transport(), exports2);
   }
 });
 
-// src/start-server.js
+// build/extension/start-server.js
 "use strict";
-var { createConnection, ProposedFeatures } = require_node3();
-var winston = require_winston();
-var { StylelintLanguageServer, modules } = require_server3();
-var connection = createConnection(ProposedFeatures.all);
-var {
-  ErrorFormatter,
-  LanguageServerTransport,
-  LanguageServerFormatter
-} = require_logging();
+var __importDefault = exports && exports.__importDefault || function(mod) {
+  return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var path_1 = __importDefault(require("path"));
+var node_1 = require_node3();
+var winston_1 = __importDefault(require_winston());
+var server_1 = require_server3();
+var connection = (0, node_1.createConnection)(node_1.ProposedFeatures.all);
+var logging_1 = require_logging();
 var { NODE_ENV } = process.env;
 var level = NODE_ENV === "development" ? "debug" : "info";
 var transports = [
-  new LanguageServerTransport({
+  new logging_1.LanguageServerTransport({
     connection,
-    format: winston.format.combine(new ErrorFormatter(), new LanguageServerFormatter({
+    format: winston_1.default.format.combine(new logging_1.ErrorFormatter(), new logging_1.LanguageServerFormatter({
       connection,
       preferredKeyOrder: ["module", "uri", "command"]
     }))
   })
 ];
 if (level === "debug") {
-  transports.push(new winston.transports.File({
-    filename: require("path").join(__dirname, "../stylelint-language-server.log"),
+  transports.push(new winston_1.default.transports.File({
+    filename: path_1.default.join(__dirname, "../stylelint-language-server.log"),
     level,
-    format: winston.format.combine(new ErrorFormatter(), winston.format.timestamp(), winston.format.json())
+    format: winston_1.default.format.combine(new logging_1.ErrorFormatter(), winston_1.default.format.timestamp(), winston_1.default.format.json())
   }));
 }
-var logger = winston.createLogger({ level, transports });
-var server = new StylelintLanguageServer({
+var logger = winston_1.default.createLogger({ level, transports });
+var server = new server_1.StylelintLanguageServer({
   connection,
   logger,
-  modules: Object.values(modules)
+  modules: Object.values(server_1.modules)
 });
 server.start();
