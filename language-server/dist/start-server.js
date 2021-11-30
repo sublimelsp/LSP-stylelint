@@ -2045,7 +2045,7 @@ var require_connection = __commonJS({
         }
         if (responseMessage.id === null) {
           if (responseMessage.error) {
-            logger2.error(`Received response message without id: Error is: 
+            logger2.error(`Received response message without id: Error is:
 ${JSON.stringify(responseMessage.error, void 0, 4)}`);
           } else {
             logger2.error(`Received response message without id. No further error information provided.`);
@@ -21579,7 +21579,8 @@ var require_code_action = __commonJS({
       return options.validate.includes(document.languageId);
     }, _CodeActionModule_getAutoFixAllAction = async function _CodeActionModule_getAutoFixAllAction2(document) {
       const edits = await __classPrivateFieldGet(this, _CodeActionModule_context, "f").getFixes(document);
-      return edits.length > 0 ? LSP.CodeAction.create("Fix all Stylelint auto-fixable problems", { documentChanges: [LSP.TextDocumentEdit.create(document, edits)] }, types_1.CodeActionKind.StylelintSourceFixAll) : void 0;
+      const identifier = { uri: document.uri, version: document.version };
+      return edits.length > 0 ? LSP.CodeAction.create("Fix all Stylelint auto-fixable problems", { documentChanges: [LSP.TextDocumentEdit.create(identifier, edits)] }, types_1.CodeActionKind.StylelintSourceFixAll) : void 0;
     }, _CodeActionModule_getAutoFixAllCommandAction = function _CodeActionModule_getAutoFixAllCommandAction2(document) {
       const command = LSP.Command.create("Fix all Stylelint auto-fixable problems", types_1.CommandId.ApplyAutoFix, { uri: document.uri, version: document.version });
       return LSP.CodeAction.create("Fix all Stylelint auto-fixable problems", command, LSP.CodeActionKind.Source);
@@ -24794,7 +24795,10 @@ var require_merge_assign = __commonJS({
         if (!object) {
           continue;
         }
-        for (const key of Object.keys(object)) {
+        for (const key of Object.getOwnPropertyNames(object)) {
+          if (key === "__proto__" || key === "constructor") {
+            continue;
+          }
           const value = object[key];
           if ((0, is_object_1.isObject)(value)) {
             if (Array.isArray(value)) {
