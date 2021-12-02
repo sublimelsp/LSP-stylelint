@@ -10,3 +10,15 @@ Stylelint support for Sublime's LSP plugin using [stylelint server](https://gith
 ## Configuration
 
 Configure the stylelint language server by accessing `Preferences > Package Settings > LSP > Servers > LSP-stylelint`.
+
+## FAQ
+
+Q: How to enable Stylelint to automatically fix issues on saving the file?
+
+A: Open `Preferences: LSP Settings` from the command palette and add or modify the following setting:
+
+```js
+  "lsp_code_actions_on_save": {
+    "source.fixAll.stylelint": true,
+  },
+```
