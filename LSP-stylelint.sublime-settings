@@ -1,27 +1,5 @@
 {
 	"command": ["${node_bin}", "${server_path}", "--stdio"],
-	"languages": [
-		{
-			"languageId": "scss",
-			"scopes": ["source.scss"],
-			"syntaxes": ["Packages/Sass/Syntaxes/SCSS.sublime-syntax", "Packages/SCSS/SCSS.tmLanguage"],
-		},
-		{
-			"languageId": "less",
-			"scopes": ["source.less"],
-			"syntaxes": ["Packages/LESS/Syntaxes/LESS.sublime-syntax"],
-		},
-		{
-			"languageId": "css",
-			"scopes": ["source.css"],
-			"syntaxes": ["Packages/CSS/CSS.sublime-syntax"],
-		},
-		{
-			"languageId": "vue",
-			"scopes": ["text.html.vue"],
-			"syntaxes": ["Packages/Vue Syntax Highlight/Vue Component.sublime-syntax"],
-		},
-	],
 	"settings": {
 		// Control whether stylelint is enabled for CSS/SCSS/Less files or not.
 		"stylelint.enable": true,
@@ -65,5 +43,30 @@
 			"less",
 			"postcss",
 		],
-	}
+	},
+	// ST4
+	"selector": "source.css | source.scss | source.less | text.html.vue",
+	// ST3
+	"languages": [
+		{
+			"languageId": "scss",
+			"scopes": ["source.scss"],
+			"syntaxes": ["Packages/Sass/Syntaxes/SCSS.sublime-syntax", "Packages/SCSS/SCSS.tmLanguage"],
+		},
+		{
+			"languageId": "less",
+			"scopes": ["source.less"],
+			"syntaxes": ["Packages/LESS/Syntaxes/LESS.sublime-syntax"],
+		},
+		{
+			"languageId": "css",
+			"scopes": ["source.css"],
+			"syntaxes": ["Packages/CSS/CSS.sublime-syntax"],
+		},
+		{
+			"languageId": "vue",
+			"scopes": ["text.html.vue"],
+			"syntaxes": ["Packages/Vue Syntax Highlight/Vue Component.sublime-syntax"],
+		},
+	],
 }
