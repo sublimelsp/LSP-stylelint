@@ -166,7 +166,7 @@ var require_messageBuffer = __commonJS({
           return void 0;
         }
         const buffer = this._read(chunkBytesRead + offset);
-        const result = new Map();
+        const result = /* @__PURE__ */ new Map();
         const headers = this.toString(buffer, "ascii").split(CRLF);
         if (headers.length < 2) {
           return result;
@@ -935,9 +935,9 @@ var require_messageReader = __commonJS({
         let charset;
         let result;
         let contentDecoder;
-        const contentDecoders = new Map();
+        const contentDecoders = /* @__PURE__ */ new Map();
         let contentTypeDecoder;
-        const contentTypeDecoders = new Map();
+        const contentTypeDecoders = /* @__PURE__ */ new Map();
         if (options === void 0 || typeof options === "string") {
           charset = options !== null && options !== void 0 ? options : "utf-8";
         } else {
@@ -1261,7 +1261,7 @@ var require_linkedMap = __commonJS({
     var LinkedMap = class {
       constructor() {
         this[Symbol.toStringTag] = "LinkedMap";
-        this._map = new Map();
+        this._map = /* @__PURE__ */ new Map();
         this._head = void 0;
         this._tail = void 0;
         this._size = 0;
@@ -1809,7 +1809,7 @@ var require_connection = __commonJS({
       const requestHandlers = Object.create(null);
       let starNotificationHandler = void 0;
       const notificationHandlers = Object.create(null);
-      const progressHandlers = new Map();
+      const progressHandlers = /* @__PURE__ */ new Map();
       let timer;
       let messageQueue = new linkedMap_1.LinkedMap();
       let responsePromises = Object.create(null);
@@ -2924,7 +2924,7 @@ var require_main = __commonJS({
     };
     exports2.StreamMessageWriter = StreamMessageWriter;
     var XDG_RUNTIME_DIR = process.env["XDG_RUNTIME_DIR"];
-    var safeIpcPathLengths = new Map([
+    var safeIpcPathLengths = /* @__PURE__ */ new Map([
       ["linux", 107],
       ["darwin", 103]
     ]);
@@ -5462,7 +5462,7 @@ var require_progress = __commonJS({
         this._connection.sendProgress(vscode_languageserver_protocol_1.WorkDoneProgress.type, this._token, { kind: "end" });
       }
     };
-    WorkDoneProgressReporterImpl.Instances = new Map();
+    WorkDoneProgressReporterImpl.Instances = /* @__PURE__ */ new Map();
     var WorkDoneProgressServerReporterImpl = class extends WorkDoneProgressReporterImpl {
       constructor(connection2, token) {
         super(connection2, token);
@@ -6125,7 +6125,7 @@ var require_server = __commonJS({
     var BulkRegistrationImpl = class {
       constructor() {
         this._registrations = [];
-        this._registered = new Set();
+        this._registered = /* @__PURE__ */ new Set();
       }
       add(type, registerOptions) {
         const method = Is.string(type) ? type : type.method;
@@ -6156,7 +6156,7 @@ var require_server = __commonJS({
     var BulkUnregistrationImpl = class {
       constructor(_connection, unregistrations) {
         this._connection = _connection;
-        this._unregistrations = new Map();
+        this._unregistrations = /* @__PURE__ */ new Map();
         unregistrations.forEach((unregistration) => {
           this._unregistrations.set(unregistration.method, unregistration);
         });
@@ -17987,7 +17987,7 @@ var require_exception_handler = __commonJS({
           throw new Error("Logger is required to handle exceptions");
         }
         this.logger = logger2;
-        this.handlers = new Map();
+        this.handlers = /* @__PURE__ */ new Map();
       }
       handle(...args) {
         args.forEach((arg) => {
@@ -18134,7 +18134,7 @@ var require_rejection_handler = __commonJS({
           throw new Error("Logger is required to handle rejections");
         }
         this.logger = logger2;
-        this.handlers = new Map();
+        this.handlers = /* @__PURE__ */ new Map();
       }
       handle(...args) {
         args.forEach((arg) => {
@@ -18702,7 +18702,7 @@ var require_container = __commonJS({
     var createLogger = require_create_logger();
     module2.exports = class Container {
       constructor(options = {}) {
-        this.loggers = new Map();
+        this.loggers = /* @__PURE__ */ new Map();
         this.options = options;
       }
       add(id, options) {
@@ -19003,7 +19003,7 @@ var require_command_manager = __commonJS({
       constructor(connection2, logger2) {
         _CommandManager_connection.set(this, void 0);
         _CommandManager_logger.set(this, void 0);
-        _CommandManager_commands.set(this, new Map());
+        _CommandManager_commands.set(this, /* @__PURE__ */ new Map());
         __classPrivateFieldSet(this, _CommandManager_connection, connection2, "f");
         __classPrivateFieldSet(this, _CommandManager_logger, logger2, "f");
       }
@@ -19280,7 +19280,7 @@ var require_notification_manager = __commonJS({
         _NotificationManager_instances.add(this);
         _NotificationManager_connection.set(this, void 0);
         _NotificationManager_logger.set(this, void 0);
-        _NotificationManager_notifications.set(this, new Map());
+        _NotificationManager_notifications.set(this, /* @__PURE__ */ new Map());
         __classPrivateFieldSet(this, _NotificationManager_connection, connection2, "f");
         __classPrivateFieldSet(this, _NotificationManager_logger, logger2, "f");
       }
@@ -19337,7 +19337,7 @@ var require_rule_code_actions_collection = __commonJS({
     exports2.RuleCodeActionsCollection = void 0;
     var RuleCodeActionsCollection = class {
       constructor() {
-        _RuleCodeActionsCollection_actions.set(this, new Map());
+        _RuleCodeActionsCollection_actions.set(this, /* @__PURE__ */ new Map());
       }
       get(ruleId) {
         const existing = __classPrivateFieldGet(this, _RuleCodeActionsCollection_actions, "f").get(ruleId);
@@ -21109,7 +21109,7 @@ var require_sets = __commonJS({
         return set1;
       }
       const [smallerSet, largerSet] = set1.size < set2.size ? [set1, set2] : [set2, set1];
-      const result = new Set();
+      const result = /* @__PURE__ */ new Set();
       for (const item of smallerSet) {
         if (largerSet.has(item)) {
           result.add(item);
@@ -21193,9 +21193,9 @@ var require_disable_metadata_lookup_table = __commonJS({
     var DisableMetadataLookupTable = class {
       constructor(diagnostics) {
         _DisableMetadataLookupTable_instances.add(this);
-        _DisableMetadataLookupTable_reportsByType.set(this, new Map());
-        _DisableMetadataLookupTable_reportsByRule.set(this, new Map());
-        _DisableMetadataLookupTable_reportsByRange.set(this, new Map());
+        _DisableMetadataLookupTable_reportsByType.set(this, /* @__PURE__ */ new Map());
+        _DisableMetadataLookupTable_reportsByRule.set(this, /* @__PURE__ */ new Map());
+        _DisableMetadataLookupTable_reportsByRange.set(this, /* @__PURE__ */ new Map());
         for (const diagnostic of diagnostics) {
           const rule = (0, get_disable_diagnostic_rule_1.getDisableDiagnosticRule)(diagnostic);
           if (!rule) {
@@ -21206,20 +21206,20 @@ var require_disable_metadata_lookup_table = __commonJS({
           if (existingByType) {
             existingByType.add(diagnostic);
           } else {
-            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByType, "f").set(code, new Set([diagnostic]));
+            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByType, "f").set(code, /* @__PURE__ */ new Set([diagnostic]));
           }
           const existingByRule = __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRule, "f").get(rule);
           if (existingByRule) {
             existingByRule.add(diagnostic);
           } else {
-            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRule, "f").set(rule, new Set([diagnostic]));
+            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRule, "f").set(rule, /* @__PURE__ */ new Set([diagnostic]));
           }
           const rangeKey = __classPrivateFieldGet(this, _DisableMetadataLookupTable_instances, "m", _DisableMetadataLookupTable_getRangeKey).call(this, diagnostic.range);
           const existingByRange = __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRange, "f").get(rangeKey);
           if (existingByRange) {
             existingByRange.add(diagnostic);
           } else {
-            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRange, "f").set(rangeKey, new Set([diagnostic]));
+            __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRange, "f").set(rangeKey, /* @__PURE__ */ new Set([diagnostic]));
           }
         }
       }
@@ -21227,7 +21227,7 @@ var require_disable_metadata_lookup_table = __commonJS({
         const reportsByType = type ? __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByType, "f").get(type) : void 0;
         const reportsByRule = rule ? __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRule, "f").get(rule) : void 0;
         const reportsByRange = range ? __classPrivateFieldGet(this, _DisableMetadataLookupTable_reportsByRange, "f").get(__classPrivateFieldGet(this, _DisableMetadataLookupTable_instances, "m", _DisableMetadataLookupTable_getRangeKey).call(this, range)) : void 0;
-        return (0, sets_1.intersect)((0, sets_1.intersect)(reportsByType, reportsByRule), reportsByRange) ?? new Set();
+        return (0, sets_1.intersect)((0, sets_1.intersect)(reportsByType, reportsByRule), reportsByRange) ?? /* @__PURE__ */ new Set();
       }
     };
     exports2.DisableMetadataLookupTable = DisableMetadataLookupTable;
@@ -21291,7 +21291,7 @@ var require_warning_to_diagnostic = __commonJS({
     function warningToDiagnostic(warning, rules) {
       const start = vscode_languageserver_types_1.Position.create(warning.line - 1, warning.column - 1);
       const end = vscode_languageserver_types_1.Position.create(warning.line - 1, warning.column);
-      const ruleDocUrl = rules?.[warning.rule] && `https://stylelint.io/user-guide/rules/${warning.rule}`;
+      const ruleDocUrl = rules?.[warning.rule]?.meta?.url;
       const diagnostic = vscode_languageserver_types_1.Diagnostic.create(vscode_languageserver_types_1.Range.create(start, end), warning.text, vscode_languageserver_types_1.DiagnosticSeverity[warning.severity === "warning" ? "Warning" : "Error"], warning.rule, "Stylelint");
       if (ruleDocUrl) {
         diagnostic.codeDescription = { href: ruleDocUrl };
@@ -21723,8 +21723,8 @@ var require_completion = __commonJS({
         });
         return items;
       }
-      const thisLineRules = new Set();
-      const nextLineRules = new Set();
+      const thisLineRules = /* @__PURE__ */ new Set();
+      const nextLineRules = /* @__PURE__ */ new Set();
       const disableTable = new stylelint_1.DisableMetadataLookupTable(diagnostics);
       for (const { code, range } of diagnostics) {
         if (!code || typeof code !== "string" || code === "CssSyntaxError" || disableTable.find({
@@ -21839,7 +21839,7 @@ var require_formatter = __commonJS({
         _FormatterModule_context.set(this, void 0);
         _FormatterModule_logger.set(this, void 0);
         _FormatterModule_registerDynamically.set(this, false);
-        _FormatterModule_registrations.set(this, new Map());
+        _FormatterModule_registrations.set(this, /* @__PURE__ */ new Map());
         __classPrivateFieldSet(this, _FormatterModule_context, context, "f");
         __classPrivateFieldSet(this, _FormatterModule_logger, logger2, "f");
       }
@@ -23116,7 +23116,7 @@ var require_lru_cache = __commonJS({
         if (this[DISPOSE] && this[LRU_LIST] && this[LRU_LIST].length) {
           this[LRU_LIST].forEach((hit) => this[DISPOSE](hit.key, hit.value));
         }
-        this[CACHE] = new Map();
+        this[CACHE] = /* @__PURE__ */ new Map();
         this[LRU_LIST] = new Yallist();
         this[LENGTH] = 0;
       }
@@ -23347,7 +23347,7 @@ var require_range = __commonJS({
         const compRe = loose ? re[t.COMPARATORLOOSE] : re[t.COMPARATOR];
         const rangeList = range.split(" ").map((comp) => parseComparator(comp, this.options)).join(" ").split(/\s+/).map((comp) => replaceGTE0(comp, this.options)).filter(this.options.loose ? (comp) => !!comp.match(compRe) : () => true).map((comp) => new Comparator(comp, this.options));
         const l = rangeList.length;
-        const rangeMap = new Map();
+        const rangeMap = /* @__PURE__ */ new Map();
         for (const comp of rangeList) {
           if (isNullSet(comp))
             return [comp];
@@ -24066,7 +24066,7 @@ var require_subset = __commonJS({
         else
           dom = [new Comparator(">=0.0.0")];
       }
-      const eqSet = new Set();
+      const eqSet = /* @__PURE__ */ new Set();
       let gt, lt;
       for (const c of sub) {
         if (c.operator === ">" || c.operator === ">=")
@@ -24255,7 +24255,7 @@ var require_old_stylelint_warning = __commonJS({
         _OldStylelintWarningModule_instances.add(this);
         _OldStylelintWarningModule_context.set(this, void 0);
         _OldStylelintWarningModule_logger.set(this, void 0);
-        _OldStylelintWarningModule_checkedWorkspaces.set(this, new Set());
+        _OldStylelintWarningModule_checkedWorkspaces.set(this, /* @__PURE__ */ new Set());
         _OldStylelintWarningModule_openMigrationGuide.set(this, false);
         __classPrivateFieldSet(this, _OldStylelintWarningModule_context, context, "f");
         __classPrivateFieldSet(this, _OldStylelintWarningModule_logger, logger2, "f");
@@ -24403,7 +24403,7 @@ var require_validator = __commonJS({
         _ValidatorModule_instances.add(this);
         _ValidatorModule_context.set(this, void 0);
         _ValidatorModule_logger.set(this, void 0);
-        _ValidatorModule_documentDiagnostics.set(this, new Map());
+        _ValidatorModule_documentDiagnostics.set(this, /* @__PURE__ */ new Map());
         __classPrivateFieldSet(this, _ValidatorModule_context, context, "f");
         __classPrivateFieldSet(this, _ValidatorModule_logger, logger2, "f");
       }
@@ -24512,17 +24512,6 @@ var require_modules = __commonJS({
 // node_modules/vscode-languageserver-textdocument/lib/umd/main.js
 var require_main5 = __commonJS({
   "node_modules/vscode-languageserver-textdocument/lib/umd/main.js"(exports2, module2) {
-    var __spreadArray = exports2 && exports2.__spreadArray || function(to, from, pack) {
-      if (pack || arguments.length === 2)
-        for (var i = 0, l = from.length, ar; i < l; i++) {
-          if (ar || !(i in from)) {
-            if (!ar)
-              ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-          }
-        }
-      return to.concat(ar || Array.prototype.slice.call(from));
-    };
     (function(factory) {
       if (typeof module2 === "object" && typeof module2.exports === "object") {
         var v = factory(require, exports2);
@@ -24535,73 +24524,60 @@ var require_main5 = __commonJS({
       "use strict";
       Object.defineProperty(exports3, "__esModule", { value: true });
       exports3.TextDocument = void 0;
-      var FullTextDocument = function() {
-        function FullTextDocument2(uri, languageId, version, content) {
+      class FullTextDocument {
+        constructor(uri, languageId, version, content) {
           this._uri = uri;
           this._languageId = languageId;
           this._version = version;
           this._content = content;
           this._lineOffsets = void 0;
         }
-        Object.defineProperty(FullTextDocument2.prototype, "uri", {
-          get: function() {
-            return this._uri;
-          },
-          enumerable: false,
-          configurable: true
-        });
-        Object.defineProperty(FullTextDocument2.prototype, "languageId", {
-          get: function() {
-            return this._languageId;
-          },
-          enumerable: false,
-          configurable: true
-        });
-        Object.defineProperty(FullTextDocument2.prototype, "version", {
-          get: function() {
-            return this._version;
-          },
-          enumerable: false,
-          configurable: true
-        });
-        FullTextDocument2.prototype.getText = function(range) {
+        get uri() {
+          return this._uri;
+        }
+        get languageId() {
+          return this._languageId;
+        }
+        get version() {
+          return this._version;
+        }
+        getText(range) {
           if (range) {
-            var start = this.offsetAt(range.start);
-            var end = this.offsetAt(range.end);
+            const start = this.offsetAt(range.start);
+            const end = this.offsetAt(range.end);
             return this._content.substring(start, end);
           }
           return this._content;
-        };
-        FullTextDocument2.prototype.update = function(changes, version) {
-          for (var _i = 0, changes_1 = changes; _i < changes_1.length; _i++) {
-            var change = changes_1[_i];
-            if (FullTextDocument2.isIncremental(change)) {
-              var range = getWellformedRange(change.range);
-              var startOffset = this.offsetAt(range.start);
-              var endOffset = this.offsetAt(range.end);
+        }
+        update(changes, version) {
+          for (let change of changes) {
+            if (FullTextDocument.isIncremental(change)) {
+              const range = getWellformedRange(change.range);
+              const startOffset = this.offsetAt(range.start);
+              const endOffset = this.offsetAt(range.end);
               this._content = this._content.substring(0, startOffset) + change.text + this._content.substring(endOffset, this._content.length);
-              var startLine = Math.max(range.start.line, 0);
-              var endLine = Math.max(range.end.line, 0);
-              var lineOffsets = this._lineOffsets;
-              var addedLineOffsets = computeLineOffsets(change.text, false, startOffset);
+              const startLine = Math.max(range.start.line, 0);
+              const endLine = Math.max(range.end.line, 0);
+              let lineOffsets = this._lineOffsets;
+              const addedLineOffsets = computeLineOffsets(change.text, false, startOffset);
               if (endLine - startLine === addedLineOffsets.length) {
-                for (var i = 0, len = addedLineOffsets.length; i < len; i++) {
+                for (let i = 0, len = addedLineOffsets.length; i < len; i++) {
                   lineOffsets[i + startLine + 1] = addedLineOffsets[i];
                 }
               } else {
                 if (addedLineOffsets.length < 1e4) {
-                  lineOffsets.splice.apply(lineOffsets, __spreadArray([startLine + 1, endLine - startLine], addedLineOffsets, false));
+                  lineOffsets.splice(startLine + 1, endLine - startLine, ...addedLineOffsets);
                 } else {
                   this._lineOffsets = lineOffsets = lineOffsets.slice(0, startLine + 1).concat(addedLineOffsets, lineOffsets.slice(endLine + 1));
                 }
               }
-              var diff = change.text.length - (endOffset - startOffset);
+              const diff = change.text.length - (endOffset - startOffset);
               if (diff !== 0) {
-                for (var i = startLine + 1 + addedLineOffsets.length, len = lineOffsets.length; i < len; i++) {
+                for (let i = startLine + 1 + addedLineOffsets.length, len = lineOffsets.length; i < len; i++) {
                   lineOffsets[i] = lineOffsets[i] + diff;
                 }
               }
-            } else if (FullTextDocument2.isFull(change)) {
+            } else if (FullTextDocument.isFull(change)) {
               this._content = change.text;
               this._lineOffsets = void 0;
             } else {
@@ -24609,59 +24585,54 @@ var require_main5 = __commonJS({
             }
           }
           this._version = version;
-        };
-        FullTextDocument2.prototype.getLineOffsets = function() {
+        }
+        getLineOffsets() {
           if (this._lineOffsets === void 0) {
             this._lineOffsets = computeLineOffsets(this._content, true);
           }
           return this._lineOffsets;
-        };
-        FullTextDocument2.prototype.positionAt = function(offset) {
+        }
+        positionAt(offset) {
           offset = Math.max(Math.min(offset, this._content.length), 0);
-          var lineOffsets = this.getLineOffsets();
-          var low = 0, high = lineOffsets.length;
+          let lineOffsets = this.getLineOffsets();
+          let low = 0, high = lineOffsets.length;
           if (high === 0) {
             return { line: 0, character: offset };
           }
           while (low < high) {
-            var mid = Math.floor((low + high) / 2);
+            let mid = Math.floor((low + high) / 2);
             if (lineOffsets[mid] > offset) {
               high = mid;
             } else {
               low = mid + 1;
             }
           }
-          var line = low - 1;
+          let line = low - 1;
           return { line, character: offset - lineOffsets[line] };
-        };
-        FullTextDocument2.prototype.offsetAt = function(position) {
-          var lineOffsets = this.getLineOffsets();
+        }
+        offsetAt(position) {
+          let lineOffsets = this.getLineOffsets();
           if (position.line >= lineOffsets.length) {
             return this._content.length;
           } else if (position.line < 0) {
             return 0;
           }
-          var lineOffset = lineOffsets[position.line];
-          var nextLineOffset = position.line + 1 < lineOffsets.length ? lineOffsets[position.line + 1] : this._content.length;
+          let lineOffset = lineOffsets[position.line];
+          let nextLineOffset = position.line + 1 < lineOffsets.length ? lineOffsets[position.line + 1] : this._content.length;
           return Math.max(Math.min(lineOffset + position.character, nextLineOffset), lineOffset);
-        };
-        Object.defineProperty(FullTextDocument2.prototype, "lineCount", {
-          get: function() {
-            return this.getLineOffsets().length;
-          },
-          enumerable: false,
-          configurable: true
-        });
-        FullTextDocument2.isIncremental = function(event) {
-          var candidate = event;
+        }
+        get lineCount() {
+          return this.getLineOffsets().length;
+        }
+        static isIncremental(event) {
+          let candidate = event;
           return candidate !== void 0 && candidate !== null && typeof candidate.text === "string" && candidate.range !== void 0 && (candidate.rangeLength === void 0 || typeof candidate.rangeLength === "number");
-        };
-        FullTextDocument2.isFull = function(event) {
-          var candidate = event;
+        }
+        static isFull(event) {
+          let candidate = event;
           return candidate !== void 0 && candidate !== null && typeof candidate.text === "string" && candidate.range === void 0 && candidate.rangeLength === void 0;
-        };
-        return FullTextDocument2;
-      }();
+        }
+      }
       var TextDocument;
       (function(TextDocument2) {
         function create(uri, languageId, version, content) {
@@ -24678,19 +24649,18 @@ var require_main5 = __commonJS({
         }
         TextDocument2.update = update;
         function applyEdits(document, edits) {
-          var text = document.getText();
-          var sortedEdits = mergeSort(edits.map(getWellformedEdit), function(a, b) {
-            var diff = a.range.start.line - b.range.start.line;
+          let text = document.getText();
+          let sortedEdits = mergeSort(edits.map(getWellformedEdit), (a, b) => {
+            let diff = a.range.start.line - b.range.start.line;
             if (diff === 0) {
               return a.range.start.character - b.range.start.character;
             }
             return diff;
           });
-          var lastModifiedOffset = 0;
-          var spans = [];
-          for (var _i = 0, sortedEdits_1 = sortedEdits; _i < sortedEdits_1.length; _i++) {
-            var e = sortedEdits_1[_i];
-            var startOffset = document.offsetAt(e.range.start);
+          let lastModifiedOffset = 0;
+          const spans = [];
+          for (const e of sortedEdits) {
+            let startOffset = document.offsetAt(e.range.start);
             if (startOffset < lastModifiedOffset) {
               throw new Error("Overlapping edit");
             } else if (startOffset > lastModifiedOffset) {
@@ -24710,16 +24680,16 @@ var require_main5 = __commonJS({
         if (data.length <= 1) {
           return data;
         }
-        var p = data.length / 2 | 0;
-        var left = data.slice(0, p);
-        var right = data.slice(p);
+        const p = data.length / 2 | 0;
+        const left = data.slice(0, p);
+        const right = data.slice(p);
         mergeSort(left, compare);
         mergeSort(right, compare);
-        var leftIdx = 0;
-        var rightIdx = 0;
-        var i = 0;
+        let leftIdx = 0;
+        let rightIdx = 0;
+        let i = 0;
         while (leftIdx < left.length && rightIdx < right.length) {
-          var ret = compare(left[leftIdx], right[rightIdx]);
+          let ret = compare(left[leftIdx], right[rightIdx]);
           if (ret <= 0) {
             data[i++] = left[leftIdx++];
           } else {
@@ -24734,13 +24704,10 @@ var require_main5 = __commonJS({
         }
         return data;
       }
-      function computeLineOffsets(text, isAtLineStart, textOffset) {
-        if (textOffset === void 0) {
-          textOffset = 0;
-        }
-        var result = isAtLineStart ? [textOffset] : [];
-        for (var i = 0; i < text.length; i++) {
-          var ch = text.charCodeAt(i);
+      function computeLineOffsets(text, isAtLineStart, textOffset = 0) {
+        const result = isAtLineStart ? [textOffset] : [];
+        for (let i = 0; i < text.length; i++) {
+          let ch = text.charCodeAt(i);
           if (ch === 13 || ch === 10) {
             if (ch === 13 && i + 1 < text.length && text.charCodeAt(i + 1) === 10) {
               i++;
@@ -24751,15 +24718,15 @@ var require_main5 = __commonJS({
         return result;
       }
       function getWellformedRange(range) {
-        var start = range.start;
-        var end = range.end;
+        const start = range.start;
+        const end = range.end;
         if (start.line > end.line || start.line === end.line && start.character > end.character) {
           return { start: end, end: start };
         }
         return range;
       }
       function getWellformedEdit(textEdit) {
-        var range = getWellformedRange(textEdit.range);
+        const range = getWellformedRange(textEdit.range);
         if (range !== textEdit.range) {
           return { newText: textEdit.newText, range };
         }
@@ -25071,7 +25038,7 @@ var require_merge_options_with_defaults = __commonJS({
     function mergeOptionsWithDefaults(options, defaults) {
       const seen = new WeakSet();
       const mapped = new WeakMap();
-      const circulars = new Set();
+      const circulars = /* @__PURE__ */ new Set();
       const result = mergeOptionsWithDefaultsInner(options, defaults, seen, mapped, circulars);
       for (const [circular, obj, key] of circulars) {
         obj[key] = mapped.get(circular);
@@ -25195,9 +25162,9 @@ var require_server2 = __commonJS({
         _StylelintLanguageServer_runner.set(this, void 0);
         _StylelintLanguageServer_documents.set(this, void 0);
         _StylelintLanguageServer_context.set(this, void 0);
-        _StylelintLanguageServer_modules.set(this, new Map());
+        _StylelintLanguageServer_modules.set(this, /* @__PURE__ */ new Map());
         _StylelintLanguageServer_hasConfigurationCapability.set(this, false);
-        _StylelintLanguageServer_scopedOptions.set(this, new Map());
+        _StylelintLanguageServer_scopedOptions.set(this, /* @__PURE__ */ new Map());
         __classPrivateFieldSet(this, _StylelintLanguageServer_connection, connection2, "f");
         __classPrivateFieldSet(this, _StylelintLanguageServer_logger, logger2?.child({ component: "language-server" }), "f");
         __classPrivateFieldSet(this, _StylelintLanguageServer_notifications, new lsp_1.NotificationManager(connection2, __classPrivateFieldGet(this, _StylelintLanguageServer_logger, "f")), "f");
@@ -25608,7 +25575,7 @@ var require_errors3 = __commonJS({
           return result;
         }
         if (obj instanceof Map) {
-          const result = new Map();
+          const result = /* @__PURE__ */ new Map();
           visited.set(obj, result);
           for (const [key, value] of obj) {
             const serializedKey = serializeInner(key, visited);
@@ -25624,7 +25591,7 @@ var require_errors3 = __commonJS({
           return result;
         }
         if (obj instanceof Set) {
-          const result = new Set();
+          const result = /* @__PURE__ */ new Set();
           visited.set(obj, result);
           for (const value of obj) {
             if (!(0, objects_1.isObject)(value)) {
