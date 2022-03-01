@@ -1,6 +1,6 @@
 # LSP-stylelint
 
-Stylelint support for Sublime's LSP plugin using [stylelint server](https://github.com/stylelint/vscode-stylelint/).
+Stylelint support for Sublime's LSP plugin using [Stylelint server](https://github.com/stylelint/vscode-stylelint/).
 
 - Install [LSP](https://packagecontrol.io/packages/LSP) and `LSP-stylelint` from Package Control.
   If you use Sass or SCSS, install [Sass](https://packagecontrol.io/packages/Sass).
@@ -9,9 +9,13 @@ Stylelint support for Sublime's LSP plugin using [stylelint server](https://gith
 
 ## Configuration
 
-Configure the stylelint language server by accessing `Preferences > Package Settings > LSP > Servers > LSP-stylelint`.
+Configure the Stylelint language server by accessing `Preferences > Package Settings > LSP > Servers > LSP-stylelint`.
 
 ## FAQ
+
+Q: I'm using Stylelint 13 in my project and the package is telling me that it's no longer supported.
+
+A: Please update Stylelint to version 14 by following the [migration guide](https://github.com/stylelint/vscode-stylelint#migrating-from-vscode-stylelint-0xstylelint-13x).
 
 Q: How to enable Stylelint to automatically fix issues on saving the file?
 
