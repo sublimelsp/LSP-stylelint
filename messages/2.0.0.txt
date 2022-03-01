@@ -1,0 +1,9 @@
+=> 2.0.0
+
+BREAKING CHANGES:
+
+- Dropped support for Stylelint 13 and prior; only Stylelint 14 is supported now.
+- Stylelint is no longer bundled with the package.
+- Only CSS and PostCSS are validated by default
+
+For more details see: https://github.com/stylelint/vscode-stylelint/blob/v1.0.0/README.md#%EF%B8%8F-stylelint-13x-and-prior-is-no-longer-supported
