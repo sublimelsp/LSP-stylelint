@@ -83,6 +83,11 @@
                       "default": "",
                       "description": "An absolute path to a custom PostCSS-compatible syntax module."
                     },
+                    "stylelint.reportDescriptionlessDisables": {
+                      "type": "boolean",
+                      "default": false,
+                      "markdownDescription": "Report `stylelint-disable` comments without a description."
+                    },
                     "stylelint.ignoreDisables": {
                       "type": "boolean",
                       "default": false,

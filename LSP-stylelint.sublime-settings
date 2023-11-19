@@ -17,6 +17,8 @@
 		"stylelint.configBasedir": "",
 		// An absolute path to a custom PostCSS-compatible syntax module.
 		"stylelint.customSyntax": "",
+		// Report `stylelint-disable` comments without a description.
+		"stylelint.reportDescriptionlessDisables": false,
 		// Ignore `styleline-disable` (e.g. `/* stylelint-disable block-no-empty */`) comments.
 		"stylelint.ignoreDisables": false,
 		// The package manager you use to install node modules. Possible values: npm, yarn, pnpm.
