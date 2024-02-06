@@ -46,9 +46,6 @@
 			"postcss",
 		],
 	},
-	// ST4
-	"selector": "source.css | source.scss | source.less | text.html.vue",
-	// ST3
 	"languages": [
 		{
 			"languageId": "scss",
