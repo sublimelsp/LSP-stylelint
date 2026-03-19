@@ -1,5 +1,8 @@
-from LSP.plugin.core.typing import Tuple
+from __future__ import annotations
+
 from lsp_utils import NpmClientHandler
+from typing import final
+from typing_extensions import override
 import os
 
 
@@ -11,12 +14,13 @@ def plugin_unloaded():
     LspStylelintPlugin.cleanup()
 
 
+@final
 class LspStylelintPlugin(NpmClientHandler):
-    package_name = __package__
+    package_name = str(__package__)
     server_directory = 'language-server'
-    server_binary_path = os.path.join(server_directory, 'dist', 'start-server.js')
-    skip_npm_install = True
+    server_binary_path = os.path.join(server_directory, "node_modules", "@stylelint", "language-server", "bin", "stylelint-language-server.mjs")  # noqa: E501
 
     @classmethod
-    def minimum_node_version(cls) -> Tuple[int, int, int]:
-        return (14, 0, 0)
+    @override
+    def required_node_version(cls) -> str:
+        return '>=22.17.0'
