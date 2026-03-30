@@ -15,7 +15,7 @@ Configure the Stylelint language server by accessing `Preferences > Package Sett
 
 Q: I'm using Stylelint 13 in my project and the package is telling me that it's no longer supported.
 
-A: Please update Stylelint to version 14 by following the [migration guide](https://github.com/stylelint/vscode-stylelint#migrating-from-vscode-stylelint-0xstylelint-13x).
+A: Please update Stylelint to version 14 by following the [migration guide](https://github.com/stylelint/vscode-stylelint/blob/main/MIGRATE.md#from-vscode-stylelint-0x-to-1x).
 
 Q: How to enable Stylelint to automatically fix issues on saving the file?
 
