@@ -2,6 +2,6 @@
   "name": "lsp-stylelint",
   "private": true,
   "dependencies": {
-    "@stylelint/language-server": "1.0.1"
+    "@stylelint/language-server": "1.1.0"
   }
 }
