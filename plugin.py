@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 from enum import IntEnum
+from LSP.plugin import LspPlugin
 from LSP.plugin import notification_handler
-from lsp_utils import NpmClientHandler
+from LSP.plugin import OnPreStartContext
+from lsp_utils import NodeManager
+from pathlib import Path
+from sublime_lib import ResourcePath
 from typing import final
 from typing import TypedDict
 from typing_extensions import override
-import os
 
 
 class Status(IntEnum):
@@ -29,23 +32,27 @@ def state_text(state: Status) -> str:
 
 
 def plugin_loaded():
-    LspStylelintPlugin.setup()
+    LspStylelintPlugin.register()
 
 
 def plugin_unloaded():
-    LspStylelintPlugin.cleanup()
+    LspStylelintPlugin.unregister()
 
 
 @final
-class LspStylelintPlugin(NpmClientHandler):
-    package_name = str(__package__)
-    server_directory = 'language-server'
-    server_binary_path = os.path.join(server_directory, "node_modules", "@stylelint", "language-server", "bin", "stylelint-language-server.mjs")
+class LspStylelintPlugin(LspPlugin):
 
     @classmethod
     @override
-    def required_node_version(cls) -> str:
-        return '>=22.17.0'
+    def on_pre_start_async(cls, context: OnPreStartContext) -> None:
+        package_name = cls.plugin_storage_path.name
+        NodeManager.on_pre_start_async(
+            context,
+            cls.plugin_storage_path,
+            ResourcePath("Packages", package_name, "language-server"),
+            Path("node_modules", "@stylelint", "language-server", "bin", "stylelint-language-server.mjs"),
+            node_version_requirement=">=22.17.0",
+        )
 
     @notification_handler('stylelint/status')
     def on_stylelint_status(self, params: StatusParams) -> None:
